@@ -14,11 +14,16 @@ class ReportService {
 		return newReport;
 	}
 
-	async getAll(id) {
+	async getAll(userId) {
 		const reports = await this.#client.report.findMany({
 			where: {
-				id: parseInt(id),
+				enroll: {
+					userId
+				}
 			},
+			include: {
+				enroll: true
+			}
 		});
 
 		return reports;
