@@ -6,7 +6,9 @@ class AuthService {
  constructor(){
     this.#client = createClient('auth/')
  }
-
+   async login({email, password}) {
+      return await this.#client.post('login', {email, password})
+   }
  async signInWithIdToken(token){
     return  await this.#client.post('login-with-id-token', {token})
  }
