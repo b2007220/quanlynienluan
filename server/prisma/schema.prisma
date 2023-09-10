@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  HIDE
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  fullName  String
+  email     String   @unique
+  password  String   @unique
+  gender    Gender   @default(HIDE)
+  active    Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  role      Int      @default(1)
+  course    Int?
+  studentId String?
+  major     Major    @relation(fields: [majorId], references: [id])
+  majorId   Int      @unique
+  enrolls   Enroll[]
+  uses      Use[]
+}
+
+model Major {
+  id        Int       @id @default(autoincrement())
+  majorName String
+  users  User[]
+}
+
+enum State {
+  WAIT
+  IN_PROCESS
+  DONE
+  PROPOSE
+}
+
+enum Type {
+  BASIS
+  MASTER
+  BOTH
+}
+
+model Topic {
+  id       Int    @id @default(autoincrement())
+  name     String
+  describe String
+  type     Type
+  uses     Use[]
+}
+
+model Use {
+  id               Int      @id @default(autoincrement())
+  semester         Int
+  year             Int
+  topic            Topic    @relation(fields: [topicId], references: [id])
+  topicId          Int      @unique
+  enrolls          Enroll[]
+  user_incharge User  @relation(fields: [userId], references: [id])
+  userId        Int      @unique
+}
+
+model Enroll {
+  id        Int      @id @default(autoincrement())
+  user   User  @relation(fields: [userId], references: [id])
+  userId Int      @unique
+  use       Use      @relation(fields: [useId], references: [id])
+  useId     Int      @unique
+  reports   Report[]
+}
+
+model Report {
+  id        Int      @id @default(autoincrement())
+  done_job  String
+  next_job  String
+  createdAt DateTime @default(now())
+  promiseAt DateTime
+  enroll    Enroll   @relation(fields: [enrollId], references: [id])
+  enrollId  Int      @unique
+}

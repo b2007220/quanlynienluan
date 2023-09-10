@@ -1,0 +1,59 @@
+const { PrismaClient } = require('@prisma/client');
+
+class MajorService {
+	#client;
+	constructor() {
+		this.#client = new PrismaClient();
+	}
+
+	async create(major) {
+		const newMajor = await this.#client.major.create({
+			data: major,
+		});
+
+		return newMajor;
+	}
+
+	async getAll(id) {
+		const majors = await this.#client.major.findMany({
+			where: {
+				id: parseInt(id),
+			},
+		});
+
+		return majors;
+	}
+
+	async getById(id) {
+		const major = await this.#client.major.findUnique({
+			where: {
+				id: parseInt(id),
+			},
+		});
+
+		return major;
+	}
+
+	async update(id, major) {
+		const updatedMajor = await this.#client.major.update({
+			where: {
+				id: parseInt(id),
+			},
+			data: major,
+		});
+
+		return updatedMajor;
+	}
+
+	async delete(id) {
+		const deletedMajor = await this.#client.major.delete({
+			where: {
+				id: parseInt(id),
+			},
+		});
+
+		return deletedMajor;
+	}
+}
+
+module.exports = new MajorService();
