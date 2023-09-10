@@ -14,12 +14,8 @@ class UserService {
 		return newUser;
 	}
 
-	async getAll(id) {
-		const users = await this.#client.user.findMany({
-			where: {
-				id: parseInt(id),
-			},
-		});
+	async getAll() {
+		const users = await this.#client.user.findMany();
 
 		return users;
 	}
@@ -37,7 +33,7 @@ class UserService {
 	async getByEmail(email) {
 		const user = await this.#client.user.findUnique({
 			where: {
-				email: email,
+				email,
 			},
 		});
 
