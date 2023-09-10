@@ -37,7 +37,7 @@ class UserService {
 	async getByEmail(email) {
 		const user = await this.#client.user.findUnique({
 			where: {
-				email: email
+				email: email,
 			},
 		});
 

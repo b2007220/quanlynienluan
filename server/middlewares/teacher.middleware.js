@@ -1,21 +1,14 @@
-const tokenService = require('../services/token.service');
+const { Role } = require('@prisma/client');
 
 module.exports = async function (req, res, next) {
 	try {
-		const token = req.headers.authorization?.replace('Bearer ', '');
+		const { role } = req.user;
 
-		if (!token) {
-			return res.status(401).end();
+		if (role == Role.TEACHER || role == Role.ADMIN) {
+			next();
+		} else {
+			return res.status(403).end();
 		}
-
-		const { role } = tokenService.decode(token);
-
-		if(role == 2 || role == 3){
-            next();
-        }
-		else{
-            return res.status(401).end();
-        }
 	} catch (error) {
 		next(error);
 	}

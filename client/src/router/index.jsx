@@ -4,11 +4,10 @@ import Layout from '../pages/_layout';
 import UsersPage from '../pages/users';
 import Login_Layout from '../pages/login';
 
-
 const router = createBrowserRouter([
 	{
 		path: '/login',
-		Component: Login_Layout
+		Component: Login_Layout,
 	},
 	{
 		path: '/',

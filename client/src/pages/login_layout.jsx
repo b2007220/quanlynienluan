@@ -2,7 +2,6 @@ import { Link, Outlet } from 'react-router-dom';
 import { Tabs, Tab, Container } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 
-
 const Login_Layout = () => {
 	const location = useLocation();
 
