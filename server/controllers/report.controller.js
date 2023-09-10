@@ -77,23 +77,23 @@ class ReportController {
 			next(error);
 		}
 	}
-		/**
+	/**
 	 * @type {import("express").RequestHandler}
 	 *
 	 */
-		async getByIdUser(req, res, next) {
-			try {
-				const report = await reportService.getAll(req.params.id);
-	
-				if (!report) {
-					res.status(404).json({ message: 'Report not found' });
-				}
-	
-				res.send(report);
-			} catch (error) {
-				next(error);
+	async getByIdUser(req, res, next) {
+		try {
+			const report = await reportService.getAll(req.params.id);
+
+			if (!report) {
+				res.status(404).json({ message: 'Report not found' });
 			}
+
+			res.send(report);
+		} catch (error) {
+			next(error);
 		}
+	}
 }
 
 module.exports = new ReportController();

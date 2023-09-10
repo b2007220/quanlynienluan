@@ -18,12 +18,12 @@ class ReportService {
 		const reports = await this.#client.report.findMany({
 			where: {
 				enroll: {
-					userId
-				}
+					userId,
+				},
 			},
 			include: {
-				enroll: true
-			}
+				enroll: true,
+			},
 		});
 
 		return reports;
