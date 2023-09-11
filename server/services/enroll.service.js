@@ -14,12 +14,8 @@ class EnrollService {
 		return newEnroll;
 	}
 
-	async getAll(id) {
-		const enrolls = await this.#client.enroll.findMany({
-			where: {
-				id: parseInt(id),
-			},
-		});
+	async getAll() {
+		const enrolls = await this.#client.enroll.findMany();
 
 		return enrolls;
 	}

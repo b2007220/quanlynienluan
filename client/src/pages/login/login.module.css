@@ -6,12 +6,17 @@ a:-webkit-any-link {
 	cursor: pointer;
 	text-decoration: underline;
 }
-
-.login-box {
+.container {
+	margin: 0;
+	padding: 0;
+	font-family: sans-serif;
+	background-image: linear-gradient(#141e30, #243b55);
+}
+.login__box {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	width: 500px;
+	width: 450px;
 	padding: 30px;
 	transform: translate(-50%, -50%);
 	background: rgba(0, 0, 0, 0.5);
@@ -20,24 +25,24 @@ a:-webkit-any-link {
 	border-radius: 10px;
 	min-height: 400px;
 }
-.login-box h2 {
+.login__box h2 {
 	color: #fff;
 	text-align: center;
 }
 
-.login-box .user-function a {
+.login__box .user__function a {
 	color: #fff;
 	position: relative;
 	text-decoration: none;
 }
-.login-box .button-box {
+.login__box .button__box {
 	width: 360px;
 	margin: 25px auto;
 	position: relative;
 	border: 1px solid #03e9f4;
 	border-radius: 30px;
 }
-.login-box .button-box a .toggle-btn {
+.login__box .button__box a .toggle-btn {
 	position: relative;
 	padding: 10px 50px;
 	cursor: pointer;
@@ -47,8 +52,8 @@ a:-webkit-any-link {
 	color: #fff;
 	font-size: 16px;
 }
-.login-box .button-box #btn1,
-.login-box .button-box #btn2 {
+.login__box .button__box #btn1,
+.login__box .button__box #btn2 {
 	top: 0px;
 	width: 180px;
 	height: 100%;
@@ -56,10 +61,10 @@ a:-webkit-any-link {
 	background: #126da6;
 	border-radius: 30px;
 }
-.login-box .button-box #btn1 {
+.login__box .button__box #btn1 {
 	left: 0;
 }
-.login-box .button-box #btn2 {
+.login__box .button__box #btn2 {
 	left: 180px;
 }
 .form-container {
@@ -68,10 +73,10 @@ a:-webkit-any-link {
 	width: 100%;
 }
 
-.login-box .user-box {
+.login__box .user__box {
 	position: relative;
 }
-.login-box .user-box input {
+.login__box .user__box input {
 	width: 100%;
 	padding: 10px 0;
 	font-size: 16px;
@@ -82,7 +87,7 @@ a:-webkit-any-link {
 	outline: none;
 	background: transparent;
 }
-.login-box .user-box label {
+.login__box .user__box label {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -92,7 +97,7 @@ a:-webkit-any-link {
 	pointer-events: none;
 	transition: 0.5s;
 }
-.login-box .user-box label:after {
+.login__box .user__box label:after {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -102,14 +107,14 @@ a:-webkit-any-link {
 	pointer-events: none;
 	transition: 0.5s;
 }
-.login-box .user-box input:focus ~ label,
-.login-box .user-box input:valid ~ label {
+.login__box .user__box input:focus ~ label,
+.login__box .user__box input:valid ~ label {
 	top: -20px;
 	left: 0;
 	color: #03e9f4;
 	font-size: 12px;
 }
-.login-box form button {
+.login__box form button {
 	border: none;
 	outline: none;
 	background: transparent;
@@ -124,7 +129,7 @@ a:-webkit-any-link {
 	transform: 0.5s;
 	letter-spacing: 4px;
 }
-.login-box form button:hover {
+.login__box form button:hover {
 	background: #03e9f4;
 	color: #fff;
 	border-radius: 5px;
@@ -134,11 +139,11 @@ a:-webkit-any-link {
 		0 0 50px #03e9f4,
 		0 0 100px #03e9f4;
 }
-.login-box button span {
+.login__box button span {
 	position: absolute;
 	display: block;
 }
-.login-box button span:nth-child(1) {
+.login__box button span:nth-child(1) {
 	top: 0;
 	left: -100%;
 	width: 100%;
@@ -154,11 +159,11 @@ a:-webkit-any-link {
 hr {
 	border: 1px solid #fff;
 }
-.social-sign-in {
+.social__signin {
 	display: flex;
 	justify-content: center;
 }
-.input-google {
+.input__google {
 	border-radius: 5px;
 	display: flex;
 	width: 80%;
@@ -172,11 +177,11 @@ hr {
 	cursor: pointer;
 	text-decoration: none;
 }
-.input-google .icon {
+.input__google .icon {
 	padding-top: 5px;
 	font-size: 2rem;
 }
-.input-google p {
+.input__google p {
 	font-size: 15px;
 	width: 90%;
 }
@@ -189,7 +194,7 @@ hr {
 		left: 100%;
 	}
 }
-.login-box button span:nth-child(2) {
+.login__box button span:nth-child(2) {
 	top: -100%;
 	right: 0%;
 	width: 2px;
@@ -207,7 +212,7 @@ hr {
 		top: 100%;
 	}
 }
-.login-box button span:nth-child(3) {
+.login__box button span:nth-child(3) {
 	bottom: 0;
 	right: -100%;
 	width: 100%;
@@ -225,7 +230,7 @@ hr {
 		right: 100%;
 	}
 }
-.login-box button span:nth-child(4) {
+.login__box button span:nth-child(4) {
 	bottom: -100%;
 	left: 0;
 	width: 2px;

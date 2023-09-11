@@ -1,9 +1,11 @@
 const router = require('express').Router();
 
-const reportControler = require('../controllers/report.controller');
+const reportController = require('../controllers/report.controller');
 
-router.route('/').post(reportControler.create).get(reportControler.getAll);
+router.route('/').post(reportController.create).get(reportController.getAll);
 
-router.route('/:id').get(reportControler.getById).put(reportControler.updateById).delete(reportControler.deleteById);
+router.route('/:id').get(reportController.getById).put(reportController.updateById).delete(reportController.deleteById);
+
+router.route('/user/:id').get(reportController.getReportsFromUser);
 
 module.exports = router;

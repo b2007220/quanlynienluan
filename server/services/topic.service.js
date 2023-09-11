@@ -14,13 +14,8 @@ class TopicService {
 		return newTopic;
 	}
 
-	async getAll(id) {
-		const topics = await this.#client.topic.findMany({
-			where: {
-				id: parseInt(id),
-			},
-		});
-
+	async getAll() {
+		const topics = await this.#client.topic.findMany();
 		return topics;
 	}
 

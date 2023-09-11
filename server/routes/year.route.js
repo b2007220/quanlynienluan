@@ -1,9 +1,9 @@
 const router = require('express').Router();
 
-const yearControler = require('../controllers/year.controller');
+const yearController = require('../controllers/year.controller');
 
-router.route('/').post(yearControler.create).get(yearControler.getAll);
+router.route('/').post(yearController.create).get(yearController.getAll);
 
-router.route('/:id').get(yearControler.getById).put(yearControler.updateById).delete(yearControler.deleteById);
+router.route('/:id').get(yearController.getById).put(yearController.updateById).delete(yearController.deleteById);
 
 module.exports = router;

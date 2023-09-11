@@ -14,13 +14,8 @@ class SemesterService {
 		return newsemester;
 	}
 
-	async getAll(id) {
-		const semesters = await this.#client.semester.findMany({
-			where: {
-				id: parseInt(id),
-			},
-		});
-
+	async getAll() {
+		const semesters = await this.#client.semester.findMany();
 		return semesters;
 	}
 

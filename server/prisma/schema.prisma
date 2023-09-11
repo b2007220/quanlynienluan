@@ -86,6 +86,7 @@ model Enroll {
   use     Use      @relation(fields: [useId], references: [id])
   useId   Int
   reports Report[]
+  state   State    @default(WAIT)
 }
 
 model Report {

@@ -14,7 +14,13 @@ class ReportService {
 		return newReport;
 	}
 
-	async getAll(userId) {
+	async getAll() {
+		const reports = await this.#client.report.findMany();
+
+		return reports;
+	}
+
+	async getReportsFromUser(userId) {
 		const reports = await this.#client.report.findMany({
 			where: {
 				enroll: {
@@ -28,7 +34,6 @@ class ReportService {
 
 		return reports;
 	}
-
 	async getById(id) {
 		const report = await this.#client.report.findUnique({
 			where: {

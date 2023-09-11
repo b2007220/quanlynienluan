@@ -14,13 +14,8 @@ class MajorService {
 		return newMajor;
 	}
 
-	async getAll(id) {
-		const majors = await this.#client.major.findMany({
-			where: {
-				id: parseInt(id),
-			},
-		});
-
+	async getAll() {
+		const majors = await this.#client.major.findMany();
 		return majors;
 	}
 

@@ -34,6 +34,10 @@ class ReportService {
 	async deleteReportById(id) {
 		await this.#client.delete(`/${id}`);
 	}
+
+	async getReportsFromUser(userId) {
+		await this.#client.get(`/user/${userId}`);
+	}
 }
 
 export default new ReportService();

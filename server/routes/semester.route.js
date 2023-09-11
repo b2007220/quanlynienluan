@@ -1,13 +1,13 @@
 const router = require('express').Router();
 
-const semesterControler = require('../controllers/semester.controller');
+const semesterController = require('../controllers/semester.controller');
 
-router.route('/').post(semesterControler.create).get(semesterControler.getAll);
+router.route('/').post(semesterController.create).get(semesterController.getAll);
 
 router
 	.route('/:id')
-	.get(semesterControler.getById)
-	.put(semesterControler.updateById)
-	.delete(semesterControler.deleteById);
+	.get(semesterController.getById)
+	.put(semesterController.updateById)
+	.delete(semesterController.deleteById);
 
 module.exports = router;
