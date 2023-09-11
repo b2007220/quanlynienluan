@@ -24,6 +24,7 @@ class AuthController {
 			next(error);
 		}
 	}
+
 	/**
 	 * @type {import('express').RequestHandler}
 	 */
