@@ -81,9 +81,9 @@ class ReportController {
 	 * @type {import("express").RequestHandler}
 	 *
 	 */
-	async getByIdUser(req, res, next) {
+	async getReportsFromUser(req, res, next) {
 		try {
-			const report = await reportService.getAll(req.params.id);
+			const report = await reportService.getReportsFromUser(req.params.id);
 
 			if (!report) {
 				res.status(404).json({ message: 'Report not found' });

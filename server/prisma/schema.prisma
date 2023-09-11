@@ -60,12 +60,18 @@ enum Type {
   BOTH
 }
 
+enum Official {
+  OFFICIAL
+  UNOFFICIAL
+}
+
 model Topic {
-  id       Int    @id @default(autoincrement())
+  id       Int      @id @default(autoincrement())
   name     String
   describe String
-  type     Type
+  type     Type   @default(BOTH)
   uses     Use[]
+  official Official @default(OFFICIAL)
 }
 
 model Use {

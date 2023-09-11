@@ -20,6 +20,21 @@ class UseService {
 		return uses;
 	}
 
+	async getAllFromUser(userId) {
+		const uses = await this.#client.use.findMany();
+		({
+			where: {
+				user: {
+					id: userId,
+				},
+			},
+			include: {
+				user: true,
+			},
+		});
+
+		return updateduse;
+	}
 	async getById(id) {
 		const use = await this.#client.use.findUnique({
 			where: {

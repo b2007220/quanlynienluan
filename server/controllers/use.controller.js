@@ -23,6 +23,17 @@ class UseController {
 			next(error);
 		}
 	}
+	/**
+	 * @type {import("express").RequestHandler}
+	 *
+	 */
+	async getAllFromUser(req, res, next) {
+		try {
+			res.status(200).json(await useService.getAllFromUser(req.query));
+		} catch (error) {
+			next(error);
+		}
+	}
 
 	/**
 	 * @type {import("express").RequestHandler}

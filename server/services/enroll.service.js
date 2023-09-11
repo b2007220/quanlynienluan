@@ -14,6 +14,14 @@ class EnrollService {
 		return newEnroll;
 	}
 
+	async createNewTopic(enroll) {
+		const newTopic = await this.#client.topic.create({
+			data: enroll,
+		});
+
+		return newEnroll;
+	}
+
 	async getAll() {
 		const enrolls = await this.#client.enroll.findMany();
 
