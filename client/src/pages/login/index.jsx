@@ -5,13 +5,13 @@ import withReactContent from 'sweetalert2-react-content';
 import style from './login.module.css';
 import { auth } from '../../firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import * as AiIcons from 'react-icons/ai';
 import authService from '../../services/auth.service';
 import tokenService from '../../services/token.service';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../store/user';
 import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
+import GoogleIcon from '@mui/icons-material/Google';
 
 export default function Login() {
 	const MySwal = withReactContent(Swal);
@@ -98,7 +98,7 @@ export default function Login() {
 							<div className={style.social__signin}>
 								<button className={style.input__google} onClick={handleSignIn}>
 									<div className={style.icon}>
-										<AiIcons.AiOutlineGooglePlus></AiIcons.AiOutlineGooglePlus>
+										<GoogleIcon></GoogleIcon>
 									</div>
 									<p>Sign In with Google</p>
 								</button>
