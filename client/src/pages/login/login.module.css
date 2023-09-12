@@ -1,24 +1,12 @@
-html {
-	height: 100%;
-}
-a:-webkit-any-link {
-	color: transparent;
-	cursor: pointer;
-	text-decoration: underline;
-}
 .container {
-	margin: 0;
-	padding: 0;
-	font-family: sans-serif;
-	background-image: linear-gradient(#141e30, #243b55);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: linear-gradient(#141e30, #243b55);
 }
 .login__box {
-	position: absolute;
-	top: 50%;
-	left: 50%;
 	width: 450px;
 	padding: 30px;
-	transform: translate(-50%, -50%);
 	background: rgba(0, 0, 0, 0.5);
 	box-sizing: border-box;
 	box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);

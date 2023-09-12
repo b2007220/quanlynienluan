@@ -33,7 +33,17 @@ export default function Login() {
 
 			dispatch(setUser(profile));
 
-			navigate('/');
+			const userRole = profile.role;
+
+			if (userRole === 'STUDENT') {
+				navigate('/student');
+			}
+			if (userRole === 'TEACHER') {
+				navigate('/teacher');
+			}
+			if (userRole === 'ADMIN') {
+				navigate('/admin');
+			}
 		} catch (error) {
 			MySwal.fire({
 				icon: 'error',
@@ -52,59 +62,61 @@ export default function Login() {
 		>
 			{({ values, handleSubmit, handleChange }) => {
 				return (
-					<div className={style.container}>
-						<div className={style.login__box}>
-							<h2>Trang đăng nhập</h2>
-							<div className={style.form__container}>
-								<form onSubmit={handleSubmit}>
-									<div className={style.user__box}>
-										<input
-											type='text'
-											name='email'
-											autoComplete='off'
-											required
-											onChange={handleChange}
-											value={values.email}
-										/>
-										<label htmlFor='email'>
-											<span>Tài khoản</span>
-										</label>
-									</div>
-									<div className={style.user__box}>
-										<input
-											type='password'
-											name='password'
-											autoComplete='off'
-											required
-											onChange={handleChange}
-											value={values.password}
-										/>
-										<label htmlFor='password'>
-											<span>Mật khẩu</span>
-										</label>
-									</div>
-									<button type='submit'>
-										<span></span>
-										<span></span>
-										<span></span>
-										<span></span>
-										Đăng nhập
+					<>
+						<div className={style.container}>
+							<div className={style.login__box}>
+								<h2>Trang đăng nhập</h2>
+								<div className={style.form__container}>
+									<form onSubmit={handleSubmit}>
+										<div className={style.user__box}>
+											<input
+												type='text'
+												name='email'
+												autoComplete='off'
+												required
+												onChange={handleChange}
+												value={values.email}
+											/>
+											<label htmlFor='email'>
+												<span>Tài khoản</span>
+											</label>
+										</div>
+										<div className={style.user__box}>
+											<input
+												type='password'
+												name='password'
+												autoComplete='off'
+												required
+												onChange={handleChange}
+												value={values.password}
+											/>
+											<label htmlFor='password'>
+												<span>Mật khẩu</span>
+											</label>
+										</div>
+										<button type='submit'>
+											<span></span>
+											<span></span>
+											<span></span>
+											<span></span>
+											Đăng nhập
+										</button>
+									</form>
+								</div>
+								<div className={style.middle__test}>
+									<hr />
+								</div>
+								<div className={style.social__signin}>
+									<button className={style.input__google} onClick={handleSignIn}>
+										<div className={style.icon}>
+											<GoogleIcon></GoogleIcon>
+										</div>
+										<p>Sign In with Google</p>
 									</button>
-								</form>
-							</div>
-							<div className={style.middle__test}>
-								<hr />
-							</div>
-							<div className={style.social__signin}>
-								<button className={style.input__google} onClick={handleSignIn}>
-									<div className={style.icon}>
-										<GoogleIcon></GoogleIcon>
-									</div>
-									<p>Sign In with Google</p>
-								</button>
+								</div>
 							</div>
 						</div>
-					</div>
+					</>
 				);
 			}}
 		</Formik>
