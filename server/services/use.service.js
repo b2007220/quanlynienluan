@@ -33,7 +33,7 @@ class UseService {
 			},
 		});
 
-		return updateduse;
+		return uses;
 	}
 	async getById(id) {
 		const use = await this.#client.use.findUnique({

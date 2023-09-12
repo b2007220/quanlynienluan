@@ -4,7 +4,7 @@ class SemesterService {
 	#client;
 
 	constructor() {
-		this.#client = createClient('Semesters');
+		this.#client = createClient('semesters');
 	}
 
 	async createSemester(semester) {

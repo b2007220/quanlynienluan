@@ -77,6 +77,18 @@ class GradeController {
 			next(error);
 		}
 	}
+
+	/**
+	 * @type {import("express").RequestHandler}
+	 *
+	 */
+	async getGradesFromUser(req, res, next) {
+		try {
+			res.status(200).json(await gradeService.getGradesFromUser(req.query));
+		} catch (error) {
+			next(error);
+		}
+	}
 }
 
 module.exports = new GradeController();

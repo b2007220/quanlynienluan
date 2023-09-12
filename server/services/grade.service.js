@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const { grade } = require('../prisma');
 
 class GradeService {
 	#client;
@@ -48,6 +49,20 @@ class GradeService {
 		});
 
 		return deletedgrade;
+	}
+
+	async getGradesFromUser(userId) {
+		const grade = await this.#client.grade.findUnique({
+			where: {
+				enroll: {
+					userId,
+				},
+			},
+			include: {
+				enroll: true,
+			},
+		});
+		return grade;
 	}
 }
 
