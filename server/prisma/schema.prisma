@@ -69,7 +69,7 @@ model Topic {
   id       Int      @id @default(autoincrement())
   name     String
   describe String
-  type     Type   @default(BOTH)
+  type     Type     @default(BOTH)
   uses     Use[]
   official Official @default(OFFICIAL)
 }
@@ -93,6 +93,7 @@ model Enroll {
   useId   Int
   reports Report[]
   state   State    @default(WAIT)
+  grade   Grade?
 }
 
 model Report {
@@ -119,4 +120,13 @@ model Semester {
   year    Year?    @relation(fields: [yearId], references: [id])
   yearId  Int?
   uses    Use[]
+}
+
+model Grade {
+  id            Int    @id @default(autoincrement())
+  diligentGrade Int
+  reportGrade   Int
+  programGrade  Int
+  enroll        Enroll @relation(fields: [enrollId], references: [id])
+  enrollId      Int    @unique
 }

@@ -32,10 +32,10 @@ const Layout = () => {
 				dispatch(setUser(user));
 				const role = useSelector((state) => state.user.role);
 				if (role === 'STUDENT') {
-					navigate('/student');
+					navigate('/student/');
 				}
 				if (role === 'ADMIN') {
-					navigate('/admin');
+					navigate('/admin/');
 				}
 			})
 			.catch((error) => {

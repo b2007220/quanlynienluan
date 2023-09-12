@@ -1,14 +1,14 @@
 import { Link, Outlet } from 'react-router-dom';
 import { Tabs, Tab, Container } from '@mui/material';
 import { useLocation } from 'react-router-dom';
+import Login from './login';
 const Login_Layout = () => {
 	const location = useLocation();
 
 	return (
 		<Container>
-			<Tabs value={location.pathname}>
-				<Tab label='Login' to='/' component={Link} value='/' />
-			</Tabs>
+			<Login></Login>
+			<Outlet></Outlet>
 		</Container>
 	);
 };

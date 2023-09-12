@@ -16,11 +16,11 @@ const router = createBrowserRouter([
 		Component: Student_Layout,
 		children: [
 			{
-				path: '',
+				path: '/student/',
 				Component: HomePage,
 			},
 			{
-				path: 'user',
+				path: '/student/user',
 				Component: UsersPage,
 			},
 		],
@@ -30,11 +30,11 @@ const router = createBrowserRouter([
 		Component: Teacher_Layout,
 		children: [
 			{
-				path: '',
+				path: '/teacher/',
 				Component: HomePage,
 			},
 			{
-				path: 'user',
+				path: '/teacher/user',
 				Component: UsersPage,
 			},
 		],
@@ -44,11 +44,11 @@ const router = createBrowserRouter([
 		Component: Admin_Layout,
 		children: [
 			{
-				path: '',
+				path: '/admin/',
 				Component: HomePage,
 			},
 			{
-				path: 'user',
+				path: '/admin/user',
 				Component: UsersPage,
 			},
 		],

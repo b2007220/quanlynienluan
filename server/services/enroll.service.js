@@ -58,6 +58,15 @@ class EnrollService {
 
 		return deletedEnroll;
 	}
+	async getEnrollsByStudentId(id) {
+		const enroll = await this.#client.enroll.findMany({
+			where: {
+				studentId: parseInt(id),
+			},
+		});
+
+		return enroll;
+	}
 }
 
 module.exports = new EnrollService();

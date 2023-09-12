@@ -34,6 +34,12 @@ class EnrollService {
 	async deleteEnrollById(id) {
 		await this.#client.delete(`/${id}`);
 	}
+
+	async getEnrollsByStudentIdInSemester(id) {
+		const enroll = await this.#client.get(`/student/${id}`);
+
+		return enroll;
+	}
 }
 
 export default new EnrollService();

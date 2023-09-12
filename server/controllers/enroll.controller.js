@@ -77,6 +77,20 @@ class EnrollController {
 			next(error);
 		}
 	}
+
+	async getEnrollsByStudentId(req, res, next) {
+		try {
+			const enroll = await enrollService.getEnrollsByStudentId(req.params.id);
+
+			if (!enroll) {
+				res.status(404).json({ message: 'Enroll not found' });
+			}
+
+			res.send(enroll);
+		} catch (error) {
+			next(error);
+		}
+	}
 }
 
 module.exports = new EnrollController();
