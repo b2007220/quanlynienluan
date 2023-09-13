@@ -93,7 +93,7 @@ const Layout = () => {
 		</Box>
 	);
 	return (
-		<Container maxWidth>
+		<Container>
 			<div>
 				{['left'].map((anchor) => (
 					<Fragment key={anchor}>
