@@ -9,8 +9,12 @@ router
 	.get(userController.getById)
 	.put(userController.updateById)
 	.delete(userController.deleteById)
-	.patch(userController.changeActiveUserById);
+	.patch(userController.activeUser);
 
-router.route('/:id/unactive').patch(userController.changeUnactiveUserById);
+router.route('/:id/unactive').patch(userController.unactiveUser);
+
+router.route('/:id/teacher').patch(userController.changeTeacher);
+
+router.route('/:id/student').patch(userController.changeStudent);
 
 module.exports = router;

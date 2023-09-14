@@ -81,15 +81,15 @@ class UserController {
 	 * @type {import("express").RequestHandler}
 	 *
 	 */
-	async changeActiveUserById(req, res, next) {
+	async activeUser(req, res, next) {
 		try {
-			const user = await userService.changeActiveUserById(req.params.id);
+			const user = await userService.getById(req.params.id);
 
 			if (!user) {
 				res.status(404).json({ message: 'User not found' });
 			}
 
-			res.send(await userService.active(req.params.id));
+			res.send(await userService.activeUser(req.params.id));
 		} catch (error) {
 			next(error);
 		}
@@ -98,15 +98,50 @@ class UserController {
 	 * @type {import("express").RequestHandler}
 	 *
 	 */
-	async changeUnactiveUserById(req, res, next) {
+	async unactiveUser(req, res, next) {
 		try {
-			const user = await userService.changeUnactiveUserById(req.params.id);
+			const user = await userService.getById(req.params.id);
 
 			if (!user) {
 				res.status(404).json({ message: 'User not found' });
 			}
 
-			res.send(await userService.unactive(req.params.id));
+			res.send(await userService.unactiveUser(req.params.id));
+		} catch (error) {
+			next(error);
+		}
+	}
+	/**
+	 * @type {import("express").RequestHandler}
+	 *
+	 */
+	async changeTeacher(req, res, next) {
+		try {
+			const user = await userService.getById(req.params.id);
+
+			if (!user) {
+				res.status(404).json({ message: 'User not found' });
+			}
+
+			res.send(await userService.changeTeacher(req.params.id));
+		} catch (error) {
+			next(error);
+		}
+	}
+
+	/**
+	 * @type {import("express").RequestHandler}
+	 *
+	 */
+	async changeStudent(req, res, next) {
+		try {
+			const user = await userService.getById(req.params.id);
+
+			if (!user) {
+				res.status(404).json({ message: 'User not found' });
+			}
+
+			res.send(await userService.changeStudent(req.params.id));
 		} catch (error) {
 			next(error);
 		}

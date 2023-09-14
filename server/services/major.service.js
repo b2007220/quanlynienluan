@@ -16,6 +16,7 @@ class MajorService {
 
 	async getAll() {
 		const majors = await this.#client.major.findMany();
+
 		return majors;
 	}
 

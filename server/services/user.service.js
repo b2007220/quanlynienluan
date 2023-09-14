@@ -15,11 +15,7 @@ class UserService {
 	}
 
 	async getAll() {
-		const users = await this.#client.user.findMany({
-			include: {
-				major: true,
-			},
-		});
+		const users = await this.#client.user.findMany();
 
 		return users;
 	}
@@ -65,7 +61,7 @@ class UserService {
 		return deletedUser;
 	}
 
-	async changeActiveUserById(id) {
+	async activeUser(id) {
 		const updatedUser = await this.#client.user.update({
 			where: {
 				id: parseInt(id),
@@ -78,7 +74,7 @@ class UserService {
 		return updatedUser;
 	}
 
-	async changeUnactiveUserById(id) {
+	async unactiveUser(id) {
 		const updatedUser = await this.#client.user.update({
 			where: {
 				id: parseInt(id),
@@ -87,6 +83,31 @@ class UserService {
 				active: false,
 			},
 		});
+		return updatedUser;
+	}
+
+	async changeTeacher(id) {
+		const updatedUser = await this.#client.user.update({
+			where: {
+				id: parseInt(id),
+			},
+			data: {
+				role: 'TEACHER',
+			},
+		});
+		return updatedUser;
+	}
+
+	async changeStudent(id) {
+		const updatedUser = await this.#client.user.update({
+			where: {
+				id: parseInt(id),
+			},
+			data: {
+				role: 'STUDENT',
+			},
+		});
+		return updatedUser;
 	}
 }
 

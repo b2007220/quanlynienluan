@@ -1,12 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom';
 import StudentHomePage from '../pages/student/';
 import Student_Layout from '../pages/student_layout';
-import UsersPage from '../pages/users';
 import Login_Layout from '../pages/login';
 import Teacher_Layout from '../pages/teacher_layout';
 import Admin_Layout from '../pages/admin_layout';
 import AdminHomePage from '../pages/admin';
-
+import AdminMajorPage from '../pages/admin/major/';
 const router = createBrowserRouter([
 	{
 		path: '/',
@@ -49,8 +48,8 @@ const router = createBrowserRouter([
 				Component: AdminHomePage,
 			},
 			{
-				path: '/admin/user',
-				Component: UsersPage,
+				path: '/admin/major',
+				Component: AdminMajorPage,
 			},
 		],
 	},

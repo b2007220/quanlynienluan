@@ -43,6 +43,7 @@ model User {
 
 model Major {
   id        Int    @id @default(autoincrement())
+  code      String
   majorName String
   users     User[]
 }
@@ -111,10 +112,14 @@ model Year {
   name      String
   semesters Semester[]
 }
-
+enum SemesterName {
+  FIRST
+  SECOND
+  SUMMER
+}
 model Semester {
   id      Int      @id @default(autoincrement())
-  name    String
+  name    SemesterName
   startAt DateTime
   endAt   DateTime
   year    Year?    @relation(fields: [yearId], references: [id])

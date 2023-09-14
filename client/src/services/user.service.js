@@ -45,6 +45,18 @@ class UserService {
 
 		return updatedUser;
 	}
+
+	async changeTeacher(id) {
+		const updatedUser = await this.#client.patch(`/${id}/teacher`);
+
+		return updatedUser;
+	}
+
+	async changeStudent(id) {
+		const updatedUser = await this.#client.patch(`/${id}/teacher`);
+
+		return updatedUser;
+	}
 }
 
 export default new UserService();

@@ -18,7 +18,7 @@ class EnrollController {
 	 */
 	async getAll(req, res, next) {
 		try {
-			res.status(200).json(await enrollService.getAll(req.query));
+			res.status(200).json(await enrollService.getAll());
 		} catch (error) {
 			next(error);
 		}

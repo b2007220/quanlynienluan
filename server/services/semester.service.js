@@ -15,7 +15,11 @@ class SemesterService {
 	}
 
 	async getAll() {
-		const semesters = await this.#client.semester.findMany();
+		const semesters = await this.#client.semester.findMany({
+			include: {
+				year: true,
+			},
+		});
 		return semesters;
 	}
 

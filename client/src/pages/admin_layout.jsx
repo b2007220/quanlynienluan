@@ -9,18 +9,16 @@ import {
 	Box,
 	List,
 	ListItemText,
-	createTheme,
 } from '@mui/material';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import authService from '../services/auth.service';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setUser } from '../store/user';
 import { Fragment } from 'react';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DensityMediumIcon from '@mui/icons-material/DensityMedium';
-
+import BadgeIcon from '@mui/icons-material/Badge';
 const Layout = () => {
 	const location = useLocation();
 	const dispatch = useDispatch();
@@ -62,29 +60,29 @@ const Layout = () => {
 			onKeyDown={toggleDrawer(anchor, false)}
 		>
 			<List>
-				<ListItem component={Link} to='/user' disablePadding>
+				<ListItem component={Link} to='/admin' disablePadding>
 					<ListItemButton>
 						<ListItemIcon>
-							<InboxIcon />
+							<AccountCircleIcon></AccountCircleIcon>
 						</ListItemIcon>
 						<ListItemText
 							sx={{
 								color: '#000000',
 							}}
-							primary='Banana'
+							primary='Trang chủ'
 						/>
 					</ListItemButton>
 				</ListItem>
-				<ListItem component={Link} to='/user' disablePadding>
+				<ListItem component={Link} to='/admin/major' disablePadding>
 					<ListItemButton>
 						<ListItemIcon>
-							<InboxIcon />
+							<BadgeIcon></BadgeIcon>
 						</ListItemIcon>
 						<ListItemText
 							sx={{
 								color: '#000000',
 							}}
-							primary={'Apple'}
+							primary={'Chuyên ngành'}
 						/>
 					</ListItemButton>
 				</ListItem>

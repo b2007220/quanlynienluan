@@ -5,7 +5,13 @@ import userService from '../../services/user.service';
 import { IconButton } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import OpenInNewOffIcon from '@mui/icons-material/OpenInNewOff';
+import SchoolIcon from '@mui/icons-material/School';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import WorkIcon from '@mui/icons-material/Work';
+
 export default function Student_Home() {
+	const MySwal = withReactContent(Swal);
 	const [userList, setUserList] = useState([]);
 	useEffect(() => {
 		authService
@@ -22,16 +28,116 @@ export default function Student_Home() {
 	}, []);
 	const handleActive = async (user) => {
 		try {
-			const id = user.id;
-			userService.activeUser(id);
+			const updatedUser = await userService.activeUser(user.id);
+
+			const userIndex = userList.findIndex((u) => u.id === user.id);
+
+			if (userIndex !== -1) {
+				const updatedUserList = [...userList];
+				updatedUserList[userIndex] = { ...user, active: true };
+				setUserList(updatedUserList);
+			}
 		} catch (error) {
 			console.log(error);
 		}
 	};
 	const handleUnActive = async (user) => {
 		try {
-			const id = user.id;
-			userService.unActiveUser(id);
+			const updatedUser = await userService.unactiveUser(user.id);
+
+			const userIndex = userList.findIndex((u) => u.id === user.id);
+
+			if (userIndex !== -1) {
+				const updatedUserList = [...userList];
+				updatedUserList[userIndex] = { ...user, active: false };
+				setUserList(updatedUserList);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	const handleChangeTeacher = async (user) => {
+		try {
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger',
+				},
+				buttonsStyling: true,
+			});
+
+			swalWithBootstrapButtons
+				.fire({
+					title: 'Bạn có muốn đổi tài khoản này thành giảng viên?',
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Có!',
+					cancelButtonText: 'Không!',
+					reverseButtons: true,
+				})
+				.then((result) => {
+					if (result.isConfirmed) {
+						const updatedUser = userService.changeTeacher(user.id);
+
+						const userIndex = userList.findIndex((u) => u.id === user.id);
+
+						if (userIndex !== -1) {
+							const updatedUserList = [...userList];
+							updatedUserList[userIndex] = { ...user, role: 'TEACHER' };
+							setUserList(updatedUserList);
+						}
+						swalWithBootstrapButtons.fire(
+							'Thành công!',
+							'Tài khoản đã chuyển đổi thành giáo viên.',
+							'success',
+						);
+					} else if (result.dismiss === Swal.DismissReason.cancel) {
+						swalWithBootstrapButtons.fire('Hủy bỏ', 'Tài khoản không thay đổi.', 'error');
+					}
+				});
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	const handleChangeStudent = async (user) => {
+		try {
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger',
+				},
+				buttonsStyling: true,
+			});
+
+			swalWithBootstrapButtons
+				.fire({
+					title: 'Bạn có muốn đổi tài khoản này thành sinh viên?',
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Có!',
+					cancelButtonText: 'Không!',
+					reverseButtons: true,
+				})
+				.then((result) => {
+					if (result.isConfirmed) {
+						const updatedUser = userService.changeStudent(user.id);
+
+						const userIndex = userList.findIndex((u) => u.id === user.id);
+
+						if (userIndex !== -1) {
+							const updatedUserList = [...userList];
+							updatedUserList[userIndex] = { ...user, role: 'STUDENT' };
+							setUserList(updatedUserList);
+						}
+						swalWithBootstrapButtons.fire(
+							'Thành công!',
+							'Tài khoản đã chuyển đổi thành sinh viên.',
+							'success',
+						);
+					} else if (result.dismiss === Swal.DismissReason.cancel) {
+						swalWithBootstrapButtons.fire('Hủy bỏ', 'Tài khoản không thay đổi.', 'error');
+					}
+				});
 		} catch (error) {
 			console.log(error);
 		}
@@ -51,7 +157,6 @@ export default function Student_Home() {
 							<td>Ngày tạo</td>
 							<td>Ngày cập nhật</td>
 							<td>Vai trò</td>
-							<td>Chuyên ngành</td>
 							<td>Trạng thái</td>
 							<td>Quản lý</td>
 						</tr>
@@ -65,15 +170,24 @@ export default function Student_Home() {
 								<td>{user.createdAt}</td>
 								<td>{user.updatedAt}</td>
 								<td>{user.role}</td>
-								<td>{user.major.majorName}</td>
-								<td>{user.active}</td>
+								<td>{user.active ? 'Hoạt động' : 'Vô hiệu'}</td>
 								<td>
-									<IconButton onClick={handleActive(user)} color='primary'>
+									<IconButton onClick={() => handleActive(user)} color='primary'>
 										<OpenInNewIcon></OpenInNewIcon>
 									</IconButton>
-									<IconButton onClick={handleUnActive(user)} color='primary'>
+									<IconButton onClick={() => handleUnActive(user)} color='primary'>
 										<OpenInNewOffIcon></OpenInNewOffIcon>
 									</IconButton>
+									{user.role === 'STUDENT' && (
+										<IconButton onClick={() => handleChangeTeacher(user)} color='primary'>
+											<WorkIcon></WorkIcon>
+										</IconButton>
+									)}
+									{user.role === 'TEACHER' && (
+										<IconButton onClick={() => handleChangeStudent(user)} color='primary'>
+											<SchoolIcon></SchoolIcon>
+										</IconButton>
+									)}
 								</td>
 							</tr>
 						</tbody>

@@ -18,7 +18,7 @@ class MajorController {
 	 */
 	async getAll(req, res, next) {
 		try {
-			res.status(200).json(await majorService.getAll(req.query));
+			res.status(200).json(await majorService.getAll());
 		} catch (error) {
 			next(error);
 		}
