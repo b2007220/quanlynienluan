@@ -83,6 +83,15 @@ export default function MajorSemeter() {
 			console.log(error);
 		}
 	};
+	const handleMajorCreate = async (values) => {
+		try {
+			const newMajor = await majorService.createMajor(values);
+			setMajorList([...majorList, newMajor]);
+			setIsOpenMajorCreateModal(false);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 	const handleSemeterChange = async (values) => {
 		try {
 			const newSemester = await semesterService.updateSemesterById(values);
