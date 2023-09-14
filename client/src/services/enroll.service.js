@@ -4,7 +4,7 @@ class EnrollService {
 	#client;
 
 	constructor() {
-		this.#client = createClient('enrolls');
+		this.#client = createClient('enroll');
 	}
 
 	async createEnroll(enroll) {

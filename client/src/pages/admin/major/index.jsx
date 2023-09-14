@@ -223,7 +223,7 @@ export default function Student_Home() {
 						<tbody key={major.id}>
 							<tr>
 								<td>{major.code}</td>
-								<td>{major.name}</td>
+								<td>{major.majorName}</td>
 								<td>
 									<IconButton onClick={() => handleMajorChange(major)} color='primary'>
 										<CreateIcon></CreateIcon>

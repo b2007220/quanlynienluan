@@ -4,7 +4,7 @@ class TopicService {
 	#client;
 
 	constructor() {
-		this.#client = createClient('topics');
+		this.#client = createClient('topic');
 	}
 
 	async createTopic(topic) {

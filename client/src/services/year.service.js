@@ -4,7 +4,7 @@ class YearService {
 	#client;
 
 	constructor() {
-		this.#client = createClient('years');
+		this.#client = createClient('year');
 	}
 
 	async createYear(year) {

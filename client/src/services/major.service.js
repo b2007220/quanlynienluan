@@ -4,7 +4,7 @@ class MajorService {
 	#client;
 
 	constructor() {
-		this.#client = createClient('majors');
+		this.#client = createClient('major');
 	}
 
 	async createMajor(major) {

@@ -7,11 +7,11 @@ class MajorService {
 	}
 
 	async create(major) {
-		const newMajor = await this.#client.major.create({
+		const newmajor = await this.#client.major.create({
 			data: major,
 		});
 
-		return newMajor;
+		return newmajor;
 	}
 
 	async getAll() {

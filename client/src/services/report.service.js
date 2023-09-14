@@ -4,7 +4,7 @@ class ReportService {
 	#client;
 
 	constructor() {
-		this.#client = createClient('reports');
+		this.#client = createClient('report');
 	}
 
 	async createReport(report) {
