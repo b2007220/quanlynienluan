@@ -25,24 +25,33 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import WorkIcon from '@mui/icons-material/Work';
 import AddIcon from '@mui/icons-material/Add';
-import * as Yup from 'yup';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
 import yearService from '../../../services/year.service';
 import majorService from '../../../services/major.service';
 import CreateIcon from '@mui/icons-material/Create';
-export default function Student_Home() {
-	const validationSchema = Yup.object().shape({
-		name: Yup.string().oneOf(['FIRST', 'SECOND', 'SUMMER']),
-		startAt: Yup.date().required(),
-		endAt: Yup.date().required(),
-		year: Yup.string().required().required('Vui lòng điền năm'),
-	});
+import DeleteIcon from '@mui/icons-material/Delete';
+import ChangeMajor from './changemajor';
+import ChangeSemeter from './changesemester';
+import CreateSemester from './createsemester';
+import CreateMajor from './createmajor';
+
+export default function MajorSemeter() {
 	const MySwal = withReactContent(Swal);
 	const [semesterList, setSemesterList] = useState([]);
 	const [majorList, setMajorList] = useState([]);
-	const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
+	const [isOpenSemesterCreateModal, setIsOpenSemesterCreateModal] = useState(false);
+	const [isOpenMajorCreateModal, setIsOpenMajorCreateModal] = useState(false);
+	const [isOpenSemesterChangeModal, setIsOpenSemesterChangeModal] = useState(false);
+	const [isOpenMajorChangeModal, setIsOpenMajorChangeModal] = useState(false);
+
+	const handleOpenSCrM = () => setIsOpenSemesterCreateModal(true);
+	const handleCloseSCrM = () => setIsOpenSemesterCreateModal(false);
+	const handleOpenSChM = () => setIsOpenSemesterChangeModal(true);
+	const handleCloseSChm = () => setIsOpenSemesterChangeModal(false);
+	const handleOpenMCrM = () => setIsOpenMajorCreateModal(true);
+	const handleCloseMCrM = () => setIsOpenMajorCreateModal(false);
+	const handleOpenMChM = () => setIsOpenMajorChangeModal(true);
+	const handleCloseMChM = () => setIsOpenMajorChangeModal(false);
 
 	useEffect(() => {
 		authService
@@ -62,14 +71,25 @@ export default function Student_Home() {
 			});
 	}, []);
 
-	const handleSemester = async (values) => {
+	const handleSemeterCreate = async (values) => {
 		try {
 			const newYear = await yearService.createYear(values.year);
 			const newSemester = await semesterService.createSemester(values);
 
 			setSemesterList([...semesterList, newSemester]);
 
-			setIsOpenCreateModal(false);
+			setIsOpenSemesterCreateModal(false);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	const handleSemeterChange = async (values) => {
+		try {
+			const newSemester = await semesterService.updateSemesterById(values);
+
+			setSemesterList([...semesterList, newSemester]);
+
+			setIsOpenSemesterCreateModal(false);
 		} catch (error) {
 			console.log(error);
 		}
@@ -87,20 +107,49 @@ export default function Student_Home() {
 			console.log(error);
 		}
 	};
+	const handleMajorDelete = async (major) => {
+		try {
+			const res = await majorService.deleteMajorById(major.id);
+			if (res.status === 200) {
+				const newMajorList = majorList.filter((m) => m.id !== major.id);
+				setMajorList(newMajorList);
+				MySwal.fire({
+					icon: 'success',
+					title: 'Xóa thành công',
+					showConfirmButton: false,
+					timer: 1500,
+				});
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	const handleSemesterDelete = async (semester) => {
+		try {
+			const res = await semesterService.deleteSemesterById(semester.id);
+			if (res.status === 200) {
+				const newSemesterList = semesterList.filter((s) => s.id !== semester.id);
+				setSemesterList(newSemesterList);
+				MySwal.fire({
+					icon: 'success',
+					title: 'Xóa thành công',
+					showConfirmButton: false,
+					timer: 1500,
+				});
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
 	return (
 		<div className={style.details}>
 			<div className={style.recentOrders}>
 				<div className={style.cardHeader}>
 					<h2>Bảng học kì</h2>
-					<IconButton
-						variant='contained'
-						onClick={() => {
-							setIsOpenCreateModal(true);
-						}}
-						color='primary'
-					>
+					<IconButton variant='contained' onClick={handleOpenSCrM} color='primary'>
 						<AddIcon></AddIcon>
 					</IconButton>
+					<CreateSemester open={isOpenSemesterCreateModal} handleClose={handleCloseSCrM} />
 				</div>
 				<table>
 					<thead>
@@ -119,97 +168,27 @@ export default function Student_Home() {
 								<td>{semester.startAt}</td>
 								<td>{semester.endAt}</td>
 								<td>{semester.year.name}</td>
+								<td>
+									<IconButton onClick={handleOpenSChM} color='primary'>
+										<CreateIcon></CreateIcon>
+									</IconButton>
+									<ChangeSemeter open={isOpenSemesterChangeModal} handleClose={handleCloseSChm} />
+									<IconButton onClick={() => handleSemesterDelete(semester)} color='primary'>
+										<DeleteIcon></DeleteIcon>
+									</IconButton>
+								</td>
 							</tr>
 						</tbody>
 					))}
 				</table>
-				<Dialog
-					open={isOpenCreateModal}
-					onClose={() => {
-						setIsOpenCreateModal(false);
-					}}
-				>
-					<Formik
-						initialValues={{
-							name: '',
-							startAt: '',
-							endAt: '',
-							year: '',
-						}}
-						validationSchema={validationSchema}
-						onSubmit={handleSemester}
-					>
-						{({ values, errors, setFieldValue, handleChange, handleSubmit }) => {
-							return (
-								<>
-									<form onSubmit={handleSubmit}>
-										<DialogTitle>Create user</DialogTitle>
-										<DialogContent>
-											<Stack
-												spacing={2}
-												sx={{
-													marginTop: '10px',
-												}}
-											>
-												<FormControl error={!!errors.name}>
-													<InputLabel>Học kì</InputLabel>
-													<Select
-														name='name'
-														label='Học kì'
-														placeholder='Học kì'
-														value={values.name}
-														error={!!errors.name}
-														onChange={(event) => {
-															setFieldValue('name', event.target.value);
-														}}
-													>
-														<MenuItem value='FIRST'>Học kì một</MenuItem>
-														<MenuItem value='SECOND'>Học kì hai</MenuItem>
-														<MenuItem value='SUMMER'>Học kì hè</MenuItem>
-													</Select>
-													<FormHelperText>{errors.gender}</FormHelperText>
-												</FormControl>
-												<LocalizationProvider dateAdapter={AdapterDayjs}>
-													<DatePicker label='Ngày bắt đầu' />
-												</LocalizationProvider>
-												<LocalizationProvider dateAdapter={AdapterDayjs}>
-													<DatePicker label='Ngày kết thúc' />
-												</LocalizationProvider>
-												<TextField
-													label='Năm'
-													placeholder='Năm'
-													name='year'
-													error={!!errors.year}
-													helperText={errors.year}
-													value={values.year}
-													onChange={handleChange}
-												/>
-											</Stack>
-										</DialogContent>
-										<DialogActions>
-											<Button onClick={handleSubmit} variant='contained'>
-												Thêm năm
-											</Button>
-										</DialogActions>
-									</form>
-								</>
-							);
-						}}
-					</Formik>
-				</Dialog>
 			</div>
 			<div className={style.recentOrders}>
 				<div className={style.cardHeader}>
 					<h2>Ngành học</h2>
-					<IconButton
-						variant='contained'
-						onClick={() => {
-							setIsOpenCreateModal(true);
-						}}
-						color='primary'
-					>
+					<IconButton variant='contained' onClick={handleOpenMCrM} color='primary'>
 						<AddIcon></AddIcon>
 					</IconButton>
+					<CreateMajor open={isOpenMajorCreateModal} handleClose={handleCloseMCrM} />
 				</div>
 				<table>
 					<thead>
@@ -225,8 +204,12 @@ export default function Student_Home() {
 								<td>{major.code}</td>
 								<td>{major.majorName}</td>
 								<td>
-									<IconButton onClick={() => handleMajorChange(major)} color='primary'>
+									<IconButton onClick={handleOpenSChM} color='primary'>
 										<CreateIcon></CreateIcon>
+									</IconButton>
+									<ChangeMajor open={isOpenMajorChangeModal} handleClose={handleCloseMChM} />
+									<IconButton onClick={() => handleMajorDelete(semester)} color='primary'>
+										<DeleteIcon></DeleteIcon>
 									</IconButton>
 								</td>
 							</tr>

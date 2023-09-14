@@ -109,7 +109,7 @@ model Report {
 
 model Year {
   id        Int        @id @default(autoincrement())
-  name      String
+  name      Int
   semesters Semester[]
 }
 enum SemesterName {

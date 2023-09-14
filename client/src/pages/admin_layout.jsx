@@ -73,7 +73,7 @@ const Layout = () => {
 						/>
 					</ListItemButton>
 				</ListItem>
-				<ListItem component={Link} to='/admin/major' disablePadding>
+				<ListItem component={Link} to='/admin/major_semester' disablePadding>
 					<ListItemButton>
 						<ListItemIcon>
 							<BadgeIcon></BadgeIcon>
