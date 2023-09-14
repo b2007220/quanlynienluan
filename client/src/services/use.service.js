@@ -34,6 +34,12 @@ class UseService {
 	async deleteUseById(id) {
 		await this.#client.delete(`/${id}`);
 	}
+
+	async getUsesByStudentIdInSemester(id) {
+		const use = await this.#client.get(`/student/${id}`);
+
+		return use;
+	}
 }
 
 export default new UseService();

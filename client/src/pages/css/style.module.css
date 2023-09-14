@@ -1,0 +1,355 @@
+:root {
+	--white: #fff;
+	--darkblue: #243b55;
+	--black1: #222;
+	--black2: #999;
+	--blue: #20639b;
+}
+.detail {
+	position: relative;
+	width: 100%;
+	padding: 20px;
+	display: grid;
+	margin-top: 10px;
+}
+.details {
+	position: relative;
+	width: 100%;
+	padding: 20px;
+	display: grid;
+	grid-template-columns: 6.5fr 3.5fr;
+	grid-gap: 30px;
+	margin-top: 10px;
+}
+.recentOrders {
+	position: relative;
+	min-height: 200px;
+	background: var(--white);
+	padding: 20px;
+	box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+	border-radius: 20px;
+}
+
+.recentOrders .row50 {
+	display: flex;
+	gap: 20px;
+}
+.recentOrders .row25 {
+	display: flex;
+	gap: 20px;
+	justify-content: start;
+}
+.input-box {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 10px;
+	width: 50%;
+}
+.recentOrders .row100 .input-box {
+	width: 100%;
+}
+.recentOrders .row25 .input-box {
+	width: 25%;
+}
+.recentOrders .row100 .input-box textarea {
+	resize: none;
+	padding: 10px;
+	border-radius: 12px;
+}
+.input-box span {
+	color: var(--darkblue);
+	margin-top: 10px;
+	margin-bottom: 5px;
+	font-weight: 500;
+}
+.input-box select,
+.input-box input {
+	padding: 10px;
+	font-style: 1.1em;
+	outline: none;
+	border: 1px solid var(--black1);
+	resize: none;
+	border-radius: 12px;
+	margin-bottom: 10px;
+}
+.recentOrders table td {
+	max-width: 500px;
+	min-width: 95px;
+}
+.recentOrders table td .btn {
+	border: none;
+	background: transparent;
+	font-size: 1.5em;
+}
+.recentOrders table td .btn:hover {
+	background: transparent;
+	color: var(--white);
+	font-size: 1.5em;
+}
+.recentOrders .row100 .input-box #dsdetai option {
+	color: var(--black1);
+}
+.input-box input[type='submit'] {
+	background: var(--darkblue);
+	color: var(--white);
+	border: none;
+	font-style: 1.1em;
+	min-width: 100px;
+	font-weight: 500;
+	cursor: pointer;
+	padding: 14px 15px;
+	max-height: 37px;
+}
+.input-box .xacnhan {
+	margin-top: 15px;
+}
+
+.input-box .radio {
+	border: 1px solid var(--black1);
+	border-radius: 12px;
+	padding: 10px 20px;
+	position: relative;
+	padding-left: 30px;
+	font-size: 0.9em;
+	font-weight: 500;
+	display: inline-block;
+	vertical-align: middle;
+	color: var(--black1);
+}
+.radio-group {
+	display: flex;
+}
+.radio + .radio {
+	margin-left: 20px;
+}
+.radio input[type='radio'] {
+	display: none;
+}
+.radio span {
+	height: 20px;
+	width: 20px;
+	border-radius: 50%;
+	border: 2px solid var(--black1);
+	display: block;
+	position: absolute;
+	left: 4px;
+	top: -2px;
+}
+.radio span::after {
+	content: '';
+	height: 8px;
+	width: 8px;
+	background: var(--black1);
+	display: block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%) scale(0);
+	border-radius: 50%;
+	transition: 300ms ease-in-out 0s;
+}
+.radio input[type='radio']:checked ~ span:after {
+	transform: translate(-50%, -50%) scale(1);
+}
+.input-box .category {
+	display: flex;
+	width: 100%;
+	justify-content: space-between;
+}
+.input-box::placeholder {
+	color: var(--black2);
+}
+.cardHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	padding-bottom: 20px;
+}
+.cardHeader h2 {
+	font-weight: 600;
+	color: var(--darkblue);
+}
+.cardHeader .detai {
+	text-decoration: none;
+}
+.cardHeader .detai h2 {
+	position: relative;
+	padding: 5px 10px;
+	background: var(--blue);
+	text-decoration: none;
+	color: var(--white);
+	border-radius: 12px;
+}
+.status {
+	font-size: 1em;
+	font-weight: 500;
+	text-decoration: none;
+	color: var(--white);
+	border-radius: 12px;
+	position: relative;
+	padding: 5px 10px;
+	border: none;
+}
+.status.wait {
+	background: rgb(215, 36, 36);
+}
+.status.process {
+	background: #f39c12;
+}
+.status.finish {
+	background: #27ae60;
+}
+.status.request {
+	background: #126da6;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 10px;
+}
+table thead td {
+	font-weight: 600;
+}
+
+.recentOrders table tr {
+	color: var(--black1);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.recentOrders table tr:hover {
+	background: var(--darkblue);
+	color: var(--white);
+}
+.recentOrders table tr:last-child {
+	border-bottom: none;
+}
+.recentOrders table tr td {
+	padding: 10px;
+	text-align: start;
+}
+.recentOrders form {
+	position: relative;
+}
+.swal2-textarea,
+.swal2-input {
+	min-width: 350px;
+	resize: none;
+}
+.swal2-textarea {
+	height: 15em;
+}
+.cardHeader .button-box {
+	width: auto;
+	position: relative;
+	display: flex;
+	border: 1px solid #03e9f4;
+	border-radius: 30px;
+}
+.cardHeader .button-box a .toggle-btn1,
+.cardHeader .button-box a .toggle-btn2 {
+	position: relative;
+	padding: 10px 80px;
+	cursor: pointer;
+	background: transparent;
+	border: 0;
+	outline: none;
+	font-size: 16px;
+}
+.cardHeader .button-box a .toggle-btn1 {
+	color: #fff;
+}
+
+.cardHeader .button-box a .toggle-btn2 {
+	color: var(--darkblue);
+	font-weight: 550;
+}
+.cardHeader .button-box #btn1,
+.cardHeader .button-box #btn2 {
+	top: 0px;
+	width: 55%;
+	height: 100%;
+	position: absolute;
+	background: #126da6;
+	border-radius: 30px;
+}
+.cardHeader .button-box #btn1 {
+	left: 0;
+}
+.cardHeader .button-box #btn2 {
+	left: 45%;
+}
+
+@media (max-width: 991px) {
+	.radio + .radio {
+		margin-left: 5px;
+	}
+	.navigation {
+		left: -300px;
+	}
+	.navigation.active {
+		width: 300px;
+		left: 0;
+	}
+	.main {
+		width: 100%;
+		left: 0;
+	}
+	.main.active {
+		left: 300px;
+	}
+	.cardBox {
+		grid-template-columns: repeat(2, 1fr);
+	}
+	.recentOrders .row50 {
+		display: flex;
+		flex-direction: columns;
+		gap: 0;
+	}
+	.recentOrders .row25 {
+		display: flex;
+		flex-direction: columns;
+		gap: 0;
+	}
+	.input-box {
+		width: 100%;
+	}
+	.recentOrders .cardHeader {
+		display: flex;
+		flex-direction: columns;
+		gap: 0;
+	}
+}
+@media (max-width: 768) {
+	.details {
+		grid-template-columns: repeat(1, 1fr);
+	}
+	.recentOrders {
+		overflow-x: auto;
+	}
+}
+@media (max-width: 480px) {
+	.cardBox {
+		grid-template-columns: repeat(1, 1fr);
+	}
+	.cardHeader h2 {
+		font-size: 20px;
+	}
+	.navigation {
+		width: 100%;
+		left: -100%;
+		z-index: 1000;
+	}
+	.navigation.active {
+		width: 100%;
+		left: 0;
+	}
+	.toggle {
+		z-index: 10001;
+	}
+	.main.active .toggle {
+		position: fixed;
+		right: 0;
+		left: initial;
+		color: var(--white);
+	}
+}

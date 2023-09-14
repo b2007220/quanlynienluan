@@ -15,7 +15,11 @@ class UserService {
 	}
 
 	async getAll() {
-		const users = await this.#client.user.findMany();
+		const users = await this.#client.user.findMany({
+			include: {
+				major: true,
+			},
+		});
 
 		return users;
 	}
@@ -59,6 +63,30 @@ class UserService {
 		});
 
 		return deletedUser;
+	}
+
+	async changeActiveUserById(id) {
+		const updatedUser = await this.#client.user.update({
+			where: {
+				id: parseInt(id),
+			},
+			data: {
+				active: true,
+			},
+		});
+
+		return updatedUser;
+	}
+
+	async changeUnactiveUserById(id) {
+		const updatedUser = await this.#client.user.update({
+			where: {
+				id: parseInt(id),
+			},
+			data: {
+				active: false,
+			},
+		});
 	}
 }
 

@@ -15,7 +15,6 @@ class UserService {
 
 	async getAllUsers() {
 		const users = await this.#client.get('/');
-
 		return users;
 	}
 
@@ -33,6 +32,18 @@ class UserService {
 
 	async deleteUserById(id) {
 		await this.#client.delete(`/${id}`);
+	}
+
+	async activeUser(id) {
+		const updatedUser = await this.#client.patch(`/${id}`);
+
+		return updatedUser;
+	}
+
+	async unactiveUser(id) {
+		const updatedUser = await this.#client.patch(`/${id}/unactive`);
+
+		return updatedUser;
 	}
 }
 

@@ -3,6 +3,7 @@
 	justify-content: center;
 	align-items: center;
 	background: linear-gradient(#141e30, #243b55);
+	min-height: 100vh;
 }
 .login__box {
 	width: 450px;
@@ -16,6 +17,7 @@
 .login__box h2 {
 	color: #fff;
 	text-align: center;
+	margin-bottom: 20px;
 }
 
 .login__box .user__function a {
@@ -139,10 +141,10 @@
 	background: linear-gradient(90deg, transparent, #03e9f4);
 	animation: btn-anim1 1s linear infinite;
 }
-.middle-test {
+.middle__test {
 	position: relative;
 	width: 100%;
-	margin: 45px 0 20px 0;
+	margin: 25px 0 20px 0;
 }
 hr {
 	border: 1px solid #fff;
@@ -150,6 +152,7 @@ hr {
 .social__signin {
 	display: flex;
 	justify-content: center;
+	margin-top: 20px;
 }
 .input__google {
 	border-radius: 5px;

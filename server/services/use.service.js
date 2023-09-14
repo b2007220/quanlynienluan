@@ -65,6 +65,20 @@ class UseService {
 
 		return deleteduse;
 	}
+
+	async getUseByStudentIdInSemester(userId) {
+		const use = await this.#client.use.findUnique({
+			where: {
+				enroll: {
+					userId,
+				},
+			},
+			include: {
+				enroll: true,
+			},
+		});
+		return use;
+	}
 }
 
 module.exports = new UseService();

@@ -51,7 +51,7 @@ class GradeService {
 		return deletedgrade;
 	}
 
-	async getGradesFromUser(userId) {
+	async getGradeByStudentId(userId) {
 		const grade = await this.#client.grade.findUnique({
 			where: {
 				enroll: {

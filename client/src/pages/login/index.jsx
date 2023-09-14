@@ -52,13 +52,41 @@ export default function Login() {
 			});
 		}
 	};
+	const handleLogin = async (values) => {
+		try {
+			const { email, password } = values;
+			const res = await authService.login(email, password);
+			tokenService.setToken(res.token);
+			const profile = await authService.getUserProfile();
 
+			dispatch(setUser(profile));
+
+			const userRole = profile.role;
+
+			if (userRole === 'STUDENT') {
+				navigate('/student');
+			}
+			if (userRole === 'TEACHER') {
+				navigate('/teacher');
+			}
+			if (userRole === 'ADMIN') {
+				navigate('/admin');
+			}
+		} catch (error) {
+			MySwal.fire({
+				icon: 'error',
+				title: 'Oops...',
+				text: 'Đăng nhập thất bại!',
+			});
+		}
+	};
 	return (
 		<Formik
 			initialValues={{
 				email: '',
 				password: '',
 			}}
+			onSubmit={handleLogin}
 		>
 			{({ values, handleSubmit, handleChange }) => {
 				return (
@@ -94,7 +122,7 @@ export default function Login() {
 												<span>Mật khẩu</span>
 											</label>
 										</div>
-										<button type='submit'>
+										<button type='submit' onClick={handleSubmit}>
 											<span></span>
 											<span></span>
 											<span></span>

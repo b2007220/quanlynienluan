@@ -34,6 +34,10 @@ class SemesterService {
 	async deleteSemesterById(id) {
 		await this.#client.delete(`/${id}`);
 	}
+
+	async getEnrollsByStudentIdInSemester(studentId, semesterId) {
+		await this.#client.get(`/${semesterId}/enrolls/${studentId}`);
+	}
 }
 
 export default new SemesterService();

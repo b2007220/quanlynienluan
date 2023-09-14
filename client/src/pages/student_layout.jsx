@@ -25,25 +25,24 @@ const Layout = () => {
 	const location = useLocation();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+
 	useEffect(() => {
 		authService
 			.getUserProfile()
 			.then((user) => {
 				dispatch(setUser(user));
-				const role = useSelector((state) => state.user.role);
-				if (role === 'TEACHER') {
-					navigate('/teacher/');
+				if (user.role === 'TEACHER') {
+					navigate('/teacher');
 				}
-				if (role === 'ADMIN') {
-					navigate('/admin/');
+				if (user.role === 'ADMIN') {
+					navigate('/admin');
 				}
 			})
 			.catch((error) => {
 				console.log(error);
-				navigate('/login');
+				navigate('/');
 			});
 	}, []);
-
 	const toggleDrawer = (anchor, open) => (event) => {
 		if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
 			return;
@@ -63,7 +62,7 @@ const Layout = () => {
 			onKeyDown={toggleDrawer(anchor, false)}
 		>
 			<List>
-				<ListItem component={Link} to='/user' disablePadding>
+				<ListItem component={Link} to='/student' disablePadding>
 					<ListItemButton>
 						<ListItemIcon>
 							<InboxIcon />
@@ -93,7 +92,7 @@ const Layout = () => {
 		</Box>
 	);
 	return (
-		<Container>
+		<Container maxWidth='100%'>
 			<div>
 				{['left'].map((anchor) => (
 					<Fragment key={anchor}>

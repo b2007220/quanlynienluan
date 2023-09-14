@@ -36,7 +36,7 @@ class ReportService {
 	}
 
 	async getReportsFromUser(userId) {
-		await this.#client.get(`/user/${userId}`);
+		await this.#client.get(`/student/${userId}`);
 	}
 }
 

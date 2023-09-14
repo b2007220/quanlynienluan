@@ -35,8 +35,8 @@ class GradeService {
 		await this.#client.delete(`/${id}`);
 	}
 
-	async getGradesFromUser(userId) {
-		const grades = await this.#client.get(`/user/${userId}`);
+	async getGradeByStudentId(userId) {
+		const grades = await this.#client.get(`/student/${userId}`);
 
 		return grades;
 	}

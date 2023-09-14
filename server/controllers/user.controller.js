@@ -18,7 +18,7 @@ class UserController {
 	 */
 	async getAll(req, res, next) {
 		try {
-			res.status(200).json(await userService.getAll(req.query));
+			res.status(200).json(await userService.getAll());
 		} catch (error) {
 			next(error);
 		}
@@ -73,6 +73,40 @@ class UserController {
 			}
 
 			res.send(await userService.delete(req.params.id));
+		} catch (error) {
+			next(error);
+		}
+	}
+	/**
+	 * @type {import("express").RequestHandler}
+	 *
+	 */
+	async changeActiveUserById(req, res, next) {
+		try {
+			const user = await userService.changeActiveUserById(req.params.id);
+
+			if (!user) {
+				res.status(404).json({ message: 'User not found' });
+			}
+
+			res.send(await userService.active(req.params.id));
+		} catch (error) {
+			next(error);
+		}
+	}
+	/**
+	 * @type {import("express").RequestHandler}
+	 *
+	 */
+	async changeUnactiveUserById(req, res, next) {
+		try {
+			const user = await userService.changeUnactiveUserById(req.params.id);
+
+			if (!user) {
+				res.status(404).json({ message: 'User not found' });
+			}
+
+			res.send(await userService.unactive(req.params.id));
 		} catch (error) {
 			next(error);
 		}

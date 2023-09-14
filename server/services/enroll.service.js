@@ -58,10 +58,13 @@ class EnrollService {
 
 		return deletedEnroll;
 	}
-	async getEnrollsByStudentId(id) {
-		const enroll = await this.#client.enroll.findMany({
+	async getEnrollByStudentIdInSmester(id) {
+		const enroll = await this.#client.enroll.findUnique({
 			where: {
-				studentId: parseInt(id),
+				userId: parseInt(id),
+			},
+			include: {
+				use: true,
 			},
 		});
 

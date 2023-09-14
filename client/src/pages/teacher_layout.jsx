@@ -25,25 +25,24 @@ const Layout = () => {
 	const location = useLocation();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+
 	useEffect(() => {
 		authService
 			.getUserProfile()
 			.then((user) => {
 				dispatch(setUser(user));
-				const role = useSelector((state) => state.user.role);
-				if (role === 'STUDENT') {
-					navigate('/student/');
+				if (user.role === 'STUDENT') {
+					navigate('/student');
 				}
-				if (role === 'ADMIN') {
-					navigate('/admin/');
+				if (user.role === 'ADMIN') {
+					navigate('/admin');
 				}
 			})
 			.catch((error) => {
 				console.log(error);
-				navigate('/login');
+				navigate('/');
 			});
 	}, []);
-
 	const toggleDrawer = (anchor, open) => (event) => {
 		if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
 			return;

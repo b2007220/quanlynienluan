@@ -78,7 +78,7 @@ class EnrollController {
 		}
 	}
 
-	async getEnrollsByStudentId(req, res, next) {
+	async getEnrollByStudentIdInSmester(req, res, next) {
 		try {
 			const enroll = await enrollService.getEnrollsByStudentId(req.params.id);
 

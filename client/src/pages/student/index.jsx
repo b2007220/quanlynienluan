@@ -1,89 +1,99 @@
-import { Box, Grid, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Box, Grid, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import reportService from '../../services/report.service';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import enrollService from '../../services/enroll.service';
 import gradeService from '../../services/grade.service';
-import useService from '../../../../server/services/use.service';
+import useService from '../../services/use.service';
+import authService from '../../services/auth.service';
+import style from '../css/style.module.css';
 
 export default function Student_Home() {
 	const [reportList, setReportList] = useState([]);
 	const [grade, setGrade] = useState([]);
 	const [enroll, setEnroll] = useState([]);
-	const [use, setUse] = useState([]);
 	useEffect(() => {
-		const userId = useSelector((state) => state.user.id);
-
-		enrollService.getEnrollsByStudentIdInSemester(userId).then((res) => {
-			setEnroll(res);
-		});
-		reportService.getReportsFromUser(userId).then((res) => {
-			setReportList(res);
-		});
-		gradeService.getGradeByStudentId(userId).then((res) => {
-			setGrade(res);
-		});
-		useService.getUseByStudentId(userId).then((res) => {
-			setUse(res);
-		});
+		authService
+			.getUserProfile()
+			.then((user) => {
+				enrollService.getEnrollsByStudentIdInSemester(user.id).then((res) => {
+					setEnroll(res);
+				});
+				reportService.getReportsFromUser(user.id).then((res) => {
+					setReportList(res);
+				});
+				gradeService.getGradeByStudentId(user.id).then((res) => {
+					setGrade(res);
+				});
+			})
+			.catch((error) => {
+				console.log(error);
+			});
 	}, []);
 
 	return (
-		<Box
-			sx={{
-				flexGrow: 1,
-			}}
-		>
-			<Grid container spacing={1}>
-				<Grid item xs={8}>
-					<Grid container spacing={1}>
-						<Grid item xs={2}></Grid>
-						<Grid item xs={6}></Grid>
-					</Grid>
-					<Table>
-						<TableHead>
-							<TableRow>
-								<TableCell>Ngày báo cáo</TableCell>
-								<TableCell>Nội dung đã thực hiện</TableCell>
-								<TableCell>Nội dung làm tiếp theo</TableCell>
-								<TableCell>Ngày hoàn thành</TableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{reportList.map((report) => (
-								<TableRow key={report.id}>
-									<TableCell>{report.creatAt}</TableCell>
-									<TableCell>{report.doneJob}</TableCell>
-									<TableCell>{report.nextJob}</TableCell>
-									<TableCell>{report.promiseAt}</TableCell>
-								</TableRow>
-							))}
-						</TableBody>
-					</Table>
-				</Grid>
-				<Grid item xs={4}>
-					<Table>
-						<TableHead>
-							<TableRow>
-								<TableCell>Điểm thành phân</TableCell>
-								<TableCell>Trọng số</TableCell>
-								<TableCell>Nội dung làm tiếp theo</TableCell>
-								<TableCell>Ngày hoàn thành</TableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{reportList.map((report) => (
-								<TableRow key={report.id}>
-									<TableCell>{report.creatAt}</TableCell>
-									<TableCell>{report.doneJob}</TableCell>
-									<TableCell>{report.nextJob}</TableCell>
-									<TableCell>{report.promiseAt}</TableCell>
-								</TableRow>
-							))}
-						</TableBody>
-					</Table>
-				</Grid>
-			</Grid>
-		</Box>
+		<div className={style.details}>
+			<div className={style.recentOrders}>
+				<div className={style.cardHeader}>
+					<h2>Lịch sử báo cáo</h2>
+				</div>
+				<table>
+					<thead>
+						<tr>
+							<td>Ngày báo cáo</td>
+							<td>Nội dung đã thực hiện</td>
+							<td>Nội dung công việc tiếp theo</td>
+							<td>Thời hạn thực hiện</td>
+						</tr>
+					</thead>
+					{reportList.map((report) => (
+						<tbody key={report.id}>
+							<tr>
+								<td>{report.createAt}</td>
+								<td>{report.doneJob}</td>
+								<td>{report.nextJob}</td>
+								<td>{report.promiseAt}</td>
+							</tr>
+						</tbody>
+					))}
+				</table>
+			</div>
+			<div className={style.recentOrders}>
+				<div className={style.cardHeader}>
+					<h2>Thang điểm</h2>
+					<span className={enroll.id}>{enroll.state}</span>';
+				</div>
+				<table>
+					<thead>
+						<tr>
+							<td>Điểm thành phần</td>
+							<td>Trọng số</td>
+							<td>Quy định</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Điểm chuyên cần</td>
+							<td>1</td>
+							<td>Mỗi lần điền báo cáo (đúng tiến độ) vào bảng bên trên sẽ được 0.2</td>
+						</tr>
+						<tr>
+							<td>Điểm quyển báo cáo</td>
+							<td>4</td>
+							<td>Quyển báo cáo: nội dung phù hợp, bố cục đúng qui định. Trình bày báo cáo.</td>
+						</tr>
+						<tr>
+							<td>Điểm chương trình</td>
+							<td>5</td>
+							<td>Đúng theo bản thiết kế, phù hợp với đề tài. Ý tưởng mới, có tính sáng tạo</td>
+						</tr>
+						<tr>
+							<td>Tổng</td>
+							<td>10</td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
 	);
 }
