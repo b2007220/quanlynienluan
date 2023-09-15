@@ -53,7 +53,7 @@ class UserService {
 	}
 
 	async changeStudent(id) {
-		const updatedUser = await this.#client.patch(`/${id}/teacher`);
+		const updatedUser = await this.#client.patch(`/${id}/student`);
 
 		return updatedUser;
 	}

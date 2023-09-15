@@ -39,31 +39,31 @@
 	gap: 20px;
 	justify-content: start;
 }
-.input-box {
+.input__box {
 	display: flex;
 	flex-direction: column;
 	margin-bottom: 10px;
 	width: 50%;
 }
-.recentOrders .row100 .input-box {
+.recentOrders .row100 .input__box {
 	width: 100%;
 }
-.recentOrders .row25 .input-box {
+.recentOrders .row25 .input__box {
 	width: 25%;
 }
-.recentOrders .row100 .input-box textarea {
+.recentOrders .row100 .input__box textarea {
 	resize: none;
 	padding: 10px;
 	border-radius: 12px;
 }
-.input-box span {
+.input__box span {
 	color: var(--darkblue);
 	margin-top: 10px;
 	margin-bottom: 5px;
 	font-weight: 500;
 }
-.input-box select,
-.input-box input {
+.input__box select,
+.input__box input {
 	padding: 10px;
 	font-style: 1.1em;
 	outline: none;
@@ -86,10 +86,10 @@
 	color: var(--white);
 	font-size: 1.5em;
 }
-.recentOrders .row100 .input-box #dsdetai option {
+.recentOrders .row100 .input__box #dsdetai option {
 	color: var(--black1);
 }
-.input-box input[type='submit'] {
+.input__box input[type='submit'] {
 	background: var(--darkblue);
 	color: var(--white);
 	border: none;
@@ -100,11 +100,11 @@
 	padding: 14px 15px;
 	max-height: 37px;
 }
-.input-box .xacnhan {
+.input__box .xacnhan {
 	margin-top: 15px;
 }
 
-.input-box .radio {
+.input__box .radio {
 	border: 1px solid var(--black1);
 	border-radius: 12px;
 	padding: 10px 20px;
@@ -151,12 +151,12 @@
 .radio input[type='radio']:checked ~ span:after {
 	transform: translate(-50%, -50%) scale(1);
 }
-.input-box .category {
+.input__box .category {
 	display: flex;
 	width: 100%;
 	justify-content: space-between;
 }
-.input-box::placeholder {
+.input__box::placeholder {
 	color: var(--black2);
 }
 .cardHeader {
@@ -307,7 +307,7 @@ table thead td {
 		flex-direction: columns;
 		gap: 0;
 	}
-	.input-box {
+	.input__box {
 		width: 100%;
 	}
 	.recentOrders .cardHeader {

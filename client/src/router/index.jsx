@@ -6,6 +6,7 @@ import Teacher_Layout from '../pages/teacher_layout';
 import Admin_Layout from '../pages/admin_layout';
 import AdminHomePage from '../pages/admin';
 import AdminMajorSemesterPage from '../pages/admin/majorsemester';
+import StudentInfoPage from '../pages/student/info';
 const router = createBrowserRouter([
 	{
 		path: '/',
@@ -19,10 +20,10 @@ const router = createBrowserRouter([
 				path: '/student/',
 				Component: StudentHomePage,
 			},
-			// {
-			// 	path: '/student/user',
-			// 	Component: UsersPage,
-			// },
+			{
+				path: '/student/info',
+				Component: StudentInfoPage,
+			},
 		],
 	},
 	// {

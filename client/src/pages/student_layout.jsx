@@ -9,10 +9,7 @@ import {
 	Box,
 	List,
 	ListItemText,
-	createTheme,
 } from '@mui/material';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import authService from '../services/auth.service';
@@ -20,7 +17,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../store/user';
 import { Fragment } from 'react';
 import DensityMediumIcon from '@mui/icons-material/DensityMedium';
-
+import ContactEmergencyIcon from '@mui/icons-material/ContactEmergency';
+import HomeIcon from '@mui/icons-material/Home';
 const Layout = () => {
 	const location = useLocation();
 	const dispatch = useDispatch();
@@ -65,26 +63,26 @@ const Layout = () => {
 				<ListItem component={Link} to='/student' disablePadding>
 					<ListItemButton>
 						<ListItemIcon>
-							<InboxIcon />
+							<HomeIcon></HomeIcon>
 						</ListItemIcon>
 						<ListItemText
 							sx={{
 								color: '#000000',
 							}}
-							primary='Banana'
+							primary='Trang chủ'
 						/>
 					</ListItemButton>
 				</ListItem>
-				<ListItem component={Link} to='/user' disablePadding>
+				<ListItem component={Link} to='/student/info' disablePadding>
 					<ListItemButton>
 						<ListItemIcon>
-							<InboxIcon />
+							<ContactEmergencyIcon></ContactEmergencyIcon>
 						</ListItemIcon>
 						<ListItemText
 							sx={{
 								color: '#000000',
 							}}
-							primary={'Apple'}
+							primary={'Thông tin cá nhân'}
 						/>
 					</ListItemButton>
 				</ListItem>

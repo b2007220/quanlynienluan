@@ -78,7 +78,7 @@ export default function Student_Home() {
 				.then((result) => {
 					if (result.isConfirmed) {
 						const updatedUser = userService.changeTeacher(user.id);
-
+						console.log(updatedUser);
 						const userIndex = userList.findIndex((u) => u.id === user.id);
 
 						if (userIndex !== -1) {

@@ -29,7 +29,9 @@ export default function Student_Home() {
 				console.log(error);
 			});
 	}, []);
-
+	const calculateTotalGrade = (grade) => {
+		return grade.diligentGrade + grade.reportGrade + grade.programGrade;
+	};
 	return (
 		<div className={style.details}>
 			<div className={style.recentOrders}>
@@ -70,28 +72,34 @@ export default function Student_Home() {
 							<td>Quy định</td>
 						</tr>
 					</thead>
-					<tbody>
-						<tr>
-							<td>Điểm chuyên cần</td>
-							<td>1</td>
-							<td>Mỗi lần điền báo cáo (đúng tiến độ) vào bảng bên trên sẽ được 0.2</td>
-						</tr>
-						<tr>
-							<td>Điểm quyển báo cáo</td>
-							<td>4</td>
-							<td>Quyển báo cáo: nội dung phù hợp, bố cục đúng qui định. Trình bày báo cáo.</td>
-						</tr>
-						<tr>
-							<td>Điểm chương trình</td>
-							<td>5</td>
-							<td>Đúng theo bản thiết kế, phù hợp với đề tài. Ý tưởng mới, có tính sáng tạo</td>
-						</tr>
-						<tr>
-							<td>Tổng</td>
-							<td>10</td>
-							<td></td>
-						</tr>
-					</tbody>
+					{grade.map((grade) => (
+						<tbody>
+							<tr>
+								<td>Điểm chuyên cần</td>
+								<td>1</td>
+								<td>Mỗi lần điền báo cáo (đúng tiến độ) vào bảng bên trên sẽ được 0.2</td>
+								<td>{grade.diligentGrade}</td>
+							</tr>
+							<tr>
+								<td>Điểm quyển báo cáo</td>
+								<td>4</td>
+								<td>Quyển báo cáo: nội dung phù hợp, bố cục đúng qui định. Trình bày báo cáo.</td>
+								<td>{grade.reportGrade}</td>
+							</tr>
+							<tr>
+								<td>Điểm chương trình</td>
+								<td>5</td>
+								<td>Đúng theo bản thiết kế, phù hợp với đề tài. Ý tưởng mới, có tính sáng tạo</td>
+								<td>{programGrade}</td>
+							</tr>
+							<tr>
+								<td>Điểm tổng</td>
+								<td>10</td>
+								<td></td>
+								<td>{calculateTotalGrade(grade)}</td>
+							</tr>
+						</tbody>
+					))}
 				</table>
 			</div>
 		</div>
