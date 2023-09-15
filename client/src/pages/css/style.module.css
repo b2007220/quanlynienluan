@@ -62,8 +62,9 @@
 	margin-bottom: 5px;
 	font-weight: 500;
 }
-.input__box select,
-.input__box input {
+.input__box__select,
+.input__box input,
+.input__box button {
 	padding: 10px;
 	font-style: 1.1em;
 	outline: none;
@@ -71,6 +72,7 @@
 	resize: none;
 	border-radius: 12px;
 	margin-bottom: 10px;
+	cursor: pointer;
 }
 .recentOrders table td {
 	max-width: 500px;
@@ -235,15 +237,15 @@ table thead td {
 .swal2-textarea {
 	height: 15em;
 }
-.cardHeader .button-box {
+.cardHeader .button__box {
 	width: auto;
 	position: relative;
 	display: flex;
 	border: 1px solid #03e9f4;
 	border-radius: 30px;
 }
-.cardHeader .button-box a .toggle-btn1,
-.cardHeader .button-box a .toggle-btn2 {
+.cardHeader .button__box a .toggle__btn1,
+.cardHeader .button__box a .toggle__btn2 {
 	position: relative;
 	padding: 10px 80px;
 	cursor: pointer;
@@ -252,16 +254,16 @@ table thead td {
 	outline: none;
 	font-size: 16px;
 }
-.cardHeader .button-box a .toggle-btn1 {
+.cardHeader .button__box a .toggle__btn1 {
 	color: #fff;
 }
 
-.cardHeader .button-box a .toggle-btn2 {
+.cardHeader .button__box a .toggle__btn2 {
 	color: var(--darkblue);
 	font-weight: 550;
 }
-.cardHeader .button-box #btn1,
-.cardHeader .button-box #btn2 {
+.cardHeader .button__box #btn1,
+.cardHeader .button__box #btn2 {
 	top: 0px;
 	width: 55%;
 	height: 100%;
@@ -269,10 +271,10 @@ table thead td {
 	background: #126da6;
 	border-radius: 30px;
 }
-.cardHeader .button-box #btn1 {
+.cardHeader .button__box #btn1 {
 	left: 0;
 }
-.cardHeader .button-box #btn2 {
+.cardHeader .button__box #btn2 {
 	left: 45%;
 }
 
