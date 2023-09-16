@@ -1,4 +1,5 @@
 const userService = require('../services/user.service');
+const passService = require('../services/pass.service');
 
 class UserController {
 	/**
@@ -142,6 +143,23 @@ class UserController {
 			}
 
 			res.send(await userService.changeStudent(req.params.id));
+		} catch (error) {
+			next(error);
+		}
+	}
+
+	async changePassword(req, res, next) {
+		try {
+			const user = await userService.getById(req.params.id);
+			if (!user) {
+				res.status(404).json({ message: 'User not found' });
+			}
+			if (req.body.password) {
+				if (!passService.verify(req.body.oldpassword, user.password)) {
+					res.status(400).json({ message: 'Wrong password' });
+				}
+			}
+			res.send(await userService.changePassword(req.params.id, req.body.newpassword));
 		} catch (error) {
 			next(error);
 		}

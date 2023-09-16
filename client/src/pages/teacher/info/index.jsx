@@ -56,7 +56,7 @@ export default function Info() {
 							></input>
 						</div>
 						<div className={style.input__box}>
-							<span>Ngành học</span>
+							<span>Chuyên ngành giảng dạy</span>
 							<Select
 								name='majorName'
 								displayEmpty
@@ -85,7 +85,7 @@ export default function Info() {
 							<input type='email' name='email' value={userinfo.email} disabled required></input>
 						</div>
 						<div className={style.input__box}>
-							<span>MSSV</span>
+							<span>MGV</span>
 							<input
 								type='text'
 								name='studentId'
@@ -93,12 +93,6 @@ export default function Info() {
 								autoComplete='off'
 								value={userinfo.studentId}
 							></input>
-						</div>
-					</div>
-					<div className={style.row25}>
-						<div className={style.input__box}>
-							<span>Khóa</span>
-							<input type='number' min='42' name='khoa' value={userinfo.course} required></input>
 						</div>
 					</div>
 					<div className={style.row25}>

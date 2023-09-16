@@ -7,6 +7,8 @@ import Admin_Layout from '../pages/admin_layout';
 import AdminHomePage from '../pages/admin';
 import AdminMajorSemesterPage from '../pages/admin/majorsemester';
 import StudentInfoPage from '../pages/student/info';
+import TeacherHomePage from '../pages/teacher';
+import TeacherInfoPage from '../pages/teacher/info';
 const router = createBrowserRouter([
 	{
 		path: '/',
@@ -17,7 +19,7 @@ const router = createBrowserRouter([
 		Component: Student_Layout,
 		children: [
 			{
-				path: '/student/',
+				path: '/student',
 				Component: StudentHomePage,
 			},
 			{
@@ -26,26 +28,26 @@ const router = createBrowserRouter([
 			},
 		],
 	},
-	// {
-	// 	path: '/teacher',
-	// 	Component: Teacher_Layout,
-	// 	children: [
-	// 		{
-	// 			path: '/teacher/',
-	// 			Component: HomePage,
-	// 		},
-	// 		{
-	// 			path: '/teacher/user',
-	// 			Component: UsersPage,
-	// 		},
-	// 	],
-	// },
+	{
+		path: '/teacher',
+		Component: Teacher_Layout,
+		children: [
+			{
+				path: '/teacher',
+				Component: TeacherHomePage,
+			},
+			{
+				path: '/teacher/info',
+				Component: TeacherInfoPage,
+			},
+		],
+	},
 	{
 		path: '/admin',
 		Component: Admin_Layout,
 		children: [
 			{
-				path: '/admin/',
+				path: '/admin',
 				Component: AdminHomePage,
 			},
 			{

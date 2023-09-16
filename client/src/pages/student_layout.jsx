@@ -19,6 +19,7 @@ import { Fragment } from 'react';
 import DensityMediumIcon from '@mui/icons-material/DensityMedium';
 import ContactEmergencyIcon from '@mui/icons-material/ContactEmergency';
 import HomeIcon from '@mui/icons-material/Home';
+
 const Layout = () => {
 	const location = useLocation();
 	const dispatch = useDispatch();
@@ -69,7 +70,7 @@ const Layout = () => {
 							sx={{
 								color: '#000000',
 							}}
-							primary='Trang chủ'
+							primary={'Trang chủ'}
 						/>
 					</ListItemButton>
 				</ListItem>

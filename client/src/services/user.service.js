@@ -57,6 +57,11 @@ class UserService {
 
 		return updatedUser;
 	}
+	async changePassword(id, oldpassword, newpassword) {
+		const updatedUser = await this.#client.patch(`/${id}/password`, oldpassword, newpassword);
+
+		return updatedUser;
+	}
 }
 
 export default new UserService();

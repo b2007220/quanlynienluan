@@ -20,7 +20,7 @@ class AuthService {
 			throw new Error('None exist');
 		}
 		if (!(await passService.verify(password, existingUser.password))) {
-			throw new Error('password incorrect');
+			throw new Error('Password incorrect');
 		}
 		return {
 			token: this.#token.sign({

@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const passService = require('./pass.service');
 
 class UserService {
 	#client;
@@ -105,6 +106,18 @@ class UserService {
 			},
 			data: {
 				role: 'STUDENT',
+			},
+		});
+		return updatedUser;
+	}
+
+	async changePassword(id, password) {
+		const updatedUser = await this.#client.user.update({
+			where: {
+				id: parseInt(id),
+			},
+			data: {
+				password: await passService.hash(password),
 			},
 		});
 		return updatedUser;

@@ -69,7 +69,7 @@ const Layout = () => {
 							sx={{
 								color: '#000000',
 							}}
-							primary='Trang chủ'
+							primary={'Trang chủ'}
 						/>
 					</ListItemButton>
 				</ListItem>
