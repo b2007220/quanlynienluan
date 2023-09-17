@@ -33,7 +33,7 @@ model User {
   updatedAt DateTime  @default(now()) @updatedAt
   role      Role      @default(STUDENT)
   course    Int?
-  studentId String?
+  schoolId String?
   major     Major?    @relation(fields: [majorId], references: [id])
   majorId   Int?
   enrolls   Enroll[]

@@ -1,4 +1,4 @@
-import { Box, Grid, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Dialog, IconButto } from '@mui/material';
 import reportService from '../../services/report.service';
 import { useEffect, useState } from 'react';
 import enrollService from '../../services/enroll.service';
@@ -6,8 +6,14 @@ import gradeService from '../../services/grade.service';
 import useService from '../../services/use.service';
 import authService from '../../services/auth.service';
 import style from '../css/style.module.css';
+import AddIcon from '@mui/icons-material/Add';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 
 export default function Student_Home() {
+	const date = new Date();
 	const [reportList, setReportList] = useState([]);
 	const [grade, setGrade] = useState([]);
 	const [enroll, setEnroll] = useState([]);
@@ -15,7 +21,7 @@ export default function Student_Home() {
 		authService
 			.getUserProfile()
 			.then((user) => {
-				enrollService.getEnrollsByStudentIdInSemester(user.id).then((res) => {
+				const enroll = enrollService.getEnrollsByStudentIdInSemester(user.id).then((res) => {
 					setEnroll(res);
 				});
 				reportService.getReportsFromUser(user.id).then((res) => {
@@ -32,11 +38,74 @@ export default function Student_Home() {
 	const calculateTotalGrade = (grade) => {
 		return grade.diligentGrade + grade.reportGrade + grade.programGrade;
 	};
+	const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
+
+	const handleCreateNewReport = async (values) => {
+		try {
+			const newreport = await userService.createUser(values);
+
+			setUserList([...userList, newUser]);
+
+			setIsOpenCreateModal(false);
+		} catch (error) {
+			alert(error);
+		}
+	};
 	return (
 		<div className={style.details}>
 			<div className={style.recentOrders}>
 				<div className={style.cardHeader}>
 					<h2>Lịch sử báo cáo</h2>
+					<IconButton variant='contained' color='primary'>
+						<AddIcon></AddIcon>
+					</IconButton>
+					<Dialog
+						open={isOpenCreateModal}
+						onClose={() => {
+							setIsOpenCreateModal(false);
+						}}
+					>
+						<Formik
+							initialValues={{
+								createAt: '',
+								doneJob: '',
+								nextJob: '',
+								promiseAt: '',
+							}}
+							onSubmit={handleCreateNewReport}
+						>
+							{({ values, handleChange, handleSubmit }) => (
+								<form onSubmit={handleSubmit}>
+									<DialogTitle>Tạo báo cáo tiến độ</DialogTitle>
+
+									<DialogContent>
+										<Stack
+											spacing={2}
+											sx={{
+												marginTop: '10px',
+											}}
+										>
+											<LocalizationProvider dateAdapter={AdapterDayjs} disabled>
+												<DatePicker label='Ngày báo cáo' />
+											</LocalizationProvider>
+											<StyledTextarea minRows={3} placeholder='Minimum 3 rows' />
+
+											<StyledTextarea minRows={3} placeholder='Minimum 3 rows' />
+											<LocalizationProvider dateAdapter={AdapterDayjs}>
+												<DatePicker label='Thời hạn' />
+											</LocalizationProvider>
+										</Stack>
+									</DialogContent>
+
+									<DialogActions>
+										<Button onClick={handleSubmit} variant='contained'>
+											Tạo
+										</Button>
+									</DialogActions>
+								</form>
+							)}
+						</Formik>
+					</Dialog>
 				</div>
 				<table>
 					<thead>

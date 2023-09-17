@@ -45,6 +45,15 @@ export default function Student_Home() {
 				console.log(error);
 			});
 	}, []);
+	const handleSearchReport = async (userId) => {
+		try {
+			const reports = await reportService.getReportsFromUser(userId);
+			setReportList([]);
+			setReportList(reports);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 	return (
 		<div className={style.details}>
 			<div className={style.recentOrders}>
@@ -97,7 +106,7 @@ export default function Student_Home() {
 								{enroll.state === 'PROPOSE' && <td className={style.status__request}>Đề xuất</td>}
 								<td>{enroll.use.topic.name}</td>
 								<td>
-									<IconButton color='primary'>
+									<IconButton onClick={() => handleSearchReport(enroll.user.id)} color='primary'>
 										<FileOpenIcon></FileOpenIcon>
 									</IconButton>
 									<IconButton>
