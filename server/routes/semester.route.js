@@ -9,5 +9,6 @@ router
 	.get(semesterController.getById)
 	.put(semesterController.updateById)
 	.delete(semesterController.deleteById);
+router.route('/:year/semesters').get(semesterController.getSemestersByYearId);
 
 module.exports = router;

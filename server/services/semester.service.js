@@ -53,6 +53,16 @@ class SemesterService {
 
 		return deletedsemester;
 	}
+
+	async getSemestersByYearId(year) {
+		const semesters = await this.#client.semester.findMany({
+			where: {
+				year: parseInt(year),
+			},
+		});
+
+		return semesters;
+	}
 }
 
 module.exports = new SemesterService();

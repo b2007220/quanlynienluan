@@ -62,6 +62,23 @@ class EnrollService {
 
 		return enroll;
 	}
+
+	async getEnrollsBySemesterIdAndTeacherId(semesterId, id) {
+		const enrolls = await this.#client.enroll.findMany({
+			where: {
+				semesterId: parseInt(semesterId),
+				use: {
+					userId: parseInt(id),
+				},
+			},
+			include: {
+				use: true,
+				user: true,
+				topics: true,
+			},
+		});
+		return enrolls;
+	}
 }
 
 module.exports = new EnrollService();

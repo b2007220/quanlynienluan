@@ -38,6 +38,12 @@ class SemesterService {
 	async getEnrollsByStudentIdInSemester(studentId, semesterId) {
 		await this.#client.get(`/${semesterId}/enrolls/${studentId}`);
 	}
+
+	async getSemestersByYearName(year) {
+		const semesters = await this.#client.get(`/${year}/semesters`);
+
+		return semesters;
+	}
 }
 
 export default new SemesterService();

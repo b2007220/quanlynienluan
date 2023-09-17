@@ -40,6 +40,12 @@ class EnrollService {
 
 		return enroll;
 	}
+
+	async getEnrollsBySemesterIdAndTeacherId(semesterId, id) {
+		const enrolls = await this.#client.get(`/semester/${semesterId}/teacher/${id}`);
+
+		return enrolls;
+	}
 }
 
 export default new EnrollService();

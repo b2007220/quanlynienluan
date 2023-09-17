@@ -18,7 +18,7 @@ class ReportController {
 	 */
 	async getAll(req, res, next) {
 		try {
-			res.status(200).json(await reportService.getAll(req.query));
+			res.status(200).json(await reportService.getAll());
 		} catch (error) {
 			next(error);
 		}

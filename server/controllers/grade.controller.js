@@ -18,7 +18,7 @@ class GradeController {
 	 */
 	async getAll(req, res, next) {
 		try {
-			res.status(200).json(await gradeService.getAll(req.query));
+			res.status(200).json(await gradeService.getAll());
 		} catch (error) {
 			next(error);
 		}

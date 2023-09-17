@@ -8,4 +8,6 @@ router.route('/:id').get(enrollController.getById).put(enrollController.updateBy
 
 router.route('/student/:id').get(enrollController.getEnrollByStudentIdInSmester);
 
+router.route('/semester/:semesterId/teacher/:id').get(enrollController.getEnrollsBySemesterIdAndTeacherId);
+
 module.exports = router;

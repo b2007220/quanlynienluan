@@ -18,7 +18,7 @@ class SemesterController {
 	 */
 	async getAll(req, res, next) {
 		try {
-			res.status(200).json(await semesterService.getAll(req.query));
+			res.status(200).json(await semesterService.getAll());
 		} catch (error) {
 			next(error);
 		}
@@ -33,7 +33,7 @@ class SemesterController {
 			const semester = await semesterService.getById(req.params.id);
 
 			if (!semester) {
-				res.status(404).json({ message: 'semester not found' });
+				res.status(404).json({ message: 'Semester not found' });
 			}
 
 			res.send(semester);
@@ -51,7 +51,7 @@ class SemesterController {
 			const semester = await semesterService.getById(req.params.id);
 
 			if (!semester) {
-				res.status(404).json({ message: 'semester not found' });
+				res.status(404).json({ message: 'Semester not found' });
 			}
 
 			res.send(await semesterService.update(req.params.id, req.body));
@@ -69,10 +69,37 @@ class SemesterController {
 			const semester = await semesterService.getById(req.params.id);
 
 			if (!semester) {
-				res.status(404).json({ message: 'semester not found' });
+				res.status(404).json({ message: 'Semester not found' });
 			}
 
 			res.send(await semesterService.delete(req.params.id));
+		} catch (error) {
+			next(error);
+		}
+	}
+
+	async getSemestersByYearId(req, res, next) {
+		try {
+			const semesters = await semesterService.getSemestersByYearId(req.params.year);
+
+			if (!semesters) {
+				res.status(404).json({ message: 'Semesters not found' });
+			}
+		} catch (error) {
+			next(error);
+		}
+	}
+
+	async getSemestersByYearIdAndTeacherId(req, res, next) {
+		try {
+			const semesters = await semesterService.getSemestersByYearIdAndTeacherId(
+				req.params.semesterId,
+				req.params.teacher,
+			);
+
+			if (!semesters) {
+				res.status(404).json({ message: 'Semesters not found' });
+			}
 		} catch (error) {
 			next(error);
 		}

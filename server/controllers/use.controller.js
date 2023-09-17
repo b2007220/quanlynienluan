@@ -18,7 +18,7 @@ class UseController {
 	 */
 	async getAll(req, res, next) {
 		try {
-			res.status(200).json(await useService.getAll(req.query));
+			res.status(200).json(await useService.getAll());
 		} catch (error) {
 			next(error);
 		}
