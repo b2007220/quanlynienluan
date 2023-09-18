@@ -2,8 +2,18 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const router = require('./routes');
+const { queryParser } = require('express-query-parser');
 
 const app = express();
+
+app.use(
+	queryParser({
+		parseNull: true,
+		parseUndefined: true,
+		parseBoolean: true,
+		parseNumber: true,
+	}),
+);
 
 app.use(
 	cors({

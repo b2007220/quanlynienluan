@@ -9,23 +9,21 @@ import SchoolIcon from '@mui/icons-material/School';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import WorkIcon from '@mui/icons-material/Work';
+import { Pagination } from '@mui/material';
 
 export default function Student_Home() {
 	const MySwal = withReactContent(Swal);
-	const [userList, setUserList] = useState([]);
+	const [userList, setUserList] = useState({
+		data: [],
+	});
+	const [page, setPage] = useState(0);
+
 	useEffect(() => {
-		authService
-			.getUserProfile()
-			.then(() => {
-				userService.getAllUsers().then((res) => {
-					setUserList(res);
-					console.log(res);
-				});
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	}, []);
+		userService.getAllUsers(page).then((res) => {
+			setUserList(res);
+		});
+	}, [page]);
+
 	const handleActive = async (user) => {
 		try {
 			const updatedUser = await userService.activeUser(user.id);
@@ -161,7 +159,7 @@ export default function Student_Home() {
 							<td>Quản lý</td>
 						</tr>
 					</thead>
-					{userList.map((user) => (
+					{userList.data.map((user) => (
 						<tbody key={user.id}>
 							<tr>
 								<td>{user.fullName}</td>
@@ -193,6 +191,13 @@ export default function Student_Home() {
 						</tbody>
 					))}
 				</table>
+				<Pagination
+					count={userList.total}
+					page={page + 1}
+					onChange={(_, page) => setPage(page - 1)}
+					variant='outlined'
+					shape='rounded'
+				/>
 			</div>
 		</div>
 	);

@@ -16,10 +16,17 @@ class UserService {
 		return newUser;
 	}
 
-	async getAll() {
-		const users = await this.#client.user.findMany();
-
-		return users;
+	async getAll(page = 0, limit = 10) {
+		const users = await this.#client.user.findMany({
+			skip: page * limit,
+			take: limit,
+		});
+		return {
+			data: users,
+			page,
+			limit,
+			total: Math.floor((await this.#client.user.count()) / limit + 0.9),
+		};
 	}
 
 	async getById(id) {

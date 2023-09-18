@@ -13,8 +13,12 @@ class UserService {
 		return newUser;
 	}
 
-	async getAllUsers() {
-		const users = await this.#client.get('/');
+	async getAllUsers(page = 0) {
+		const users = await this.#client.get('/', {
+			params: {
+				page,
+			},
+		});
 		return users;
 	}
 

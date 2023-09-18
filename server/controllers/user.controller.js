@@ -19,7 +19,8 @@ class UserController {
 	 */
 	async getAll(req, res, next) {
 		try {
-			res.status(200).json(await userService.getAll());
+			const { page, limit } = req.query;
+			res.status(200).json(await userService.getAll(page, limit));
 		} catch (error) {
 			next(error);
 		}
