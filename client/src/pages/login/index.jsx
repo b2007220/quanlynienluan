@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
-import style from './login.module.css';
-import { auth } from '../../firebase';
+import GoogleIcon from '@mui/icons-material/Google';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { Formik } from 'formik';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { auth } from '../../firebase';
 import authService from '../../services/auth.service';
 import tokenService from '../../services/token.service';
-import { useDispatch } from 'react-redux';
 import { setUser } from '../../store/user';
-import { useNavigate } from 'react-router-dom';
-import { Formik } from 'formik';
-import GoogleIcon from '@mui/icons-material/Google';
+import style from './login.module.css';
 
 export default function Login() {
 	const MySwal = withReactContent(Swal);

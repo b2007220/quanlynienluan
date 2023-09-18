@@ -43,8 +43,8 @@ model User {
 
 model Major {
   id        Int    @id @default(autoincrement())
-  code      String
-  majorName String
+  code      String @unique
+  majorName String 
   users     User[]
 }
 
@@ -119,6 +119,7 @@ model Semester {
   year    Year?    @relation(fields: [yearId], references: [id])
   yearId  Int?
   uses    Use[]
+  isCurrent Boolean @default(false)
 }
 
 model Grade {

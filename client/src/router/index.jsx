@@ -9,6 +9,8 @@ import AdminMajorSemesterPage from '../pages/admin/majorsemester';
 import StudentInfoPage from '../pages/student/info';
 import TeacherHomePage from '../pages/teacher';
 import TeacherInfoPage from '../pages/teacher/info';
+import SignOut from '../pages/auth/signout';
+
 const router = createBrowserRouter([
 	{
 		path: '/',
@@ -55,6 +57,10 @@ const router = createBrowserRouter([
 				Component: AdminMajorSemesterPage,
 			},
 		],
+	},
+	{
+		path: '/signout',
+		Component: SignOut,
 	},
 ]);
 

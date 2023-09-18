@@ -63,6 +63,14 @@ class SemesterService {
 
 		return semesters;
 	}
+	async getCurrentSemester() {
+		const semester = await this.#client.semester.findUnique({
+			where: {
+				isCurrent: true,
+			},
+		});
+		return semester;
+	}
 }
 
 module.exports = new SemesterService();

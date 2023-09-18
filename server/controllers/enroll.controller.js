@@ -91,6 +91,10 @@ class EnrollController {
 			next(error);
 		}
 	}
+	async getEnrollsBySemesterIdAndTeacherId(req, res, next) {
+		try {
+		} catch (error) {}
+	}
 }
 
 module.exports = new EnrollController();

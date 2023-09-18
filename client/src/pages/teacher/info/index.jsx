@@ -151,6 +151,7 @@ export default function Info() {
 					}}
 				</Formik>
 			</div>
+			{userinfo.password}
 			<div className={style.recentOrders}>
 				<div className={style.cardHeader}>
 					<h2>Đổi mật khẩu</h2>

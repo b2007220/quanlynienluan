@@ -44,6 +44,10 @@ class SemesterService {
 
 		return semesters;
 	}
+	async getCurrent() {
+		const semester = await this.#client.get('/current');
+		return semester;
+	}
 }
 
 export default new SemesterService();

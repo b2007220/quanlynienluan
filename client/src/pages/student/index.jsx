@@ -1,4 +1,4 @@
-import { Dialog, IconButto } from '@mui/material';
+import { Dialog, IconButton } from '@mui/material';
 import reportService from '../../services/report.service';
 import { useEffect, useState } from 'react';
 import enrollService from '../../services/enroll.service';
@@ -11,6 +11,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
+import semesterService from '../../services/semester.service';
 
 export default function Student_Home() {
 	const date = new Date();
@@ -21,6 +22,7 @@ export default function Student_Home() {
 		authService
 			.getUserProfile()
 			.then((user) => {
+				const semester = semesterService.getCurrent();
 				const enroll = enrollService.getEnrollsByStudentIdInSemester(user.id).then((res) => {
 					setEnroll(res);
 				});

@@ -77,7 +77,10 @@ class SemesterController {
 			next(error);
 		}
 	}
-
+	/**
+	 * @type {import("express").RequestHandler}
+	 *
+	 */
 	async getSemestersByYearId(req, res, next) {
 		try {
 			const semesters = await semesterService.getSemestersByYearId(req.params.year);
@@ -89,7 +92,10 @@ class SemesterController {
 			next(error);
 		}
 	}
-
+	/**
+	 * @type {import("express").RequestHandler}
+	 *
+	 */
 	async getSemestersByYearIdAndTeacherId(req, res, next) {
 		try {
 			const semesters = await semesterService.getSemestersByYearIdAndTeacherId(
@@ -99,6 +105,20 @@ class SemesterController {
 
 			if (!semesters) {
 				res.status(404).json({ message: 'Semesters not found' });
+			}
+		} catch (error) {
+			next(error);
+		}
+	}
+	/**
+	 * @type {import("express").RequestHandler}
+	 *
+	 */
+	async getCurrentSemester(req, res, next) {
+		try {
+			const semester = await semesterService.getCurrentSemester();
+			if (!semester) {
+				res.status(404).json({ message: 'Semester not found' });
 			}
 		} catch (error) {
 			next(error);

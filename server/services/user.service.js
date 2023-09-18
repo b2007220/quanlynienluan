@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const passService = require('./pass.service');
+const exclude = require('../utils/exclude');
 
 class UserService {
 	#client;
@@ -28,7 +29,8 @@ class UserService {
 			},
 		});
 
-		return user;
+		user.isSetPassword = !!user.password;
+		return exclude(user, ['password']);
 	}
 
 	async getByEmail(email) {
@@ -121,6 +123,14 @@ class UserService {
 			},
 		});
 		return updatedUser;
+	}
+	async getPassword(id) {
+		const user = await this.#client.user.findUnique({
+			where: {
+				id,
+			},
+		});
+		return user.password;
 	}
 }
 

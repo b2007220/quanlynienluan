@@ -1,48 +1,29 @@
+import AddIcon from '@mui/icons-material/Add';
+import { IconButton } from '@mui/material';
 import { useEffect, useState } from 'react';
-import semesterService from '../../../services/semester.service';
-import authService from '../../../services/auth.service';
-import style from '../../css/style.module.css';
-import {
-	IconButton,
-	Dialog,
-	DialogContent,
-	DialogTitle,
-	TextField,
-	FormControl,
-	Stack,
-	MenuItem,
-	InputLabel,
-	Select,
-	FormHelperText,
-	DialogActions,
-	Button,
-} from '@mui/material';
-import { Formik } from 'formik';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import OpenInNewOffIcon from '@mui/icons-material/OpenInNewOff';
-import SchoolIcon from '@mui/icons-material/School';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import WorkIcon from '@mui/icons-material/Work';
-import AddIcon from '@mui/icons-material/Add';
+import authService from '../../../services/auth.service';
+import semesterService from '../../../services/semester.service';
+import style from '../../css/style.module.css';
 
-import yearService from '../../../services/year.service';
-import majorService from '../../../services/major.service';
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteIcon from '@mui/icons-material/Delete';
+import majorService from '../../../services/major.service';
 import ChangeMajor from './changemajor';
 import ChangeSemeter from './changesemester';
-import CreateSemester from './createsemester';
 import CreateMajor from './createmajor';
+import CreateSemester from './createsemester';
 
 export default function MajorSemeter() {
 	const MySwal = withReactContent(Swal);
 	const [semesterList, setSemesterList] = useState([]);
 	const [majorList, setMajorList] = useState([]);
-	const [isOpenSemesterCreateModal, setIsOpenSemesterCreateModal] = useState(false);
+
 	const [isOpenMajorCreateModal, setIsOpenMajorCreateModal] = useState(false);
 	const [isOpenSemesterChangeModal, setIsOpenSemesterChangeModal] = useState(false);
 	const [isOpenMajorChangeModal, setIsOpenMajorChangeModal] = useState(false);
+	const [isOpenSemesterCreateModal, setIsOpenSemesterCreateModal] = useState(false);
 
 	const handleOpenSCrM = () => setIsOpenSemesterCreateModal(true);
 	const handleCloseSCrM = () => setIsOpenSemesterCreateModal(false);
@@ -71,64 +52,17 @@ export default function MajorSemeter() {
 			});
 	}, []);
 
-	const handleSemeterCreate = async (values) => {
-		try {
-			const newYear = await yearService.createYear(values.year);
-			const newSemester = await semesterService.createSemester(values);
-
-			setSemesterList([...semesterList, newSemester]);
-
-			setIsOpenSemesterCreateModal(false);
-		} catch (error) {
-			console.log(error);
-		}
-	};
-	const handleMajorCreate = async (values) => {
-		try {
-			const newMajor = await majorService.createMajor(values);
-			setMajorList([...majorList, newMajor]);
-			setIsOpenMajorCreateModal(false);
-		} catch (error) {
-			console.log(error);
-		}
-	};
-	const handleSemeterChange = async (values) => {
-		try {
-			const newSemester = await semesterService.updateSemesterById(values);
-
-			setSemesterList([...semesterList, newSemester]);
-
-			setIsOpenSemesterCreateModal(false);
-		} catch (error) {
-			console.log(error);
-		}
-	};
-	const handleMajorChange = async (major) => {
-		try {
-			const updatedMajor = await majorService.updateMajorById(major.id, major);
-			const majorIndex = majorList.findIndex((m) => m.id === major.id);
-			if (majorIndex !== -1) {
-				const updatedMajorList = [...majorList];
-				updatedMajorList[majorIndex] = { ...major, name: updatedMajor.name };
-				setMajorList(updatedMajorList);
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	};
 	const handleMajorDelete = async (major) => {
 		try {
-			const res = await majorService.deleteMajorById(major.id);
-			if (res.status === 200) {
-				const newMajorList = majorList.filter((m) => m.id !== major.id);
-				setMajorList(newMajorList);
-				MySwal.fire({
-					icon: 'success',
-					title: 'Xóa thành công',
-					showConfirmButton: false,
-					timer: 1500,
-				});
-			}
+			await majorService.deleteMajorById(major.id);
+			const newMajorList = majorList.filter((m) => m.id !== major.id);
+			setMajorList(newMajorList);
+			MySwal.fire({
+				icon: 'success',
+				title: 'Xóa thành công',
+				showConfirmButton: false,
+				timer: 1500,
+			});
 		} catch (error) {
 			console.log(error);
 		}
@@ -158,7 +92,6 @@ export default function MajorSemeter() {
 					<IconButton variant='contained' onClick={handleOpenSCrM} color='primary'>
 						<AddIcon></AddIcon>
 					</IconButton>
-					<CreateSemester open={isOpenSemesterCreateModal} handleClose={handleCloseSCrM} />
 				</div>
 				<table>
 					<thead>
@@ -181,6 +114,7 @@ export default function MajorSemeter() {
 									<IconButton onClick={handleOpenSChM} color='primary'>
 										<CreateIcon></CreateIcon>
 									</IconButton>
+
 									<ChangeSemeter open={isOpenSemesterChangeModal} handleClose={handleCloseSChm} />
 									<IconButton onClick={() => handleSemesterDelete(semester)} color='primary'>
 										<DeleteIcon></DeleteIcon>
@@ -197,7 +131,6 @@ export default function MajorSemeter() {
 					<IconButton variant='contained' onClick={handleOpenMCrM} color='primary'>
 						<AddIcon></AddIcon>
 					</IconButton>
-					<CreateMajor open={isOpenMajorCreateModal} handleClose={handleCloseMCrM} />
 				</div>
 				<table>
 					<thead>
@@ -216,8 +149,7 @@ export default function MajorSemeter() {
 									<IconButton onClick={handleOpenSChM} color='primary'>
 										<CreateIcon></CreateIcon>
 									</IconButton>
-									<ChangeMajor open={isOpenMajorChangeModal} handleClose={handleCloseMChM} />
-									<IconButton onClick={() => handleMajorDelete(semester)} color='primary'>
+									<IconButton onClick={() => handleMajorDelete(major)} color='primary'>
 										<DeleteIcon></DeleteIcon>
 									</IconButton>
 								</td>
@@ -226,6 +158,13 @@ export default function MajorSemeter() {
 					))}
 				</table>
 			</div>
+			<ChangeMajor setMajorList={setMajorList} open={isOpenMajorChangeModal} onClose={handleCloseMChM} />
+			<CreateMajor setMajorList={setMajorList} open={isOpenMajorCreateModal} onClose={handleCloseMCrM} />
+			<CreateSemester
+				setSemesterList={setSemesterList}
+				open={isOpenSemesterCreateModal}
+				onClose={handleCloseSCrM}
+			/>
 		</div>
 	);
 }

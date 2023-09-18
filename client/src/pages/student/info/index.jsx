@@ -5,7 +5,15 @@ import { Select, MenuItem } from '@mui/material';
 import majorService from '../../../services/major.service';
 import userService from '../../../services/user.service';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 
+const validationSchema = Yup.object().shape({
+	fullName: Yup.string().required('Fullname is required'),
+	gender: Yup.string().required().oneOf(['MALE', 'FEMALE', 'HIDDEN']),
+	schoolId: Yup.string().required('SchoolID is required'),
+	majorName: Yup.string().required('MajorName is required'),
+	course: Yup.number().required('Course is required'),
+});
 export default function Info() {
 	const [userinfo, setUserinfo] = useState([]);
 	const [major, setMajor] = useState([]);
@@ -51,11 +59,12 @@ export default function Info() {
 						schoolId: userinfo.schoolId,
 						majorName: userinfo.major.majorName,
 						gender: userinfo.gender,
-						schoolId: userinfo.schoolId,
+						course: userinfo.course,
 					}}
+					validationSchema={validationSchema}
 					onSubmit={handleInfoChange}
 				>
-					{({ values, setFieldValue, handleChange, handleSubmit }) => {
+					{({ values, errors, setFieldValue, handleChange, handleSubmit }) => {
 						return (
 							<form onSubmit={handleSubmit}>
 								<div className={style.row50}>
@@ -64,7 +73,8 @@ export default function Info() {
 										<input
 											type='text'
 											autoComplete='off'
-											required
+											error={!!errors.fullName}
+											helperText={errors.fullName}
 											value={values.fullName}
 											onChange={handleChange}
 											name='fullName'
@@ -75,6 +85,8 @@ export default function Info() {
 										<Select
 											name='majorName'
 											displayEmpty
+											error={!!errors.fullName}
+											helperText={errors.fullName}
 											onChange={(event) => {
 												setFieldValue('majorName', event.target.value);
 											}}
@@ -90,7 +102,7 @@ export default function Info() {
 											}}
 										>
 											{major.map((major) => (
-												<MenuItem key={major.id} value={major.code}>
+												<MenuItem key={major.id} value={major.id}>
 													{major.majorName}
 												</MenuItem>
 											))}
@@ -163,57 +175,63 @@ export default function Info() {
 					}}
 				</Formik>
 			</div>
-			<div className={style.recentOrders}>
-				<div className={style.cardHeader}>
-					<h2>Đổi mật khẩu</h2>
-				</div>
-				<Formik
-					initialValues={{
-						oldPassword: '',
-						newPassword: '',
-					}}
-					onSubmit={handlePasswordChange}
-				>
-					{({ values, handleChange, handleSubmit }) => {
-						return (
-							<form onSubmit={handleSubmit}>
-								<div className={style.row100}>
-									<div className={style.input__box}>
-										<span>Mật khẩu cũ</span>
-										<input
-											type='text'
-											autoComplete='off'
-											onChange={handleChange}
-											value={values.oldPassword}
-											required
-											name='oldPassword'
-										></input>
-									</div>
-								</div>
-								<div className={style.row100}>
-									<div className={style.input__box}>
-										<span>Mật khẩu mới</span>
-										<input
-											type='text'
-											autoComplete='off'
-											required
-											onChange={handleChange}
-											value={values.newPassword}
-											name='newPassword'
-										></input>
-									</div>
-								</div>
+			{userinfo.isSetPassword ? (
+				<>
+					<div className={style.recentOrders}>
+						<div className={style.cardHeader}>
+							<h2>Đổi mật khẩu</h2>
+						</div>
+						<Formik
+							initialValues={{
+								oldPassword: '',
+								newPassword: '',
+							}}
+							onSubmit={handlePasswordChange}
+						>
+							{({ values, handleChange, handleSubmit }) => {
+								return (
+									<form onSubmit={handleSubmit}>
+										<div className={style.row100}>
+											<div className={style.input__box}>
+												<span>Mật khẩu cũ</span>
+												<input
+													type='text'
+													autoComplete='off'
+													onChange={handleChange}
+													value={values.oldPassword}
+													required
+													name='oldPassword'
+												></input>
+											</div>
+										</div>
+										<div className={style.row100}>
+											<div className={style.input__box}>
+												<span>Mật khẩu mới</span>
+												<input
+													type='text'
+													autoComplete='off'
+													required
+													onChange={handleChange}
+													value={values.newPassword}
+													name='newPassword'
+												></input>
+											</div>
+										</div>
 
-								<div className={style.row100}>
-									<div className={style.input__box}>
-										<input type='submit' value='Cập nhật' onClick={handleSubmit}></input>
-									</div>
-								</div>
-							</form>
-						);
-					}}
-				</Formik>
-			</div>
+										<div className={style.row100}>
+											<div className={style.input__box}>
+												<input type='submit' value='Cập nhật' onClick={handleSubmit}></input>
+											</div>
+										</div>
+									</form>
+								);
+							}}
+						</Formik>
+					</div>
+				</>
+			) : (
+				<></>
+			)}
 		</div>
 	);
 }

@@ -86,6 +86,19 @@ const Layout = () => {
 						/>
 					</ListItemButton>
 				</ListItem>
+				<ListItem component={Link} to='/signout' disablePadding>
+					<ListItemButton>
+						<ListItemIcon>
+							<BadgeIcon></BadgeIcon>
+						</ListItemIcon>
+						<ListItemText
+							sx={{
+								color: '#000000',
+							}}
+							primary={'Signout'}
+						/>
+					</ListItemButton>
+				</ListItem>
 			</List>
 		</Box>
 	);
