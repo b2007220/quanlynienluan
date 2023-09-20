@@ -172,7 +172,7 @@ class UserController {
 			if (user.password) {
 				res.status(400).json({ message: 'Already have password' });
 			}
-			res.send(await userService.changePassword(req.params.id, req.body.password));
+			res.send(await userService.createPassword(req.params.id, req.body.password));
 		} catch (error) {
 			next(error);
 		}

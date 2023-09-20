@@ -12,7 +12,7 @@ router.use('/report', authMiddleware, require('./report.route'));
 router.use('/use', authMiddleware, require('./use.route'));
 router.use('/semester', authMiddleware, adminCheck, require('./semester.route'));
 router.use('/major', authMiddleware, require('./major.route'));
-router.use('/users', authMiddleware, adminCheck, require('./user.route'));
+router.use('/users', authMiddleware, require('./user.route'));
 router.use('/year', authMiddleware, adminCheck, require('./year.route'));
 router.use('/grade', authMiddleware, teacherCheck, require('./grade.route'));
 

@@ -131,6 +131,7 @@ class UserService {
 		});
 		return updatedUser;
 	}
+
 	async getPassword(id) {
 		const user = await this.#client.user.findUnique({
 			where: {
@@ -138,6 +139,19 @@ class UserService {
 			},
 		});
 		return user.password;
+	}
+
+	async createPassword(id, password) {
+		const updatedUser = await this.#client.user.update({
+			where: {
+				id: parseInt(id),
+			},
+			data: {
+				password: await passService.hash(password),
+				isSetPassword: true,
+			},
+		});
+		return updatedUser;
 	}
 }
 

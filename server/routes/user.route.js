@@ -17,6 +17,8 @@ router.route('/:id/teacher').patch(userController.changeTeacher);
 
 router.route('/:id/student').patch(userController.changeStudent);
 
-router.route('/:id/password').patch(userController.changePassword);
+router.route('/:id/password/change').patch(userController.changePassword);
+
+router.route('/:id/password/create').patch(userController.createPassword);
 
 module.exports = router;

@@ -32,14 +32,15 @@ export default function Student_Home() {
 				gradeService.getGradeByStudentId(user.id).then((res) => {
 					setGrade(res);
 				});
+				const calculateTotalGrade = (grade) => {
+					return grade.diligentGrade + grade.reportGrade + grade.programGrade;
+				};
 			})
 			.catch((error) => {
 				console.log(error);
 			});
 	}, []);
-	const calculateTotalGrade = (grade) => {
-		return grade.diligentGrade + grade.reportGrade + grade.programGrade;
-	};
+
 	const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
 
 	const handleCreateNewReport = async (values) => {

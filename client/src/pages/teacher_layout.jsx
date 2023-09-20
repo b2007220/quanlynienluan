@@ -1,26 +1,23 @@
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import ContactEmergencyIcon from '@mui/icons-material/ContactEmergency';
+import DensityMediumIcon from '@mui/icons-material/DensityMedium';
+import HomeIcon from '@mui/icons-material/Home';
 import {
-	Container,
-	SwipeableDrawer,
+	Box,
 	Button,
+	Container,
+	List,
 	ListItem,
 	ListItemButton,
 	ListItemIcon,
-	Box,
-	List,
 	ListItemText,
-	createTheme,
+	SwipeableDrawer,
 } from '@mui/material';
-import { useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import authService from '../services/auth.service';
-import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../store/user';
-import { Fragment } from 'react';
-import DensityMediumIcon from '@mui/icons-material/DensityMedium';
-import ContactEmergencyIcon from '@mui/icons-material/ContactEmergency';
-import HomeIcon from '@mui/icons-material/Home';
-
+import LogoutIcon from '@mui/icons-material/Logout';
 const Layout = () => {
 	const location = useLocation();
 	const dispatch = useDispatch();
@@ -85,6 +82,19 @@ const Layout = () => {
 								color: '#000000',
 							}}
 							primary={'Thông tin'}
+						/>
+					</ListItemButton>
+				</ListItem>
+				<ListItem component={Link} to='/signout' disablePadding>
+					<ListItemButton>
+						<ListItemIcon>
+							<LogoutIcon></LogoutIcon>
+						</ListItemIcon>
+						<ListItemText
+							sx={{
+								color: '#000000',
+							}}
+							primary={'Đăng xuất'}
 						/>
 					</ListItemButton>
 				</ListItem>

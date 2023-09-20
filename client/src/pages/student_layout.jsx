@@ -19,7 +19,7 @@ import { Fragment } from 'react';
 import DensityMediumIcon from '@mui/icons-material/DensityMedium';
 import ContactEmergencyIcon from '@mui/icons-material/ContactEmergency';
 import HomeIcon from '@mui/icons-material/Home';
-
+import LogoutIcon from '@mui/icons-material/Logout';
 const Layout = () => {
 	const location = useLocation();
 	const dispatch = useDispatch();
@@ -84,6 +84,19 @@ const Layout = () => {
 								color: '#000000',
 							}}
 							primary={'Thông tin cá nhân'}
+						/>
+					</ListItemButton>
+				</ListItem>
+				<ListItem component={Link} to='/signout' disablePadding>
+					<ListItemButton>
+						<ListItemIcon>
+							<LogoutIcon></LogoutIcon>
+						</ListItemIcon>
+						<ListItemText
+							sx={{
+								color: '#000000',
+							}}
+							primary={'Đăng xuất'}
 						/>
 					</ListItemButton>
 				</ListItem>

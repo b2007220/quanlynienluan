@@ -1,19 +1,33 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from '@mui/material';
 import { Formik } from 'formik';
-import * as Yup from 'yup';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import majorService from '../../../services/major.service';
 
+import * as Yup from 'yup';
 const validationSchema = Yup.object().shape({
 	code: Yup.string().required('Vui lòng điền mã ngành'),
 	majorName: Yup.string().required('Vui lòng điền tên ngành'),
 });
-
-const CreateMajor = ({ open, onClose, setMajorList }) => {
-	const handleMajorCreate = async (values) => {
+const ChangeMajor = ({ id, open, onClose, setMajorList }) => {
+	const MySwal = withReactContent(Swal);
+	const handleMajorChange = async (values) => {
 		try {
-			const newMajor = await majorService.createMajor(values);
-			setMajorList((majorList) => [...majorList, newMajor]);
+			const updatedMajor = await majorService.updateMajorById(id, values);
+			setMajorList((prev) => {
+				return prev.map((e) => {
+					if (e.id === updatedMajor.id) return updatedMajor;
+					return e;
+				});
+			});
+
 			onClose();
+			MySwal.fire({
+				icon: 'success',
+				title: 'Đổi thành công',
+				showConfirmButton: false,
+				timer: 1500,
+			});
 		} catch (error) {
 			console.log(error);
 		}
@@ -22,17 +36,17 @@ const CreateMajor = ({ open, onClose, setMajorList }) => {
 		<Dialog open={open} onClose={onClose}>
 			<Formik
 				initialValues={{
-					code: '',
 					majorName: '',
+					code: '',
 				}}
 				validationSchema={validationSchema}
-				onSubmit={handleMajorCreate}
+				onSubmit={handleMajorChange}
 			>
 				{({ values, errors, handleChange, handleSubmit }) => {
 					return (
 						<>
 							<form onSubmit={handleSubmit}>
-								<DialogTitle>Tạo chuyên ngành</DialogTitle>
+								<DialogTitle>Đổi thông tin chuyên ngành</DialogTitle>
 								<DialogContent>
 									<Stack
 										spacing={2}
@@ -62,7 +76,7 @@ const CreateMajor = ({ open, onClose, setMajorList }) => {
 								</DialogContent>
 								<DialogActions>
 									<Button onClick={handleSubmit} variant='contained'>
-										Thêm chuyên ngành
+										Đổi
 									</Button>
 								</DialogActions>
 							</form>
@@ -73,4 +87,4 @@ const CreateMajor = ({ open, onClose, setMajorList }) => {
 		</Dialog>
 	);
 };
-export default CreateMajor;
+export default ChangeMajor;

@@ -25,7 +25,7 @@ class MajorService {
 		return major;
 	}
 
-	async updateMajorById(id, Major) {
+	async updateMajorById(id, major) {
 		const updatedmajor = await this.#client.put(`/${id}`, major);
 
 		return updatedmajor;

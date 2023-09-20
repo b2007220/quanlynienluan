@@ -1,16 +1,14 @@
-import { useEffect, useState } from 'react';
-import authService from '../../services/auth.service';
-import style from '../css/style.module.css';
-import userService from '../../services/user.service';
-import { IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import OpenInNewOffIcon from '@mui/icons-material/OpenInNewOff';
 import SchoolIcon from '@mui/icons-material/School';
+import WorkIcon from '@mui/icons-material/Work';
+import { IconButton, Pagination } from '@mui/material';
+import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import WorkIcon from '@mui/icons-material/Work';
-import { Pagination } from '@mui/material';
-
+import userService from '../../services/user.service';
+import style from '../css/style.module.css';
 export default function Student_Home() {
 	const MySwal = withReactContent(Swal);
 	const [userList, setUserList] = useState({
@@ -64,7 +62,7 @@ export default function Student_Home() {
 				buttonsStyling: true,
 			});
 
-			swalWithBootstrapButtons
+			await swalWithBootstrapButtons
 				.fire({
 					title: 'Bạn có muốn đổi tài khoản này thành giảng viên?',
 					icon: 'warning',
@@ -76,7 +74,7 @@ export default function Student_Home() {
 				.then((result) => {
 					if (result.isConfirmed) {
 						const updatedUser = userService.changeTeacher(user.id);
-						console.log(updatedUser);
+
 						const userIndex = userList.findIndex((u) => u.id === user.id);
 
 						if (userIndex !== -1) {
@@ -116,15 +114,55 @@ export default function Student_Home() {
 					cancelButtonText: 'Không!',
 					reverseButtons: true,
 				})
-				.then((result) => {
+				.then(async (result) => {
 					if (result.isConfirmed) {
-						const updatedUser = userService.changeStudent(user.id);
+						const updatedUser = await userService.changeStudent(user.id);
 
-						const userIndex = userList.findIndex((u) => u.id === user.id);
+						const userIndex = userList.data.findIndex((u) => u.id === user.id);
 
 						if (userIndex !== -1) {
-							const updatedUserList = [...userList];
+							const updatedUserList = [...userList.data];
 							updatedUserList[userIndex] = { ...user, role: 'STUDENT' };
+							setUserList(updatedUserList.data);
+						}
+						swalWithBootstrapButtons.fire(
+							'Thành công!',
+							'Tài khoản đã chuyển đổi thành sinh viên.',
+							'success',
+						);
+					} else if (result.dismiss === Swal.DismissReason.cancel) {
+						swalWithBootstrapButtons.fire('Hủy bỏ', 'Tài khoản không thay đổi.', 'error');
+					}
+				});
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	const handleDeleteAccount = async (user) => {
+		try {
+			const swalWithBootstrapButtons = await Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger',
+				},
+				buttonsStyling: true,
+			});
+			await swalWithBootstrapButtons
+				.fire({
+					title: 'Bạn có muốn xóa tài khoản khỏi hệ thống?',
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Có!',
+					cancelButtonText: 'Không!',
+					reverseButtons: true,
+				})
+				.then(async (result) => {
+					if (result.isConfirmed) {
+						userService.deleteUserById(user.id);
+						const userIndex = userList.findIndex((u) => u.id === user.id);
+						if (userIndex !== -1) {
+							const updatedUserList = [...userList];
+							updatedUserList.splice(userIndex, 1);
 							setUserList(updatedUserList);
 						}
 						swalWithBootstrapButtons.fire(
@@ -186,6 +224,9 @@ export default function Student_Home() {
 											<SchoolIcon></SchoolIcon>
 										</IconButton>
 									)}
+									<IconButton onClick={() => handleDeleteAccount(user)} color='primary'>
+										<DeleteIcon></DeleteIcon>
+									</IconButton>
 								</td>
 							</tr>
 						</tbody>

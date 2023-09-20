@@ -39,6 +39,7 @@ model User {
   enrolls   Enroll[]
   uses      Use[]
   uid       String    @unique
+  isSetPassword Boolean @default(false)
 }
 
 model Major {
@@ -65,6 +66,7 @@ model Topic {
   id       Int      @id @default(autoincrement())
   name     String
   describe String
+  link    String
   type     Type     @default(BOTH)
   uses     Use[]
 }
@@ -103,7 +105,7 @@ model Report {
 
 model Year {
   id        Int        @id @default(autoincrement())
-  name      Int
+  name      String
   semesters Semester[]
 }
 enum SemesterName {

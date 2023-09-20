@@ -5,12 +5,14 @@ import Login_Layout from '../pages/login';
 import Teacher_Layout from '../pages/teacher_layout';
 import Admin_Layout from '../pages/admin_layout';
 import AdminHomePage from '../pages/admin';
-import AdminMajorSemesterPage from '../pages/admin/majorsemester';
+import AdminMajorPage from '../pages/admin/major';
 import StudentInfoPage from '../pages/student/info';
 import TeacherHomePage from '../pages/teacher';
 import TeacherInfoPage from '../pages/teacher/info';
 import SignOut from '../pages/auth/signout';
-
+import AdminYearPage from '../pages/admin/year';
+import AdminSemesterPage from '../pages/admin/semester';
+import AdminPasswordPage from '../pages/admin/password';
 const router = createBrowserRouter([
 	{
 		path: '/',
@@ -53,8 +55,20 @@ const router = createBrowserRouter([
 				Component: AdminHomePage,
 			},
 			{
-				path: '/admin/major_semester',
-				Component: AdminMajorSemesterPage,
+				path: '/admin/major',
+				Component: AdminMajorPage,
+			},
+			{
+				path: '/admin/password',
+				Component: AdminPasswordPage,
+			},
+			{
+				path: '/admin/year',
+				Component: AdminYearPage,
+			},
+			{
+				path: '/admin/semester',
+				Component: AdminSemesterPage,
 			},
 		],
 	},

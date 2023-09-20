@@ -22,12 +22,7 @@ import {
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-const validationSchema = Yup.object().shape({
-	username: Yup.string().required('Username is required'),
-	fullName: Yup.string().required('Fullname is required'),
-	email: Yup.string().email('Email is invalid').required('Email is required'),
-	gender: Yup.string().required().oneOf(['MALE', 'FEMALE']),
-});
+C;
 
 export default function UsersPage() {
 	const [userList, setUserList] = useState([]);

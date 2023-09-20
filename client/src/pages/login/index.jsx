@@ -6,11 +6,17 @@ import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { Formik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
 import { auth } from '../../firebase';
 import authService from '../../services/auth.service';
 import tokenService from '../../services/token.service';
 import { setUser } from '../../store/user';
 import style from './login.module.css';
+
+const validationSchema = Yup.object().shape({
+	email: Yup.string().required('Email is required'),
+	password: Yup.string().required('Password is required'),
+});
 
 export default function Login() {
 	const MySwal = withReactContent(Swal);
@@ -86,6 +92,7 @@ export default function Login() {
 				password: '',
 			}}
 			onSubmit={handleLogin}
+			validationSchema={validationSchema}
 		>
 			{({ values, handleSubmit, handleChange }) => {
 				return (
