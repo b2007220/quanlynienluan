@@ -1,21 +1,19 @@
-import { FormControl, IconButton, MenuItem, Select } from '@mui/material';
+import { FormControl, IconButton, MenuItem, Select, Pagination } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import authService from '../../../services/auth.service';
 import style from '../../css/style.module.css';
 
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import semesterService from '../../../services/semester.service';
 import yearService from '../../../services/year.service';
 import ChangeSemester from './changesemeter';
-import { DateField } from '@mui/x-date-pickers/DateField';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 const validationSchema = Yup.object().shape({
 	name: Yup.string().oneOf(['FIRST', 'SECOND', 'SUMMER']),
@@ -26,8 +24,13 @@ const validationSchema = Yup.object().shape({
 
 export default function Semester() {
 	const MySwal = withReactContent(Swal);
-	const [semesterList, setSemesterList] = useState([]);
-	const [yearList, setYearList] = useState([]);
+	const [page, setPage] = useState(0);
+	const [semesterList, setSemesterList] = useState({
+		data: [],
+	});
+	const [yearList, setYearList] = useState({
+		data: [],
+	});
 
 	const [isOpenSemesterChangeModal, setIsOpenSemesterChangeModal] = useState(false);
 
@@ -35,21 +38,16 @@ export default function Semester() {
 	const handleCloseSemesterChangeModal = () => setIsOpenSemesterChangeModal(false);
 
 	useEffect(() => {
-		authService
-			.getUserProfile()
-			.then(() => {
-				semesterService.getAllSemesters().then((res) => {
-					setSemesterList(res);
-				});
-				yearService.getAllYears().then((res) => {
-					setYearList(res);
-				});
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	}, []);
+		semesterService.getAllSemesters(page).then((res) => {
+			setSemesterList(res);
+		});
+	}, [page]);
 
+	useEffect(() => {
+		yearService.getAllYears(page).then((res) => {
+			setYearList(res);
+		});
+	}, []);
 	const handleSemesterDelete = async (semester) => {
 		try {
 			await semesterService.deleteSemesterById(semester.id);
@@ -97,7 +95,7 @@ export default function Semester() {
 							<td>Thao tác</td>
 						</tr>
 					</thead>
-					{semesterList.map((semester) => (
+					{semesterList.data.map((semester) => (
 						<tbody key={semester.id}>
 							<tr>
 								<td>{semester.name}</td>
@@ -123,6 +121,13 @@ export default function Semester() {
 						</tbody>
 					))}
 				</table>
+				<Pagination
+					count={semesterList.total}
+					page={page + 1}
+					onChange={(_, page) => setPage(page - 1)}
+					variant='outlined'
+					shape='rounded'
+				/>
 			</div>
 			<div className={style.recentOrders}>
 				<div className={style.cardHeader}>
@@ -203,7 +208,7 @@ export default function Semester() {
 												marginBottom: '10px',
 											}}
 										>
-											{yearList.map((year) => (
+											{yearList.data.map((year) => (
 												<MenuItem key={year.id} value={year.id}>
 													{year.name}
 												</MenuItem>

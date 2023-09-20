@@ -14,10 +14,18 @@ class MajorService {
 		return newmajor;
 	}
 
-	async getAll() {
-		const majors = await this.#client.major.findMany();
+	async getAll(page = 0, limit = 10) {
+		const majors = await this.#client.major.findMany({
+			skip: page * limit,
+			take: limit,
+		});
 
-		return majors;
+		return {
+			data: majors,
+			page,
+			limit,
+			total: Math.floor((await this.#client.major.count()) / limit + 0.9),
+		};
 	}
 
 	async getById(id) {

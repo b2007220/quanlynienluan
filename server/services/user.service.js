@@ -135,7 +135,7 @@ class UserService {
 	async getPassword(id) {
 		const user = await this.#client.user.findUnique({
 			where: {
-				id,
+				id: parseInt(id),
 			},
 		});
 		return user.password;
@@ -148,7 +148,6 @@ class UserService {
 			},
 			data: {
 				password: await passService.hash(password),
-				isSetPassword: true,
 			},
 		});
 		return updatedUser;

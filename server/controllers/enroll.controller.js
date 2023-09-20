@@ -78,9 +78,9 @@ class EnrollController {
 		}
 	}
 
-	async getEnrollByStudentIdInSmester(req, res, next) {
+	async getByStudentIdInSemester(req, res, next) {
 		try {
-			const enroll = await enrollService.getEnrollsByStudentId(req.params.id);
+			const enroll = await enrollService.getByStudentIdInSemester(req.params.userId, req.params.semesterId);
 
 			if (!enroll) {
 				res.status(404).json({ message: 'Enroll not found' });
@@ -90,10 +90,6 @@ class EnrollController {
 		} catch (error) {
 			next(error);
 		}
-	}
-	async getEnrollsBySemesterIdAndTeacherId(req, res, next) {
-		try {
-		} catch (error) {}
 	}
 }
 

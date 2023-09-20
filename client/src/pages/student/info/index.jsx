@@ -11,20 +11,21 @@ const validationSchema = Yup.object().shape({
 	fullName: Yup.string().required('Fullname is required'),
 	gender: Yup.string().required().oneOf(['MALE', 'FEMALE', 'HIDDEN']),
 	schoolId: Yup.string().required('SchoolID is required'),
-	majorName: Yup.string().required('MajorName is required'),
+	majorId: Yup.number().required('Major is required'),
 	course: Yup.number().required('Course is required'),
 });
 export default function Info() {
-	const [userinfo, setUserinfo] = useState([]);
-	const [major, setMajor] = useState([]);
+	const [userInfo, setUserInfo] = useState([]);
+	const [majorList, setMajorList] = useState([]);
 	useEffect(() => {
 		authService
 			.getUserProfile()
 			.then((user) => {
-				setUserinfo(user);
+				setUserInfo(user);
 				majorService.getAllMajors().then((res) => {
-					setMajor(res);
+					setMajorList(res);
 				});
+				console.log(userInfo);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -32,16 +33,16 @@ export default function Info() {
 	}, []);
 	const handleInfoChange = async () => {
 		try {
-			const updatedUserInfo = await userService.updateUserById(userinfo.id, userinfo);
-			setUserinfo(updatedUserInfo);
+			const updatedUserInfo = await userService.updateUserById(userInfo.id, userInfo);
+			setUserInfo(updatedUserInfo);
 		} catch (error) {
 			console.log(error);
 		}
 	};
 	const handlePasswordChange = async () => {
 		try {
-			const updatedUserInfo = await userService.changePassword(userinfo.id, oldPassword, newPassword);
-			setUserinfo(updatedUserInfo);
+			const updatedUserInfo = await userService.changePassword(userInfo.id, oldPassword, newPassword);
+			setUserInfo(updatedUserInfo);
 		} catch (error) {
 			console.log(error);
 		}
@@ -54,12 +55,12 @@ export default function Info() {
 				</div>
 				<Formik
 					initialValues={{
-						fullName: userinfo.fullName,
-						email: userinfo.email,
-						schoolId: userinfo.schoolId,
-						majorName: userinfo.major.majorName,
-						gender: userinfo.gender,
-						course: userinfo.course,
+						fullName: userInfo.fullName,
+						email: userInfo.email,
+						schoolId: userInfo.schoolId,
+						majorId: '',
+						gender: userInfo.gender,
+						course: userInfo.course,
 					}}
 					validationSchema={validationSchema}
 					onSubmit={handleInfoChange}
@@ -74,7 +75,6 @@ export default function Info() {
 											type='text'
 											autoComplete='off'
 											error={!!errors.fullName}
-											helperText={errors.fullName}
 											value={values.fullName}
 											onChange={handleChange}
 											name='fullName'
@@ -83,12 +83,11 @@ export default function Info() {
 									<div className={style.input__box}>
 										<span>Ngành học</span>
 										<Select
-											name='majorName'
+											name='majorId'
 											displayEmpty
 											error={!!errors.fullName}
-											helperText={errors.fullName}
 											onChange={(event) => {
-												setFieldValue('majorName', event.target.value);
+												setFieldValue('majorId', event.target.value);
 											}}
 											sx={{
 												padding: '10px',
@@ -101,7 +100,7 @@ export default function Info() {
 												height: '37px',
 											}}
 										>
-											{major.map((major) => (
+											{majorList.map((major) => (
 												<MenuItem key={major.id} value={major.id}>
 													{major.majorName}
 												</MenuItem>
@@ -175,7 +174,7 @@ export default function Info() {
 					}}
 				</Formik>
 			</div>
-			{userinfo.isSetPassword ? (
+			{userInfo.isSetPassword ? (
 				<>
 					<div className={style.recentOrders}>
 						<div className={style.cardHeader}>

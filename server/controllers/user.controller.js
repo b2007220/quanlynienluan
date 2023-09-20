@@ -168,10 +168,6 @@ class UserController {
 
 	async createPassword(req, res, next) {
 		try {
-			const user = await userService.getPassword(req.params.id);
-			if (user.password) {
-				res.status(400).json({ message: 'Already have password' });
-			}
 			res.send(await userService.createPassword(req.params.id, req.body.password));
 		} catch (error) {
 			next(error);

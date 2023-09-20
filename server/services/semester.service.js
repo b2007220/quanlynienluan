@@ -14,13 +14,20 @@ class SemesterService {
 		return newsemester;
 	}
 
-	async getAll() {
+	async getAll(page = 0, limit = 10) {
 		const semesters = await this.#client.semester.findMany({
+			skip: page * limit,
+			take: limit,
 			include: {
 				year: true,
 			},
 		});
-		return semesters;
+		return {
+			data: semesters,
+			page,
+			limit,
+			total: Math.floor((await this.#client.semester.count()) / limit + 0.9),
+		};
 	}
 
 	async getById(id) {

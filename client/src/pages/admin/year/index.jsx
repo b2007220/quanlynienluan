@@ -1,8 +1,7 @@
-import { IconButton } from '@mui/material';
+import { IconButton, Pagination } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import authService from '../../../services/auth.service';
 import style from '../../css/style.module.css';
 
 import CreateIcon from '@mui/icons-material/Create';
@@ -18,7 +17,10 @@ const validationSchema = Yup.object().shape({
 
 export default function Year() {
 	const MySwal = withReactContent(Swal);
-	const [yearList, setYearList] = useState([]);
+	const [page, setPage] = useState(0);
+	const [yearList, setYearList] = useState({
+		data: [],
+	});
 
 	const [isOpenYearChangeModal, setIsOpenYearChangeModal] = useState(false);
 
@@ -26,18 +28,10 @@ export default function Year() {
 	const handleCloseYearChangeModal = () => setIsOpenYearChangeModal(false);
 
 	useEffect(() => {
-		authService
-			.getUserProfile()
-			.then(() => {
-				yearService.getAllYears().then((res) => {
-					setYearList(res);
-					console.log(res);
-				});
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	}, []);
+		yearService.getAllYears(page).then((res) => {
+			setYearList(res);
+		});
+	}, [page]);
 
 	const handleYearDelete = async (year) => {
 		try {
@@ -82,7 +76,7 @@ export default function Year() {
 							<td>Thao tác</td>
 						</tr>
 					</thead>
-					{yearList.map((year) => (
+					{yearList.data.map((year) => (
 						<tbody key={year.id}>
 							<tr>
 								<td>{year.name}</td>
@@ -104,6 +98,13 @@ export default function Year() {
 						</tbody>
 					))}
 				</table>
+				<Pagination
+					count={yearList.total}
+					page={page + 1}
+					onChange={(_, page) => setPage(page - 1)}
+					variant='outlined'
+					shape='rounded'
+				/>
 			</div>
 			<div className={style.recentOrders}>
 				<div className={style.cardHeader}>

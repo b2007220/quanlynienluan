@@ -14,10 +14,18 @@ class YearService {
 		return newyear;
 	}
 
-	async getAll() {
-		const years = await this.#client.year.findMany();
+	async getAll(page = 0, limit = 10) {
+		const years = await this.#client.year.findMany({
+			skip: page * limit,
+			take: limit,
+		});
 
-		return years;
+		return {
+			data: years,
+			page,
+			limit,
+			total: Math.floor((await this.#client.year.count()) / limit + 0.9),
+		};
 	}
 
 	async getById(id) {

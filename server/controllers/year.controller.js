@@ -18,7 +18,8 @@ class YearController {
 	 */
 	async getAll(req, res, next) {
 		try {
-			res.status(200).json(await yearService.getAll());
+			const { page, limit } = req.query;
+			res.status(200).json(await yearService.getAll(page, limit));
 		} catch (error) {
 			next(error);
 		}

@@ -35,16 +35,10 @@ class EnrollService {
 		await this.#client.delete(`/${id}`);
 	}
 
-	async getEnrollsByStudentIdInSemester(id) {
-		const enroll = await this.#client.get(`/student/${id}`);
+	async getEnrollByStudentIdInSmester(userId, semesterId) {
+		const enroll = await this.#client.get(`/student/${userId}/semester/${semesterId}`);
 
 		return enroll;
-	}
-
-	async getEnrollsBySemesterIdAndTeacherId(semesterId, id) {
-		const enrolls = await this.#client.get(`/semester/${semesterId}/teacher/${id}`);
-
-		return enrolls;
 	}
 }
 

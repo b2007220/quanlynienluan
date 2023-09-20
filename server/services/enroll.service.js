@@ -50,10 +50,13 @@ class EnrollService {
 
 		return deletedEnroll;
 	}
-	async getEnrollByStudentIdInSmester(id) {
+	async getByStudentIdInSemester(userId, semesterId) {
 		const enroll = await this.#client.enroll.findUnique({
 			where: {
-				userId: parseInt(id),
+				userId: parseInt(userId),
+				use: {
+					semesterId: parseInt(semesterId),
+				},
 			},
 			include: {
 				use: true,
@@ -61,23 +64,6 @@ class EnrollService {
 		});
 
 		return enroll;
-	}
-
-	async getEnrollsBySemesterIdAndTeacherId(semesterId, id) {
-		const enrolls = await this.#client.enroll.findMany({
-			where: {
-				semesterId: parseInt(semesterId),
-				use: {
-					userId: parseInt(id),
-				},
-			},
-			include: {
-				use: true,
-				user: true,
-				topics: true,
-			},
-		});
-		return enrolls;
 	}
 }
 

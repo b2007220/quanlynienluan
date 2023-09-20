@@ -1,4 +1,4 @@
-import { IconButton } from '@mui/material';
+import { IconButton, Pagination } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -19,8 +19,11 @@ const validationSchema = Yup.object().shape({
 
 export default function Major() {
 	const MySwal = withReactContent(Swal);
+	const [page, setPage] = useState(0);
 
-	const [majorList, setMajorList] = useState([]);
+	const [majorList, setMajorList] = useState({
+		data: [],
+	});
 
 	const [isOpenMajorChangeModal, setIsOpenMajorChangeModal] = useState(false);
 
@@ -28,18 +31,11 @@ export default function Major() {
 	const handleCloseMChM = () => setIsOpenMajorChangeModal(false);
 
 	useEffect(() => {
-		authService
-			.getUserProfile()
-			.then(() => {
-				majorService.getAllMajors().then((res) => {
-					setMajorList(res);
-					console.log(res);
-				});
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	}, []);
+		majorService.getAllMajors(page).then((res) => {
+			setMajorList(res);
+			console.log(res);
+		});
+	}, [page]);
 
 	const handleMajorDelete = async (major) => {
 		try {
@@ -86,7 +82,7 @@ export default function Major() {
 							<td>Thao tác</td>
 						</tr>
 					</thead>
-					{majorList.map((major) => (
+					{majorList.data.map((major) => (
 						<tbody key={major.id}>
 							<tr>
 								<td>{major.code}</td>
@@ -109,6 +105,13 @@ export default function Major() {
 						</tbody>
 					))}
 				</table>
+				<Pagination
+					count={majorList.total}
+					page={page + 1}
+					onChange={(_, page) => setPage(page - 1)}
+					variant='outlined'
+					shape='rounded'
+				/>
 			</div>
 			<div className={style.recentOrders}>
 				<div className={style.cardHeader}>
