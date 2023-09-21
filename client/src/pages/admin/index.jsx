@@ -9,7 +9,8 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import userService from '../../services/user.service';
 import style from '../css/style.module.css';
-export default function Student_Home() {
+
+export default function Admin_Home() {
 	const MySwal = withReactContent(Swal);
 	const [userList, setUserList] = useState({
 		data: [],
@@ -24,30 +25,79 @@ export default function Student_Home() {
 
 	const handleActive = async (user) => {
 		try {
-			const updatedUser = await userService.activeUser(user.id);
-
-			const userIndex = userList.findIndex((u) => u.id === user.id);
-
-			if (userIndex !== -1) {
-				const updatedUserList = [...userList];
-				updatedUserList[userIndex] = { ...user, active: true };
-				setUserList(updatedUserList);
-			}
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger',
+				},
+				buttonsStyling: true,
+			});
+			await swalWithBootstrapButtons
+				.fire({
+					title: 'Bạn có muốn kích hoạt lại tài khoản này?',
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Có!',
+					cancelButtonText: 'Không!',
+					reverseButtons: true,
+				})
+				.then(async (result) => {
+					if (result.isConfirmed) {
+						const updatedUser = await userService.activeUser(user.id);
+						setUserList((prev) => {
+							return {
+								...prev,
+								data: prev.data.map((e) => {
+									if (e.id === updatedUser.id) return updatedUser;
+									return e;
+								}),
+							};
+						});
+						swalWithBootstrapButtons.fire('Thành công!', 'Tài khoản đã được kích hoạt.', 'success');
+					} else if (result.dismiss === Swal.DismissReason.cancel) {
+						swalWithBootstrapButtons.fire('Hủy bỏ', 'Tài khoản không thay đổi.', 'error');
+					}
+				});
 		} catch (error) {
 			console.log(error);
 		}
 	};
+
 	const handleUnActive = async (user) => {
 		try {
-			const updatedUser = await userService.unactiveUser(user.id);
-
-			const userIndex = userList.findIndex((u) => u.id === user.id);
-
-			if (userIndex !== -1) {
-				const updatedUserList = [...userList];
-				updatedUserList[userIndex] = { ...user, active: false };
-				setUserList(updatedUserList);
-			}
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger',
+				},
+				buttonsStyling: true,
+			});
+			await swalWithBootstrapButtons
+				.fire({
+					title: 'Bạn có muốn vô hiệu hóa tài khoản này?',
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Có!',
+					cancelButtonText: 'Không!',
+					reverseButtons: true,
+				})
+				.then(async (result) => {
+					if (result.isConfirmed) {
+						const updatedUser = await userService.unActiveUser(user.id);
+						setUserList((prev) => {
+							return {
+								...prev,
+								data: prev.data.map((e) => {
+									if (e.id === updatedUser.id) return updatedUser;
+									return e;
+								}),
+							};
+						});
+						swalWithBootstrapButtons.fire('Thành công!', 'Tài khoản đã bị vô hiệu hóa.', 'success');
+					} else if (result.dismiss === Swal.DismissReason.cancel) {
+						swalWithBootstrapButtons.fire('Hủy bỏ', 'Tài khoản không thay đổi.', 'error');
+					}
+				});
 		} catch (error) {
 			console.log(error);
 		}
@@ -71,17 +121,18 @@ export default function Student_Home() {
 					cancelButtonText: 'Không!',
 					reverseButtons: true,
 				})
-				.then((result) => {
+				.then(async (result) => {
 					if (result.isConfirmed) {
-						const updatedUser = userService.changeTeacher(user.id);
-
-						const userIndex = userList.findIndex((u) => u.id === user.id);
-
-						if (userIndex !== -1) {
-							const updatedUserList = [...userList];
-							updatedUserList[userIndex] = { ...user, role: 'TEACHER' };
-							setUserList(updatedUserList);
-						}
+						const updatedUser = await userService.changeTeacher(user.id);
+						setUserList((prev) => {
+							return {
+								...prev,
+								data: prev.data.map((e) => {
+									if (e.id === updatedUser.id) return updatedUser;
+									return e;
+								}),
+							};
+						});
 						swalWithBootstrapButtons.fire(
 							'Thành công!',
 							'Tài khoản đã chuyển đổi thành giáo viên.',
@@ -117,14 +168,15 @@ export default function Student_Home() {
 				.then(async (result) => {
 					if (result.isConfirmed) {
 						const updatedUser = await userService.changeStudent(user.id);
-
-						const userIndex = userList.data.findIndex((u) => u.id === user.id);
-
-						if (userIndex !== -1) {
-							const updatedUserList = [...userList.data];
-							updatedUserList[userIndex] = { ...user, role: 'STUDENT' };
-							setUserList(updatedUserList.data);
-						}
+						setUserList((prev) => {
+							return {
+								...prev,
+								data: prev.data.map((e) => {
+									if (e.id === updatedUser.id) return updatedUser;
+									return e;
+								}),
+							};
+						});
 						swalWithBootstrapButtons.fire(
 							'Thành công!',
 							'Tài khoản đã chuyển đổi thành sinh viên.',
@@ -159,12 +211,9 @@ export default function Student_Home() {
 				.then(async (result) => {
 					if (result.isConfirmed) {
 						userService.deleteUserById(user.id);
-						const userIndex = userList.findIndex((u) => u.id === user.id);
-						if (userIndex !== -1) {
-							const updatedUserList = [...userList];
-							updatedUserList.splice(userIndex, 1);
-							setUserList(updatedUserList);
-						}
+						setUserList((prev) => {
+							return { ...prev, data: prev.data.filter((e) => e.id !== user.id) };
+						});
 						swalWithBootstrapButtons.fire(
 							'Thành công!',
 							'Tài khoản đã chuyển đổi thành sinh viên.',

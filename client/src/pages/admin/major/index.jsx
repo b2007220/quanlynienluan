@@ -33,15 +33,15 @@ export default function Major() {
 	useEffect(() => {
 		majorService.getAllMajors(page).then((res) => {
 			setMajorList(res);
-			console.log(res);
 		});
 	}, [page]);
 
 	const handleMajorDelete = async (major) => {
 		try {
 			await majorService.deleteMajorById(major.id);
-			const newMajorList = majorList.filter((m) => m.id !== major.id);
-			setMajorList(newMajorList);
+			setMajorList((prev) => {
+				return { ...prev, data: prev.data.filter((e) => e.id !== major.id) };
+			});
 			MySwal.fire({
 				icon: 'success',
 				title: 'Xóa thành công',
@@ -54,9 +54,13 @@ export default function Major() {
 	};
 	const handleMajorCreate = async (values) => {
 		try {
-			const res = await majorService.createMajor(values);
-			const newMajorList = [...majorList, res];
-			setMajorList(newMajorList);
+			const newMajor = await majorService.createMajor(values);
+			setMajorList((prev) => {
+				return {
+					...prev,
+					data: [...prev.data, newMajor],
+				};
+			});
 
 			MySwal.fire({
 				icon: 'success',

@@ -41,18 +41,16 @@ export default function Semester() {
 		semesterService.getAllSemesters(page).then((res) => {
 			setSemesterList(res);
 		});
-	}, [page]);
-
-	useEffect(() => {
 		yearService.getAllYears(page).then((res) => {
 			setYearList(res);
 		});
-	}, []);
+	}, [page]);
 	const handleSemesterDelete = async (semester) => {
 		try {
 			await semesterService.deleteSemesterById(semester.id);
-			const newSemesterList = semesterList.filter((y) => y.id !== semester.id);
-			setSemesterList(newSemesterList);
+			setSemesterList((prev) => {
+				return { ...prev, data: prev.data.filter((e) => e.id !== semester.id) };
+			});
 			MySwal.fire({
 				icon: 'success',
 				title: 'Xóa thành công',
@@ -65,15 +63,20 @@ export default function Semester() {
 	};
 	const handleSemesterCreate = async (values) => {
 		try {
-			const res = await semesterService.createSemester(values);
-			const newSemesterList = [...semesterList, res];
-			setSemesterList(newSemesterList);
-			MySwal.fire({
-				icon: 'success',
-				title: 'Thêm thành công',
-				showConfirmButton: false,
-				timer: 1500,
-			});
+			console.log(values);
+			// const newSemester = await semesterService.createSemester(values);
+			// setSemesterList((prev) => {
+			// 	return {
+			// 		...prev,
+			// 		data: [...prev.data, newSemester],
+			// 	};
+			// });
+			// MySwal.fire({
+			// 	icon: 'success',
+			// 	title: 'Thêm thành công',
+			// 	showConfirmButton: false,
+			// 	timer: 1500,
+			// });
 		} catch (error) {
 			console.log(error);
 		}
@@ -135,9 +138,9 @@ export default function Semester() {
 				</div>
 				<Formik
 					initialValues={{
+						name: '',
 						startAt: '',
 						endAt: '',
-						name: '',
 						yearId: '',
 					}}
 					onSubmit={handleSemesterCreate}
@@ -149,13 +152,22 @@ export default function Semester() {
 								<div className={style.row100}>
 									<div className={style.input__box}>
 										<span>Tên năm học</span>
-										<input
-											type='input'
-											onChange={handleChange}
-											value={values.name}
-											error={!!errors.name}
-											name='name'
-										></input>
+										<FormControl fullWidth>
+											<Select
+												name='name'
+												value={values.name}
+												error={!!errors.name}
+												onChange={handleChange}
+												sx={{
+													borderRadius: '12px',
+													height: '45px',
+												}}
+											>
+												<MenuItem value='FIRST'>Học kì một</MenuItem>
+												<MenuItem value='SECOND'>Học kì hai</MenuItem>
+												<MenuItem value='SUMMER'>Học kì hè</MenuItem>
+											</Select>
+										</FormControl>
 									</div>
 								</div>
 								<div className={style.row100}>
@@ -163,9 +175,6 @@ export default function Semester() {
 										<span>Thời gian bắt đầu</span>
 										<LocalizationProvider dateAdapter={AdapterDayjs}>
 											<DatePicker
-												sx={{
-													borderColor: 'transparent',
-												}}
 												value={values.startAt}
 												error={!!errors.startAt}
 												slotProps={{ textField: { variant: 'standard' } }}
@@ -185,40 +194,37 @@ export default function Semester() {
 														variant: 'standard',
 													},
 												}}
-												sx={{
-													content: 'none',
-												}}
 											/>
 										</LocalizationProvider>
 									</div>
 								</div>
 								<div className={style.row100}>
-									<span>Chọn năm học</span>
-									<FormControl fullWidth>
-										<Select
-											name='yearId'
-											value={values.yearId}
-											error={!!errors.yearId}
-											onChange={(event) => {
-												setFieldValue('yearId', event.target.value);
-											}}
-											sx={{
-												marginTop: '10px',
-												borderRadius: '12px',
-												marginBottom: '10px',
-											}}
-										>
-											{yearList.data.map((year) => (
-												<MenuItem key={year.id} value={year.id}>
-													{year.name}
-												</MenuItem>
-											))}
-										</Select>
-									</FormControl>
+									<div className={style.input__box}>
+										<span>Chọn năm học</span>
+										<FormControl fullWidth>
+											<Select
+												name='yearId'
+												value={values.yearId}
+												error={!!errors.yearId}
+												onChange={handleChange}
+												sx={{
+													borderRadius: '12px',
+
+													height: '45px',
+												}}
+											>
+												{yearList.data.map((year) => (
+													<MenuItem key={year.id} value={year.id}>
+														{year.name}
+													</MenuItem>
+												))}
+											</Select>
+										</FormControl>
+									</div>
 								</div>
 								<div className={style.row100}>
 									<div className={style.input__box}>
-										<input type='submit' value='Tạo ngành học' onClick={handleSubmit}></input>
+										<input type='submit' value='Tạo học kì' onClick={handleSubmit}></input>
 									</div>
 								</div>
 							</form>

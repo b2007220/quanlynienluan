@@ -44,7 +44,7 @@ class UserService {
 		return updatedUser;
 	}
 
-	async unactiveUser(id) {
+	async unActiveUser(id) {
 		const updatedUser = await this.#client.patch(`/${id}/unactive`);
 
 		return updatedUser;

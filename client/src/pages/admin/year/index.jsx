@@ -36,8 +36,9 @@ export default function Year() {
 	const handleYearDelete = async (year) => {
 		try {
 			await yearService.deleteYearById(year.id);
-			const newYearList = yearList.filter((y) => y.id !== year.id);
-			setYearList(newYearList);
+			setYearList((prev) => {
+				return { ...prev, data: prev.data.filter((e) => e.id !== year.id) };
+			});
 			MySwal.fire({
 				icon: 'success',
 				title: 'Xóa thành công',
@@ -50,9 +51,13 @@ export default function Year() {
 	};
 	const handleYearCreate = async (values) => {
 		try {
-			const res = await yearService.createYear(values);
-			const newYearList = [...yearList, res];
-			setYearList(newYearList);
+			const newYear = await yearService.createYear(values);
+			setYearList((prev) => {
+				return {
+					...prev,
+					data: [...prev.data, newYear],
+				};
+			});
 			MySwal.fire({
 				icon: 'success',
 				title: 'Thêm thành công',

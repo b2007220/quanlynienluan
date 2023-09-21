@@ -22,8 +22,6 @@ import {
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-C;
-
 export default function UsersPage() {
 	const [userList, setUserList] = useState([]);
 

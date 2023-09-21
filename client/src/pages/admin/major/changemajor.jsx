@@ -15,12 +15,14 @@ const ChangeMajor = ({ id, open, onClose, setMajorList }) => {
 		try {
 			const updatedMajor = await majorService.updateMajorById(id, values);
 			setMajorList((prev) => {
-				return prev.map((e) => {
-					if (e.id === updatedMajor.id) return updatedMajor;
-					return e;
-				});
+				return {
+					...prev,
+					data: prev.data.map((e) => {
+						if (e.id === updatedMajor.id) return updatedMajor;
+						return e;
+					}),
+				};
 			});
-
 			onClose();
 			MySwal.fire({
 				icon: 'success',

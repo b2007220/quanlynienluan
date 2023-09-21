@@ -7,12 +7,15 @@ import authService from '../../../services/auth.service';
 import userService from '../../../services/user.service';
 import style from '../../css/style.module.css';
 
-const validationSchema = Yup.object().shape({
+const validationSchemaChange = Yup.object().shape({
 	oldPassword: Yup.string().required('Mật khẩu cũ không được để trống'),
 	newPassword: Yup.string().required('Mật khẩu mới không được để trống'),
+});
+const validationSchemaCreate = Yup.object().shape({
 	password: Yup.string().required('Mật khẩu không được để trống'),
 	confirmPassword: Yup.string().required('Xác nhận mật khẩu không được để trống'),
 });
+
 export default function Password() {
 	const MySwal = withReactContent(Swal);
 
@@ -45,7 +48,7 @@ export default function Password() {
 					timer: 1500,
 				});
 			} else {
-				await userService.createPassword(userInfo.id, values.password);
+				const user = await userService.createPassword(userInfo.id, values.password);
 				MySwal.fire({
 					icon: 'success',
 					title: 'Đặt mật khẩu thành công',
@@ -71,7 +74,7 @@ export default function Password() {
 								newPassword: '',
 							}}
 							onSubmit={handlePasswordChange}
-							validationSchema={validationSchema}
+							validationSchema={validationSchemaChange}
 						>
 							{({ values, handleChange, handleSubmit }) => {
 								return (
@@ -125,22 +128,20 @@ export default function Password() {
 								password: '',
 								confirmPassword: '',
 							}}
-							onSubmit={handlePasswordChange}
-							validationSchema={validationSchema}
+							onSubmit={handlePasswordCreate}
+							validationSchema={validationSchemaCreate}
 						>
-							{({ values, handleChange, handleSubmit }) => {
+							{({ values, errors, handleChange, handleSubmit }) => {
 								return (
 									<form onSubmit={handleSubmit}>
 										<div className={style.row100}>
 											<div className={style.input__box}>
 												<span>Mật khẩu</span>
 												<input
-													type='text'
-													autoComplete='off'
+													name='password'
+													error={!!errors.password}
 													onChange={handleChange}
 													value={values.password}
-													required
-													name='password'
 												></input>
 											</div>
 										</div>
@@ -148,12 +149,10 @@ export default function Password() {
 											<div className={style.input__box}>
 												<span>Xác nhận mật khẩu</span>
 												<input
-													type='text'
-													autoComplete='off'
-													required
+													name='confirmPassword'
+													error={!!errors.confirmPassword}
 													onChange={handleChange}
 													value={values.confirmPassword}
-													name='confirmPassword'
 												></input>
 											</div>
 										</div>
@@ -163,7 +162,7 @@ export default function Password() {
 												<input
 													type='submit'
 													value='Tạo mật khẩu'
-													onClick={handlePasswordCreate}
+													onClick={handleSubmit}
 												></input>
 											</div>
 										</div>

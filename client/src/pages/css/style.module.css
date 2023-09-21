@@ -43,7 +43,7 @@
 	display: flex;
 	flex-direction: column;
 	margin-bottom: 10px;
-	width: 50%;
+	width: 100%;
 }
 .recentOrders .row100 .input__box {
 	width: 100%;

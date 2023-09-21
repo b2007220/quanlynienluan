@@ -1,9 +1,8 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from '@mui/material';
 import { Formik } from 'formik';
-import yemesterService from '../../../services/semester.service';
-import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import * as Yup from 'yup';
 
 const validationSchema = Yup.object().shape({
 	name: Yup.string().oneOf(['FIRST', 'SECOND', 'SUMMER']),
@@ -11,17 +10,20 @@ const validationSchema = Yup.object().shape({
 	endAt: Yup.date().required().min(Yup.ref('startAt')),
 	yearId: Yup.number().required('Vui lòng điền năm'),
 });
-const ChangeSemester = ({ id, open, onClose, setSList }) => {
+const ChangeSemester = ({ id, open, onClose, setSemesterList }) => {
 	const MySwal = withReactContent(Swal);
 
 	const handleSemesterChange = async (values) => {
 		try {
 			const updatedSemester = await semesterService.updateSemesterById(id, values);
 			setSemesterList((prev) => {
-				return prev.map((e) => {
-					if (e.id === updatedSemester.id) return updatedSemester;
-					return e;
-				});
+				return {
+					...prev,
+					data: prev.data.map((e) => {
+						if (e.id === updatedSemester.id) return updatedSemester;
+						return e;
+					}),
+				};
 			});
 			onClose();
 			MySwal.fire({
@@ -38,9 +40,10 @@ const ChangeSemester = ({ id, open, onClose, setSList }) => {
 		<Dialog open={open} onClose={onClose}>
 			<Formik
 				initialValues={{
+					name: '',
 					startAt: '',
 					endAt: '',
-					name: '',
+
 					yearId: '',
 				}}
 				validationSchema={validationSchema}

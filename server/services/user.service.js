@@ -140,18 +140,6 @@ class UserService {
 		});
 		return user.password;
 	}
-
-	async createPassword(id, password) {
-		const updatedUser = await this.#client.user.update({
-			where: {
-				id: parseInt(id),
-			},
-			data: {
-				password: await passService.hash(password),
-			},
-		});
-		return updatedUser;
-	}
 }
 
 module.exports = new UserService();

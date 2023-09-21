@@ -15,10 +15,13 @@ const ChangeYear = ({ id, open, onClose, setYearList }) => {
 		try {
 			const updatedYear = await yearService.updateYearById(id, values);
 			setYearList((prev) => {
-				return prev.map((e) => {
-					if (e.id === updatedYear.id) return updatedYear;
-					return e;
-				});
+				return {
+					...prev,
+					data: prev.data.map((e) => {
+						if (e.id === updatedYear.id) return updatedYear;
+						return e;
+					}),
+				};
 			});
 			onClose();
 			MySwal.fire({

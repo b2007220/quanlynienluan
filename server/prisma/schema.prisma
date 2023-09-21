@@ -59,7 +59,6 @@ enum State {
 enum Type {
   BASIS
   MASTER
-  BOTH
 }
 
 model Topic {
@@ -67,7 +66,7 @@ model Topic {
   name     String
   describe String
   link    String
-  type     Type     @default(BOTH)
+  type     Type 
   uses     Use[]
 }
 

@@ -168,7 +168,7 @@ class UserController {
 
 	async createPassword(req, res, next) {
 		try {
-			res.send(await userService.createPassword(req.params.id, req.body.password));
+			res.send(await userService.changePassword(req.params.id, req.body.password));
 		} catch (error) {
 			next(error);
 		}
