@@ -15,30 +15,7 @@ export default function Student_Home() {
 	useEffect(() => {
 		authService
 			.getUserProfile()
-			.then((user) => {
-				semesterService.getSemestersByYearName(date.getFullYear()).then((res) => {
-					setSemester(res);
-				});
-				{
-					semester.map((semester) => {
-						const dateStart = new Date(semester.startAt);
-						const dateEnd = new Date(semester.endAt);
-						if (dateStart <= date.getUTCDate <= dateEnd) {
-							const presentSemesterId = semester.id;
-							enrollService.getEnrollsBySemesterIdAndTeacherId(presentSemesterId, user.id).then((res) => {
-								setEnrollList(res);
-							});
-						}
-					});
-				}
-				{
-					enrollList.map((enroll) => {
-						reportService.getReportsByEnrollId(enroll.id).then((res) => {
-							setReportList(res);
-						});
-					});
-				}
-			})
+			.then((user) => {})
 			.catch((error) => {
 				console.log(error);
 			});

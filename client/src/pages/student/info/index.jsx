@@ -1,7 +1,7 @@
 import style from '../../css/style.module.css';
 import { useEffect, useState } from 'react';
 import authService from '../../../services/auth.service';
-import { Select, MenuItem } from '@mui/material';
+import { Select, MenuItem, FormControl } from '@mui/material';
 import majorService from '../../../services/major.service';
 import userService from '../../../services/user.service';
 import { Formik } from 'formik';
@@ -14,9 +14,20 @@ const validationSchema = Yup.object().shape({
 	majorId: Yup.number().required('Major is required'),
 	course: Yup.number().required('Course is required'),
 });
+const validationSchemaChange = Yup.object().shape({
+	oldPassword: Yup.string().required('Mật khẩu cũ không được để trống'),
+	newPassword: Yup.string().required('Mật khẩu mới không được để trống'),
+});
+const validationSchemaCreate = Yup.object().shape({
+	password: Yup.string().required('Mật khẩu không được để trống'),
+	confirmPassword: Yup.string().required('Xác nhận mật khẩu không được để trống'),
+});
+
 export default function Info() {
 	const [userInfo, setUserInfo] = useState([]);
-	const [majorList, setMajorList] = useState([]);
+	const [majorList, setMajorList] = useState({
+		data: [],
+	});
 	useEffect(() => {
 		authService
 			.getUserProfile()
@@ -39,10 +50,37 @@ export default function Info() {
 			console.log(error);
 		}
 	};
-	const handlePasswordChange = async () => {
+	const handlePasswordChange = async (values) => {
 		try {
-			const updatedUserInfo = await userService.changePassword(userInfo.id, oldPassword, newPassword);
-			setUserInfo(updatedUserInfo);
+			await userService.changePassword(userInfo.id, values.oldPassword, values.newPassword);
+			MySwal.fire({
+				icon: 'success',
+				title: 'Đặt mật khẩu thành công',
+				showConfirmButton: false,
+				timer: 1500,
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	const handlePasswordCreate = async (values) => {
+		try {
+			if (values.password !== values.confirmPassword) {
+				MySwal.fire({
+					icon: 'error',
+					title: 'Mật khẩu không khớp',
+					showConfirmButton: false,
+					timer: 1500,
+				});
+			} else {
+				const user = await userService.createPassword(userInfo.id, values.password);
+				MySwal.fire({
+					icon: 'success',
+					title: 'Đặt mật khẩu thành công',
+					showConfirmButton: false,
+					timer: 1500,
+				});
+			}
 		} catch (error) {
 			console.log(error);
 		}
@@ -82,30 +120,24 @@ export default function Info() {
 									</div>
 									<div className={style.input__box}>
 										<span>Ngành học</span>
-										<Select
-											name='majorId'
-											displayEmpty
-											error={!!errors.fullName}
-											onChange={(event) => {
-												setFieldValue('majorId', event.target.value);
-											}}
-											sx={{
-												padding: '10px',
-												outline: 'none',
-												border: '1px solid var(--black1)',
-												resize: 'none',
-												borderRadius: '12px',
-												marginBottom: '10px',
-												fontSize: '1.1em',
-												height: '37px',
-											}}
-										>
-											{majorList.map((major) => (
-												<MenuItem key={major.id} value={major.id}>
-													{major.majorName}
-												</MenuItem>
-											))}
-										</Select>
+										<FormControl fullWidth>
+											<Select
+												name='majorId'
+												value={values.majorId}
+												error={!!errors.fullName}
+												onChange={handleChange}
+												sx={{
+													borderRadius: '12px',
+													height: '37px',
+												}}
+											>
+												{majorList.data.map((major) => (
+													<MenuItem key={major.id} value={major.id}>
+														{major.majorName}
+													</MenuItem>
+												))}
+											</Select>
+										</FormControl>
 									</div>
 								</div>
 								<div className={style.row50}>
@@ -186,6 +218,7 @@ export default function Info() {
 								newPassword: '',
 							}}
 							onSubmit={handlePasswordChange}
+							validationSchema={validationSchemaChange}
 						>
 							{({ values, handleChange, handleSubmit }) => {
 								return (
@@ -229,7 +262,60 @@ export default function Info() {
 					</div>
 				</>
 			) : (
-				<></>
+				<>
+					<div className={style.recentOrders}>
+						<div className={style.cardHeader}>
+							<h2>Tạo mật khẩu</h2>
+						</div>
+						<Formik
+							initialValues={{
+								password: '',
+								confirmPassword: '',
+							}}
+							onSubmit={handlePasswordCreate}
+							validationSchema={validationSchemaCreate}
+						>
+							{({ values, errors, handleChange, handleSubmit }) => {
+								return (
+									<form onSubmit={handleSubmit}>
+										<div className={style.row100}>
+											<div className={style.input__box}>
+												<span>Mật khẩu</span>
+												<input
+													name='password'
+													error={!!errors.password}
+													onChange={handleChange}
+													value={values.password}
+												></input>
+											</div>
+										</div>
+										<div className={style.row100}>
+											<div className={style.input__box}>
+												<span>Xác nhận mật khẩu</span>
+												<input
+													name='confirmPassword'
+													error={!!errors.confirmPassword}
+													onChange={handleChange}
+													value={values.confirmPassword}
+												></input>
+											</div>
+										</div>
+
+										<div className={style.row100}>
+											<div className={style.input__box}>
+												<input
+													type='submit'
+													value='Tạo mật khẩu'
+													onClick={handleSubmit}
+												></input>
+											</div>
+										</div>
+									</form>
+								);
+							}}
+						</Formik>
+					</div>
+				</>
 			)}
 		</div>
 	);

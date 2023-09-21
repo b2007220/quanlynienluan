@@ -35,8 +35,8 @@ class ReportService {
 		await this.#client.delete(`/${id}`);
 	}
 
-	async getReportsFromUser(userId) {
-		await this.#client.get(`/student/${userId}`);
+	async getReportByEnrollId(id) {
+		const reports = await this.#client.get(`/enroll/${id}`);
 	}
 }
 

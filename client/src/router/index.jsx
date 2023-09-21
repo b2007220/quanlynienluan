@@ -1,18 +1,19 @@
 import { createBrowserRouter } from 'react-router-dom';
-import StudentHomePage from '../pages/student/';
-import Student_Layout from '../pages/student_layout';
-import Login_Layout from '../pages/login';
-import Teacher_Layout from '../pages/teacher_layout';
-import Admin_Layout from '../pages/admin_layout';
 import AdminHomePage from '../pages/admin';
 import AdminMajorPage from '../pages/admin/major';
+import AdminPasswordPage from '../pages/admin/password';
+import AdminSemesterPage from '../pages/admin/semester';
+import AdminYearPage from '../pages/admin/year';
+import Admin_Layout from '../pages/admin_layout';
+import SignOut from '../pages/auth/signout';
+import Login_Layout from '../pages/login';
+import StudentHomePage from '../pages/student/';
+import StudentEnrollPage from '../pages/student/enroll';
 import StudentInfoPage from '../pages/student/info';
+import Student_Layout from '../pages/student_layout';
 import TeacherHomePage from '../pages/teacher';
 import TeacherInfoPage from '../pages/teacher/info';
-import SignOut from '../pages/auth/signout';
-import AdminYearPage from '../pages/admin/year';
-import AdminSemesterPage from '../pages/admin/semester';
-import AdminPasswordPage from '../pages/admin/password';
+import Teacher_Layout from '../pages/teacher_layout';
 const router = createBrowserRouter([
 	{
 		path: '/',
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
 			{
 				path: '/student/info',
 				Component: StudentInfoPage,
+			},
+			{
+				path: '/student/enroll',
+				Component: StudentEnrollPage,
 			},
 		],
 	},

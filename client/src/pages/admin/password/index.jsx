@@ -34,6 +34,12 @@ export default function Password() {
 	const handlePasswordChange = async (values) => {
 		try {
 			await userService.changePassword(userInfo.id, values.oldPassword, values.newPassword);
+			MySwal.fire({
+				icon: 'success',
+				title: 'Đặt mật khẩu thành công',
+				showConfirmButton: false,
+				timer: 1500,
+			});
 		} catch (error) {
 			console.log(error);
 		}

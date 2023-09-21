@@ -81,15 +81,15 @@ class ReportController {
 	 * @type {import("express").RequestHandler}
 	 *
 	 */
-	async getReportsFromUser(req, res, next) {
+	async getReportByEnrollId(req, res, next) {
 		try {
-			const report = await reportService.getReportsFromUser(req.params.id);
+			const reports = await reportService.getReportByEnrollId(req.params.id);
 
-			if (!report) {
+			if (!reports) {
 				res.status(404).json({ message: 'Report not found' });
 			}
 
-			res.send(report);
+			res.send(reports);
 		} catch (error) {
 			next(error);
 		}

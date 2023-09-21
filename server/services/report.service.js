@@ -20,20 +20,6 @@ class ReportService {
 		return reports;
 	}
 
-	async getReportsFromUser(userId) {
-		const reports = await this.#client.report.findMany({
-			where: {
-				enroll: {
-					userId,
-				},
-			},
-			include: {
-				enroll: true,
-			},
-		});
-
-		return reports;
-	}
 	async getById(id) {
 		const report = await this.#client.report.findUnique({
 			where: {
@@ -63,6 +49,16 @@ class ReportService {
 		});
 
 		return deletedReport;
+	}
+
+	async getReportByEnrollId(id) {
+		const reports = await this.#client.report.findMany({
+			where: {
+				enrollId: parseInt(id),
+			},
+		});
+
+		return reports;
 	}
 }
 

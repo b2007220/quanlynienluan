@@ -6,6 +6,6 @@ router.route('/').post(reportController.create).get(reportController.getAll);
 
 router.route('/:id').get(reportController.getById).put(reportController.updateById).delete(reportController.deleteById);
 
-router.route('/student/:id').get(reportController.getReportsFromUser);
+router.route('/enroll/:id').get(reportController.getReportByEnrollId);
 
 module.exports = router;

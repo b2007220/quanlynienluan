@@ -1,17 +1,20 @@
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { Formik } from 'formik';
 import { useEffect, useState } from 'react';
+import * as Yup from 'yup';
 import authService from '../../services/auth.service';
+import enrollService from '../../services/enroll.service';
+import reportService from '../../services/report.service';
 import semesterService from '../../services/semester.service';
 import style from '../css/style.module.css';
-import enrollService from '../../services/enroll.service';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
 
+const yesterday = new Date(Date.now() - 86400000);
 const validationSchema = Yup.object().shape({
-	fullName: Yup.string().required('Fullname is required'),
-	gender: Yup.string().required().oneOf(['MALE', 'FEMALE', 'HIDDEN']),
-	schoolId: Yup.string().required('SchoolID is required'),
-	majorId: Yup.number().required('Major is required'),
-	course: Yup.number().required('Course is required'),
+	doneJob: Yup.string().required('Vui lòng điền công việc đã hoàn thành'),
+	nextJob: Yup.string().required('Vui lòng điền công việc tiếp theo'),
+	promiseAt: Yup.date().min(yesterday).required('Vui lòng điền thời hạn'),
 });
 
 export default function Student_Home() {
@@ -25,6 +28,9 @@ export default function Student_Home() {
 				enrollService.getEnrollByStudentIdInSmester(user.id, semester.id).then((enroll) => {
 					setEnroll(enroll);
 				});
+				reportService.getReportByEnrollId(enroll.id).then((report) => {
+					setReportList(report);
+				});
 			})
 			.catch((error) => {
 				console.log(error);
@@ -33,15 +39,28 @@ export default function Student_Home() {
 
 	const handleCreateNewReport = async (values) => {
 		try {
-			const newreport = await userService.createUser(values);
-
-			setUserList([...userList, newUser]);
-
-			setIsOpenCreateModal(false);
+			if (enroll.id === undefined) {
+				MySwal.fire({
+					icon: 'error',
+					title: 'Bạn chưa đăng ký đề tài',
+					showConfirmButton: false,
+					timer: 1500,
+				});
+				return;
+			}
+			const newReport = await reportService.createReport(values);
+			setReportList([...userList, newReport]);
+			MySwal.fire({
+				icon: 'success',
+				title: 'Xóa thành công',
+				showConfirmButton: false,
+				timer: 1500,
+			});
 		} catch (error) {
 			alert(error);
 		}
 	};
+
 	return (
 		<div className={style.details}>
 			<div className={style.recentOrders}>
@@ -72,133 +91,69 @@ export default function Student_Home() {
 			<div className={style.recentOrders}>
 				<div className={style.cardHeader}>
 					<h2>Thêm báo cáo mới</h2>
-					<Formik
-						initialValues={{
-							fullName: userInfo.fullName,
-							email: userInfo.email,
-							schoolId: userInfo.schoolId,
-							majorId: '',
-							gender: userInfo.gender,
-							course: userInfo.course,
-						}}
-						validationSchema={validationSchema}
-						onSubmit={handleCreateNewReport}
-					>
-						{({ values, errors, setFieldValue, handleChange, handleSubmit }) => {
-							return (
-								<form onSubmit={handleSubmit}>
-									<div className={style.row50}>
-										<div className={style.input__box}>
-											<span>Họ tên</span>
-											<input
-												type='text'
-												autoComplete='off'
-												error={!!errors.fullName}
-												value={values.fullName}
-												onChange={handleChange}
-												name='fullName'
-											></input>
-										</div>
-										<div className={style.input__box}>
-											<span>Ngành học</span>
-											<Select
-												name='majorId'
-												displayEmpty
-												error={!!errors.fullName}
-												onChange={(event) => {
-													setFieldValue('majorId', event.target.value);
-												}}
-												sx={{
-													padding: '10px',
-													outline: 'none',
-													border: '1px solid var(--black1)',
-													resize: 'none',
-													borderRadius: '12px',
-													marginBottom: '10px',
-													fontSize: '1.1em',
-													height: '37px',
-												}}
-											>
-												{majorList.map((major) => (
-													<MenuItem key={major.id} value={major.id}>
-														{major.majorName}
-													</MenuItem>
-												))}
-											</Select>
-										</div>
-									</div>
-									<div className={style.row50}>
-										<div className={style.input__box}>
-											<span>Email</span>
-											<input
-												type='email'
-												name='email'
-												value={values.email}
-												disabled
-												required
-											></input>
-										</div>
-										<div className={style.input__box}>
-											<span>MSSV</span>
-											<input
-												type='text'
-												name='studentId'
-												required
-												autoComplete='off'
-												value={values.studentId}
-												onChange={handleChange}
-											></input>
-										</div>
-									</div>
-									<div className={style.row25}>
-										<div className={style.input__box}>
-											<span>Khóa</span>
-											<input
-												type='number'
-												min='42'
-												name='khoa'
-												value={values.course}
-												required
-											></input>
-										</div>
-									</div>
-									<div className={style.row25}>
-										<div className={style.input__box}>
-											<span>Giới tính</span>
-											<Select
-												value={values.gender}
-												name='gender'
-												displayEmpty
-												onChange={(event) => {
-													setFieldValue('gender', event.target.value);
-												}}
-												sx={{
-													padding: '10px',
-													outline: 'none',
-													border: '1px solid var(--black1)',
-													resize: 'none',
-													borderRadius: '12px',
-													marginBottom: '10px',
-													fontSize: '1.1em',
-													height: '37px',
-												}}
-											>
-												<MenuItem value='MALE'>Nam</MenuItem>
-												<MenuItem value='FEMALE'>Nữ</MenuItem>
-												<MenuItem value='HIDĐEN'>Ẩn</MenuItem>
-											</Select>
-										</div>
-									</div>
-									<div className={style.row100}>
-										<div className={style.input__box}>
-											<input type='submit' value='Cập nhật' onClick={handleSubmit}></input>
-										</div>
-									</div>
-								</form>
-							);
-						}}
-					</Formik>
 				</div>
+				<Formik
+					initialValues={{
+						doneJob: '',
+						nextJob: '',
+						promiseAt: '',
+						enrollId: enroll.id,
+					}}
+					validationSchema={validationSchema}
+					onSubmit={handleCreateNewReport}
+				>
+					{({ values, errors, handleChange, handleSubmit }) => {
+						return (
+							<form onSubmit={handleSubmit}>
+								<div className={style.row100}>
+									<div className={style.input__box}>
+										<span>Thời hạn</span>
+										<LocalizationProvider dateAdapter={AdapterDayjs}>
+											<DatePicker
+												value={values.endAt}
+												error={!!errors.endAt}
+												slotProps={{
+													textField: {
+														variant: 'standard',
+													},
+												}}
+											/>
+										</LocalizationProvider>
+									</div>
+								</div>
+								<div className={style.row100}>
+									<div className={style.input__box}>
+										<span>Công việc đã hoàn thành</span>
+										<textarea
+											name='doneJob'
+											rows='5'
+											onChange={handleChange}
+											value={values.doneJob}
+											error={!!errors.doneJob}
+										></textarea>
+									</div>
+								</div>
+								<div className={style.row100}>
+									<div className={style.input__box}>
+										<span>Công việc sắp tới</span>
+										<textarea
+											name='nextJob'
+											rows='5'
+											onChange={handleChange}
+											value={values.nextJob}
+											error={!!errors.nextJob}
+										></textarea>
+									</div>
+								</div>
+								<div className={style.row100}>
+									<div className={style.input__box}>
+										<input type='submit' value='Cập nhật' onClick={handleSubmit}></input>
+									</div>
+								</div>
+							</form>
+						);
+					}}
+				</Formik>
 			</div>
 		</div>
 	);
