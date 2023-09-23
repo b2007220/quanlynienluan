@@ -13,8 +13,12 @@ class TopicService {
 		return newtopic;
 	}
 
-	async getAllTopics() {
-		const topics = await this.#client.get('/');
+	async getAllTopics(page = 0) {
+		const topics = await this.#client.get('/', {
+			params: {
+				page,
+			},
+		});
 
 		return topics;
 	}

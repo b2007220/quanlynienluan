@@ -13,8 +13,12 @@ class YearService {
 		return newyear;
 	}
 
-	async getAllYears() {
-		const years = await this.#client.get('/');
+	async getAllYears(page = 0) {
+		const years = await this.#client.get('/', {
+			params: {
+				page,
+			},
+		});
 
 		return years;
 	}
