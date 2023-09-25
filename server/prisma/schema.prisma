@@ -23,29 +23,29 @@ enum Role {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  fullName  String
-  email     String    @unique
-  password  String?
-  gender    Gender    @default(HIDDEN)
-  active    Boolean   @default(true)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now()) @updatedAt
-  role      Role      @default(STUDENT)
-  course    Int?
-  schoolId String?
-  major     Major?    @relation(fields: [majorId], references: [id])
-  majorId   Int?
-  enrolls   Enroll[]
-  uses      Use[]
-  uid       String    @unique
-  isSetPassword Boolean @default(false)
+  id            Int      @id @default(autoincrement())
+  fullName      String
+  email         String   @unique
+  password      String?
+  gender        Gender   @default(HIDDEN)
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now()) @updatedAt
+  role          Role     @default(STUDENT)
+  course        Int?
+  schoolId      String?
+  major         Major?   @relation(fields: [majorId], references: [id])
+  majorId       Int?
+  enrolls       Enroll[]
+  uses          Use[]
+  uid           String   @unique
+  isSetPassword Boolean  @default(false)
 }
 
 model Major {
   id        Int    @id @default(autoincrement())
   code      String @unique
-  majorName String 
+  majorName String
   users     User[]
 }
 
@@ -62,12 +62,13 @@ enum Type {
 }
 
 model Topic {
-  id       Int      @id @default(autoincrement())
-  name     String
-  describe String
-  link    String
-  type     Type 
-  uses     Use[]
+  id        Int     @id @default(autoincrement())
+  name      String
+  describe  String
+  link      String
+  type      Type
+  uses      Use[]
+  isChecked Boolean @default(false)
 }
 
 model Use {
@@ -75,7 +76,7 @@ model Use {
   topic        Topic     @relation(fields: [topicId], references: [id])
   topicId      Int
   enrolls      Enroll[]
-  userIncharge User    @relation(fields: [userId], references: [id])
+  userIncharge User      @relation(fields: [userId], references: [id])
   userId       Int
   semester     Semester? @relation(fields: [semesterId], references: [id])
   semesterId   Int?
@@ -107,20 +108,22 @@ model Year {
   name      String
   semesters Semester[]
 }
+
 enum SemesterName {
   FIRST
   SECOND
   SUMMER
 }
+
 model Semester {
-  id      Int      @id @default(autoincrement())
-  name    SemesterName
-  startAt DateTime
-  endAt   DateTime
-  year    Year?    @relation(fields: [yearId], references: [id])
-  yearId  Int?
-  uses    Use[]
-  isCurrent Boolean @default(false)
+  id        Int          @id @default(autoincrement())
+  name      SemesterName
+  startAt   DateTime
+  endAt     DateTime
+  year      Year?        @relation(fields: [yearId], references: [id])
+  yearId    Int?
+  uses      Use[]
+  isCurrent Boolean      @default(false)
 }
 
 model Grade {

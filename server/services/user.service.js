@@ -140,6 +140,15 @@ class UserService {
 		});
 		return user.password;
 	}
+
+	async getAllTeachers() {
+		const users = await this.#client.user.findMany({
+			where: {
+				role: 'TEACHER',
+			},
+		});
+		return users;
+	}
 }
 
 module.exports = new UserService();

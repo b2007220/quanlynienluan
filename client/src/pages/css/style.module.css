@@ -29,7 +29,16 @@
 	box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
 	border-radius: 20px;
 }
-
+.card__container {
+	min-height: 200px;
+	background: var(--white);
+	padding: 20px;
+	box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+	border-radius: 20px;
+	display: grid;
+	grid-template-columns: auto auto auto;
+	row-gap: 20px;
+}
 .recentOrders .row50 {
 	display: flex;
 	gap: 20px;
@@ -168,6 +177,10 @@
 	padding-bottom: 20px;
 }
 .cardHeader h2 {
+	font-weight: 600;
+	color: var(--darkblue);
+}
+.cardHeader__button {
 	font-weight: 600;
 	color: var(--darkblue);
 }

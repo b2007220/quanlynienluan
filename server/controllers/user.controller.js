@@ -148,7 +148,10 @@ class UserController {
 			next(error);
 		}
 	}
-
+	/**
+	 * @type {import("express").RequestHandler}
+	 *
+	 */
 	async changePassword(req, res, next) {
 		try {
 			const user = await userService.getPassword(req.params.id);
@@ -165,10 +168,24 @@ class UserController {
 			next(error);
 		}
 	}
-
+	/**
+	 * @type {import("express").RequestHandler}
+	 *
+	 */
 	async createPassword(req, res, next) {
 		try {
 			res.send(await userService.changePassword(req.params.id, req.body.password));
+		} catch (error) {
+			next(error);
+		}
+	}
+	/**
+	 * @type {import("express").RequestHandler}
+	 *
+	 */
+	async getAllTeachers(req, res, next) {
+		try {
+			res.status(200).json(await userService.getAllTeachers());
 		} catch (error) {
 			next(error);
 		}

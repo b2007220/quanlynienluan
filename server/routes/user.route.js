@@ -21,4 +21,6 @@ router.route('/:id/password/create').patch(userController.createPassword);
 
 router.route('/:id/password/change').patch(userController.changePassword);
 
+router.route('/teachers').get(userController.getAllTeachers);
+
 module.exports = router;

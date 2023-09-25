@@ -21,6 +21,10 @@ class UserService {
 		});
 		return users;
 	}
+	async getAllTeachers() {
+		const users = await this.#client.get('/teachers');
+		return users;
+	}
 
 	async getUserById(id) {
 		const user = await this.#client.get(`/${id}`);

@@ -14,7 +14,11 @@ class SemesterService {
 	}
 
 	async getAllSemesters() {
-		const semesters = await this.#client.get('/');
+		const semesters = await this.#client.get('/', {
+			params: {
+				page,
+			},
+		});
 
 		return semesters;
 	}

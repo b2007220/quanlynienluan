@@ -14,10 +14,26 @@ class UseService {
 		return newUse;
 	}
 
-	async getAll() {
-		const uses = await this.#client.use.findMany();
+	async getAll(page = 0, limit = 6) {
+		const uses = await this.#client.use.findMany({
+			where: {
+				topic: {
+					isChecked: true,
+				},
+			},
+			include: {
+				topic: true,
+			},
+			skip: page * limit,
+			take: limit,
+		});
 
-		return uses;
+		return {
+			data: uses,
+			page,
+			limit,
+			total: Math.floor((await this.#client.user.count()) / limit + 0.9),
+		};
 	}
 
 	async getAllFromUser(userId) {
