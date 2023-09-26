@@ -44,6 +44,11 @@ class UseService {
 
 		return use;
 	}
+	async getAllUsesInSemester(semester) {
+		const uses = await this.#client.get(`/semester/${semester}`);
+
+		return uses;
+	}
 }
 
 export default new UseService();

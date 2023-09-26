@@ -65,8 +65,8 @@ model Topic {
   id        Int     @id @default(autoincrement())
   name      String
   describe  String
-  link      String
-  type      Type
+  link      String?
+  type      Type?
   uses      Use[]
   isChecked Boolean @default(false)
 }

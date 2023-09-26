@@ -8,4 +8,6 @@ router.route('/:id').get(useController.getById).put(useController.updateById).de
 
 router.route('/user/:userId').get(useController.getAllFromUser);
 
+router.route('/semester/:semester').get(useController.getAllInSemester);
+
 module.exports = router;

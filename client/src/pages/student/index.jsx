@@ -57,7 +57,7 @@ export default function Student_Home() {
 				timer: 1500,
 			});
 		} catch (error) {
-			alert(error);
+			console.log(error);
 		}
 	};
 

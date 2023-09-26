@@ -35,9 +35,8 @@
 	padding: 20px;
 	box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
 	border-radius: 20px;
-	display: grid;
-	grid-template-columns: auto auto auto;
-	row-gap: 20px;
+	display: flex;
+	flex-wrap: wrap;
 }
 .recentOrders .row50 {
 	display: flex;

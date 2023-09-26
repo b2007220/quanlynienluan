@@ -13,8 +13,13 @@ import CardContent from '@mui/material/CardContent';
 import React from 'react';
 import Typography from '@mui/material/Typography';
 import { Formik } from 'formik';
-
-const card = <React.Fragment></React.Fragment>;
+import * as yup from 'yup';
+import topicService from '../../../services/topic.service';
+import enrollService from '../../../services/enroll.service';
+const validationSchema = yup.object({
+	name: yup.string().required('Vui lòng nhập tên đề tài'),
+	describe: yup.string().required('Vui lòng nhập mô tả đề tài'),
+});
 export default function Enroll() {
 	const [page, setPage] = useState(0);
 	const [teacherList, setTeacherList] = useState([]);
@@ -23,8 +28,10 @@ export default function Enroll() {
 		data: [],
 	});
 	useEffect(() => {
-		const semester = semesterService.getCurrent();
-		useService.getAllUses().then((res) => {
+		authService.getUserProfile().then((res) => {
+			setUser(res);
+		});
+		useService.getAllUsesInSemester().then((res) => {
 			setUseList(res);
 		});
 		userService.getAllTeachers().then((res) => {
@@ -32,6 +39,23 @@ export default function Enroll() {
 			console.log(res);
 		});
 	}, []);
+	const handleCreateNewTopic = (values) => {
+		try {
+			const semester = semesterService.getCurrent();
+			const topic = topicService.createTopic(values);
+			const newUse = useService.createUse({ topic, teacher, semester });
+			const newEnroll = enrollService.createEnroll({ user, newUse });
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	const handleCreateNewEnroll = (use) => {
+		try {
+			const enroll = enrollService.createEnroll({ user, use });
+		} catch (error) {
+			console.log(error);
+		}
+	};
 	return (
 		<div className={style.details}>
 			<div className={style.recentOrders}>
@@ -40,7 +64,7 @@ export default function Enroll() {
 				</div>
 				<div className={style.row50}>
 					<div className={style.input__box}>
-						<span>Học kì này bạn làm niên luận gì</span>
+						<span>Loại đề tài bạn tìm kiếm</span>
 						<div className={style.radio__group}>
 							<label className={style.radio}>
 								<input type='radio' name='type' />
@@ -97,43 +121,36 @@ export default function Enroll() {
 							</Card>
 						</Box>
 					))}
-					<Pagination
-						count={useList.total}
-						page={page + 1}
-						onChange={(_, page) => setPage(page - 1)}
-						variant='outlined'
-						shape='rounded'
-					/>
 				</div>
+				<Pagination
+					count={useList.total}
+					page={page + 1}
+					onChange={(_, page) => setPage(page - 1)}
+					variant='outlined'
+					shape='rounded'
+				/>
 			</div>
 			<div className={style.recentOrders}>
 				<div className={style.cardHeader}>
-					<h2>Thêm báo cáo mới</h2>
+					<h2>Thêm đề tài mới</h2>
 				</div>
 				<Formik
 					initialValues={{
-						doneJob: '',
-						nextJob: '',
-						promiseAt: '',
-						enrollId: '',
+						name: '',
+						describe: '',
 					}}
-					// validationSchema={validationSchema}
-					// onSubmit={handleCreateNewReport}
+					validationSchema={validationSchema}
+					onSubmit={handleCreateNewTopic}
 				>
 					{({ values, errors, handleChange, handleSubmit }) => {
 						return (
 							<form onSubmit={handleSubmit}>
 								<div className={style.row100}>
 									<div className={style.input__box}>
-										<span>Thời hạn</span>
-									</div>
-								</div>
-								<div className={style.row100}>
-									<div className={style.input__box}>
-										<span>Công việc đã hoàn thành</span>
+										<span>Tên đề tài</span>
 										<textarea
-											name='doneJob'
-											rows='5'
+											name='name'
+											rows='3'
 											onChange={handleChange}
 											value={values.doneJob}
 											error={!!errors.doneJob}
@@ -142,19 +159,19 @@ export default function Enroll() {
 								</div>
 								<div className={style.row100}>
 									<div className={style.input__box}>
-										<span>Công việc sắp tới</span>
+										<span>Miêu tả về đề tài</span>
 										<textarea
-											name='nextJob'
+											name='describe'
 											rows='5'
 											onChange={handleChange}
-											value={values.nextJob}
-											error={!!errors.nextJob}
+											value={values.describe}
+											error={!!errors.describe}
 										></textarea>
 									</div>
 								</div>
 								<div className={style.row100}>
 									<div className={style.input__box}>
-										<input type='submit' value='Cập nhật' onClick={handleSubmit}></input>
+										<input type='submit' value='Đăng kí' onClick={handleSubmit}></input>
 									</div>
 								</div>
 							</form>

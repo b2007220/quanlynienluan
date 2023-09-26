@@ -88,6 +88,18 @@ class UseController {
 			next(error);
 		}
 	}
+
+	/**
+	 * @type {import("express").RequestHandler}
+	 *
+	 */
+	async getAllInSemester(req, res, next) {
+		try {
+			res.status(200).json(await useService.getAllInSemester());
+		} catch (error) {
+			next(error);
+		}
+	}
 }
 
 module.exports = new UseController();
