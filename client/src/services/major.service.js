@@ -13,7 +13,7 @@ class MajorService {
 		return newmajor;
 	}
 
-	async getAllMajors() {
+	async getAllMajors(page = 0) {
 		const majors = await this.#client.get('/', {
 			params: {
 				page,
