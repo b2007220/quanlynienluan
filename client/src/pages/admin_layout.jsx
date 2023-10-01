@@ -18,12 +18,12 @@ import {
 } from '@mui/material';
 import { Fragment, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import authService from '../services/auth.service';
 import { setUser } from '../store/user';
-
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 const Layout = () => {
-	const location = useLocation();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -145,26 +145,28 @@ const Layout = () => {
 		</Box>
 	);
 	return (
-		<Container maxWidth='100%'>
-			<div>
-				{['left'].map((anchor) => (
-					<Fragment key={anchor}>
-						<Button onClick={toggleDrawer(anchor, true)}>
-							<DensityMediumIcon></DensityMediumIcon>
-						</Button>
-						<SwipeableDrawer
-							anchor={anchor}
-							open={state[anchor]}
-							onClose={toggleDrawer(anchor, false)}
-							onOpen={toggleDrawer(anchor, true)}
-						>
-							{list(anchor)}
-						</SwipeableDrawer>
-					</Fragment>
-				))}
-			</div>
-			<Outlet />
-		</Container>
+		<LocalizationProvider dateAdapter={AdapterDayjs}>
+			<Container maxWidth='100%'>
+				<div>
+					{['left'].map((anchor) => (
+						<Fragment key={anchor}>
+							<Button onClick={toggleDrawer(anchor, true)}>
+								<DensityMediumIcon></DensityMediumIcon>
+							</Button>
+							<SwipeableDrawer
+								anchor={anchor}
+								open={state[anchor]}
+								onClose={toggleDrawer(anchor, false)}
+								onOpen={toggleDrawer(anchor, true)}
+							>
+								{list(anchor)}
+							</SwipeableDrawer>
+						</Fragment>
+					))}
+				</div>
+				<Outlet />
+			</Container>
+		</LocalizationProvider>
 	);
 };
 

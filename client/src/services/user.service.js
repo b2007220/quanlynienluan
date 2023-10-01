@@ -71,7 +71,7 @@ class UserService {
 		return updatedUser;
 	}
 	async createPassword(id, password) {
-		const updatedUser = await this.#client.patch(`/${id}/password/create`, password);
+		const updatedUser = await this.#client.patch(`/${id}/password/create`, { password });
 
 		return updatedUser;
 	}

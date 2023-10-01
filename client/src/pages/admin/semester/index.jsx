@@ -6,14 +6,13 @@ import style from '../../css/style.module.css';
 
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import semesterService from '../../../services/semester.service';
 import yearService from '../../../services/year.service';
 import ChangeSemester from './changesemeter';
+import dayjs from 'dayjs';
 
 const validationSchema = Yup.object().shape({
 	name: Yup.string().oneOf(['FIRST', 'SECOND', 'SUMMER']),
@@ -31,11 +30,7 @@ export default function Semester() {
 	const [yearList, setYearList] = useState({
 		data: [],
 	});
-
-	const [isOpenSemesterChangeModal, setIsOpenSemesterChangeModal] = useState(false);
-
-	const handleOpenSemesterChangeModal = () => setIsOpenSemesterChangeModal(true);
-	const handleCloseSemesterChangeModal = () => setIsOpenSemesterChangeModal(false);
+	const [editSemester, setEditSemester] = useState(null);
 
 	useEffect(() => {
 		semesterService.getAllSemesters(page).then((res) => {
@@ -63,24 +58,24 @@ export default function Semester() {
 	};
 	const handleSemesterCreate = async (values) => {
 		try {
-			console.log(values);
-			// const newSemester = await semesterService.createSemester(values);
-			// setSemesterList((prev) => {
-			// 	return {
-			// 		...prev,
-			// 		data: [...prev.data, newSemester],
-			// 	};
-			// });
-			// MySwal.fire({
-			// 	icon: 'success',
-			// 	title: 'Thêm thành công',
-			// 	showConfirmButton: false,
-			// 	timer: 1500,
-			// });
+			const newSemester = await semesterService.createSemester(values);
+			setSemesterList((prev) => {
+				return {
+					...prev,
+					data: [...prev.data, newSemester],
+				};
+			});
+			MySwal.fire({
+				icon: 'success',
+				title: 'Thêm thành công',
+				showConfirmButton: false,
+				timer: 1500,
+			});
 		} catch (error) {
 			console.log(error);
 		}
 	};
+	console.log(semesterList);
 	return (
 		<div className={style.details}>
 			<div className={style.recentOrders}>
@@ -102,20 +97,14 @@ export default function Semester() {
 						<tbody key={semester.id}>
 							<tr>
 								<td>{semester.name}</td>
-								<td>{semester.startAt}</td>
-								<td>{semester.endAt}</td>
+								<td>{dayjs(semester.startAt).format('DD-MM-YYYY')}</td>
+								<td>{dayjs(semester.endAt).format('DD-MM-YYYY')}</td>
 								<td>{semester.year.name}</td>
 								{semester.isCurrent ? <td>Đang mở</td> : <td>Đã đóng</td>}
 								<td>
-									<IconButton onClick={() => handleOpenSemesterChangeModal()} color='primary'>
+									<IconButton onClick={() => setEditSemester(semester)} color='primary'>
 										<CreateIcon></CreateIcon>
 									</IconButton>
-									<ChangeSemester
-										id={semester.id}
-										setSemesterList={setSemesterList}
-										open={isOpenSemesterChangeModal}
-										onClose={handleCloseSemesterChangeModal}
-									/>
 									<IconButton onClick={() => handleSemesterDelete(semester)} color='primary'>
 										<DeleteIcon></DeleteIcon>
 									</IconButton>
@@ -146,7 +135,7 @@ export default function Semester() {
 					onSubmit={handleSemesterCreate}
 					validationSchema={validationSchema}
 				>
-					{({ values, errors, handleChange, handleSubmit }) => {
+					{({ values, errors, handleChange, handleSubmit, setFieldValue }) => {
 						return (
 							<form onSubmit={handleSubmit}>
 								<div className={style.row100}>
@@ -173,29 +162,27 @@ export default function Semester() {
 								<div className={style.row100}>
 									<div className={style.input__box}>
 										<span>Thời gian bắt đầu</span>
-										<LocalizationProvider dateAdapter={AdapterDayjs}>
-											<DatePicker
-												value={values.startAt}
-												error={!!errors.startAt}
-												slotProps={{ textField: { variant: 'standard' } }}
-											/>
-										</LocalizationProvider>
+										<DatePicker
+											value={values.startAt}
+											onChange={(d) => setFieldValue('startAt', d)}
+											error={!!errors.startAt}
+											slotProps={{ textField: { variant: 'standard' } }}
+										/>
 									</div>
 								</div>
 								<div className={style.row100}>
 									<div className={style.input__box}>
 										<span>Thời gian kết thúc</span>
-										<LocalizationProvider dateAdapter={AdapterDayjs}>
-											<DatePicker
-												value={values.endAt}
-												error={!!errors.endAt}
-												slotProps={{
-													textField: {
-														variant: 'standard',
-													},
-												}}
-											/>
-										</LocalizationProvider>
+										<DatePicker
+											value={values.endAt}
+											onChange={(d) => setFieldValue('endAt', d)}
+											error={!!errors.endAt}
+											slotProps={{
+												textField: {
+													variant: 'standard',
+												},
+											}}
+										/>
 									</div>
 								</div>
 								<div className={style.row100}>
@@ -232,6 +219,12 @@ export default function Semester() {
 					}}
 				</Formik>
 			</div>
+			<ChangeSemester
+				semester={editSemester}
+				setSemesterList={setSemesterList}
+				open={!!editSemester}
+				onClose={() => setEditSemester(null)}
+			/>
 		</div>
 	);
 }

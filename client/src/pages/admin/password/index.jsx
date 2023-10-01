@@ -13,7 +13,9 @@ const validationSchemaChange = Yup.object().shape({
 });
 const validationSchemaCreate = Yup.object().shape({
 	password: Yup.string().required('Mật khẩu không được để trống'),
-	confirmPassword: Yup.string().required('Xác nhận mật khẩu không được để trống'),
+	confirmPassword: Yup.string()
+		.required('Xác nhận mật khẩu không được để trống')
+		.oneOf([Yup.ref('password'), ''], 'Mật khẩu không khớp'),
 });
 
 export default function Password() {
@@ -25,7 +27,6 @@ export default function Password() {
 			.getUserProfile()
 			.then((user) => {
 				setUserInfo(user);
-				console.log(user);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -46,22 +47,13 @@ export default function Password() {
 	};
 	const handlePasswordCreate = async (values) => {
 		try {
-			if (values.password !== values.confirmPassword) {
-				MySwal.fire({
-					icon: 'error',
-					title: 'Mật khẩu không khớp',
-					showConfirmButton: false,
-					timer: 1500,
-				});
-			} else {
-				const user = await userService.createPassword(userInfo.id, values.password);
-				MySwal.fire({
-					icon: 'success',
-					title: 'Đặt mật khẩu thành công',
-					showConfirmButton: false,
-					timer: 1500,
-				});
-			}
+			await userService.createPassword(userInfo.id, values.password);
+			MySwal.fire({
+				icon: 'success',
+				title: 'Đặt mật khẩu thành công',
+				showConfirmButton: false,
+				timer: 1500,
+			});
 		} catch (error) {
 			console.log(error);
 		}
@@ -85,7 +77,7 @@ export default function Password() {
 							{({ values, handleChange, handleSubmit }) => {
 								return (
 									<form onSubmit={handleSubmit}>
-										<div className={style.row100}>
+										<div className={style.row25}>
 											<div className={style.input__box}>
 												<span>Mật khẩu cũ</span>
 												<input
@@ -98,7 +90,7 @@ export default function Password() {
 												></input>
 											</div>
 										</div>
-										<div className={style.row100}>
+										<div className={style.row25}>
 											<div className={style.input__box}>
 												<span>Mật khẩu mới</span>
 												<input
@@ -112,7 +104,7 @@ export default function Password() {
 											</div>
 										</div>
 
-										<div className={style.row100}>
+										<div className={style.row25}>
 											<div className={style.input__box}>
 												<input type='submit' value='Cập nhật' onClick={handleSubmit}></input>
 											</div>
@@ -137,7 +129,7 @@ export default function Password() {
 							onSubmit={handlePasswordCreate}
 							validationSchema={validationSchemaCreate}
 						>
-							{({ values, errors, handleChange, handleSubmit }) => {
+							{({ values, handleChange, handleSubmit }) => {
 								return (
 									<form onSubmit={handleSubmit}>
 										<div className={style.row100}>
@@ -145,7 +137,6 @@ export default function Password() {
 												<span>Mật khẩu</span>
 												<input
 													name='password'
-													error={!!errors.password}
 													onChange={handleChange}
 													value={values.password}
 												></input>
@@ -156,7 +147,6 @@ export default function Password() {
 												<span>Xác nhận mật khẩu</span>
 												<input
 													name='confirmPassword'
-													error={!!errors.confirmPassword}
 													onChange={handleChange}
 													value={values.confirmPassword}
 												></input>

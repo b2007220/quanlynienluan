@@ -7,14 +7,14 @@
 }
 .detail {
 	position: relative;
-	width: 100%;
+
 	padding: 20px;
 	display: grid;
 	margin-top: 10px;
 }
 .details {
 	position: relative;
-	width: 100%;
+
 	padding: 20px;
 	display: grid;
 	grid-template-columns: 6.5fr 3.5fr;

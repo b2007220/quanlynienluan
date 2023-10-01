@@ -2,7 +2,6 @@ import { IconButton, Pagination } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import authService from '../../../services/auth.service';
 import style from '../../css/style.module.css';
 
 import CreateIcon from '@mui/icons-material/Create';
@@ -18,17 +17,13 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function Major() {
+	const [editMajor, setEditMajor] = useState(null);
 	const MySwal = withReactContent(Swal);
 	const [page, setPage] = useState(0);
 
 	const [majorList, setMajorList] = useState({
 		data: [],
 	});
-
-	const [isOpenMajorChangeModal, setIsOpenMajorChangeModal] = useState(false);
-
-	const handleOpenMChM = () => setIsOpenMajorChangeModal(true);
-	const handleCloseMChM = () => setIsOpenMajorChangeModal(false);
 
 	useEffect(() => {
 		majorService.getAllMajors(page).then((res) => {
@@ -92,15 +87,9 @@ export default function Major() {
 								<td>{major.code}</td>
 								<td>{major.majorName}</td>
 								<td>
-									<IconButton onClick={handleOpenMChM} color='primary'>
+									<IconButton onClick={() => setEditMajor(major)} color='primary'>
 										<CreateIcon></CreateIcon>
 									</IconButton>
-									<ChangeMajor
-										id={major.id}
-										setMajorList={setMajorList}
-										open={isOpenMajorChangeModal}
-										onClose={handleCloseMChM}
-									/>
 									<IconButton onClick={() => handleMajorDelete(major)} color='primary'>
 										<DeleteIcon></DeleteIcon>
 									</IconButton>
@@ -129,7 +118,7 @@ export default function Major() {
 					onSubmit={handleMajorCreate}
 					validationSchema={validationSchema}
 				>
-					{({ values, errors, handleChange, handleSubmit }) => {
+					{({ values, handleChange, handleSubmit }) => {
 						return (
 							<form onSubmit={handleSubmit}>
 								<div className={style.row100}>
@@ -139,7 +128,6 @@ export default function Major() {
 											type='input'
 											onChange={handleChange}
 											value={values.code}
-											error={!!errors.code}
 											name='code'
 										></input>
 									</div>
@@ -152,7 +140,6 @@ export default function Major() {
 											name='majorName'
 											onChange={handleChange}
 											value={values.majorName}
-											error={!!errors.majorName}
 										></input>
 									</div>
 								</div>
@@ -166,6 +153,12 @@ export default function Major() {
 					}}
 				</Formik>
 			</div>
+			<ChangeMajor
+				major={editMajor}
+				setMajorList={setMajorList}
+				open={!!editMajor}
+				onClose={() => setEditMajor(null)}
+			/>
 		</div>
 	);
 }

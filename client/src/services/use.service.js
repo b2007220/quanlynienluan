@@ -13,7 +13,7 @@ class UseService {
 		return newuse;
 	}
 
-	async getAllUses() {
+	async getAllUses(page = 0) {
 		const uses = await this.#client.get('/', {
 			params: {
 				page,

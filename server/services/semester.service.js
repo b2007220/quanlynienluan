@@ -9,6 +9,9 @@ class SemesterService {
 	async create(semester) {
 		const newsemester = await this.#client.semester.create({
 			data: semester,
+			include: {
+				year: true,
+			},
 		});
 
 		return newsemester;

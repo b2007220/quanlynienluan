@@ -3,23 +3,10 @@ import FileOpenIcon from '@mui/icons-material/FileOpen';
 import { IconButton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import authService from '../../services/auth.service';
-import enrollService from '../../services/enroll.service';
 import reportService from '../../services/report.service';
-import semesterService from '../../services/semester.service';
 import style from '../css/style.module.css';
 export default function Student_Home() {
-	const date = new Date();
 	const [reportList, setReportList] = useState([]);
-	const [semester, setSemester] = useState([]);
-	const [enrollList, setEnrollList] = useState([]);
-	useEffect(() => {
-		authService
-			.getUserProfile()
-			.then((user) => {})
-			.catch((error) => {
-				console.log(error);
-			});
-	}, []);
 	const handleSearchReport = async (userId) => {
 		try {
 			const reports = await reportService.getReportsFromUser(userId);

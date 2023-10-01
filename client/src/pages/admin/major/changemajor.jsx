@@ -9,11 +9,11 @@ const validationSchema = Yup.object().shape({
 	code: Yup.string().required('Vui lòng điền mã ngành'),
 	majorName: Yup.string().required('Vui lòng điền tên ngành'),
 });
-const ChangeMajor = ({ id, open, onClose, setMajorList }) => {
+const ChangeMajor = ({ major, open, onClose, setMajorList }) => {
 	const MySwal = withReactContent(Swal);
 	const handleMajorChange = async (values) => {
 		try {
-			const updatedMajor = await majorService.updateMajorById(id, values);
+			const updatedMajor = await majorService.updateMajorById(major?.id, values);
 			setMajorList((prev) => {
 				return {
 					...prev,
@@ -37,10 +37,8 @@ const ChangeMajor = ({ id, open, onClose, setMajorList }) => {
 	return (
 		<Dialog open={open} onClose={onClose}>
 			<Formik
-				initialValues={{
-					majorName: '',
-					code: '',
-				}}
+				initialValues={major || { code: '', majorName: '' }}
+				enableReinitialize
 				validationSchema={validationSchema}
 				onSubmit={handleMajorChange}
 			>

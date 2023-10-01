@@ -11,12 +11,12 @@ const validationSchema = Yup.object().shape({
 	endAt: Yup.date().required().min(Yup.ref('startAt')),
 	yearId: Yup.number().required('Vui lòng điền năm'),
 });
-const ChangeSemester = ({ id, open, onClose, setSemesterList }) => {
+const ChangeSemester = ({ semester, open, onClose, setSemesterList }) => {
 	const MySwal = withReactContent(Swal);
 
 	const handleSemesterChange = async (values) => {
 		try {
-			const updatedSemester = await semesterService.updateSemesterById(id, values);
+			const updatedSemester = await semesterService.updateSemesterById(semester?.id, values);
 			setSemesterList((prev) => {
 				return {
 					...prev,
@@ -40,13 +40,7 @@ const ChangeSemester = ({ id, open, onClose, setSemesterList }) => {
 	return (
 		<Dialog open={open} onClose={onClose}>
 			<Formik
-				initialValues={{
-					name: '',
-					startAt: '',
-					endAt: '',
-
-					yearId: '',
-				}}
+				initialValues={semester || { name: '', startAt: '', endAt: '', yearId: '' }}
 				validationSchema={validationSchema}
 				onSubmit={handleSemesterChange}
 			>
