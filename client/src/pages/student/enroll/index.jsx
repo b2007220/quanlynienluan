@@ -52,6 +52,7 @@ export default function Enroll() {
 	const handleCreateNewEnroll = (use) => {
 		try {
 			const enroll = enrollService.createEnroll({ user, use });
+			console.log(enroll);
 		} catch (error) {
 			console.log(error);
 		}
@@ -98,8 +99,8 @@ export default function Enroll() {
 				</div>
 				<div className={style.card__container}>
 					{useList.data.map((use) => (
-						<Box sx={{ minWidth: 275, maxWidth: 350 }}>
-							<Card variant='outlined' key={use.id}>
+						<Box sx={{ minWidth: 275, maxWidth: 350 }} key={use.id}>
+							<Card variant='outlined'>
 								<CardContent>
 									<Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
 										{use.topic.type === 1 ? 'Niên luận cơ sở' : 'Niên luận ngành'}
@@ -152,8 +153,8 @@ export default function Enroll() {
 											name='name'
 											rows='3'
 											onChange={handleChange}
-											value={values.doneJob}
-											error={!!errors.doneJob}
+											value={values.name}
+											error={!!errors.name}
 										></textarea>
 									</div>
 								</div>

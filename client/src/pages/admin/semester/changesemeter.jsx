@@ -3,6 +3,7 @@ import { Formik } from 'formik';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import * as Yup from 'yup';
+import semesterService from '../../../services/semester.service';
 
 const validationSchema = Yup.object().shape({
 	name: Yup.string().oneOf(['FIRST', 'SECOND', 'SUMMER']),

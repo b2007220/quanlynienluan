@@ -37,6 +37,8 @@ class ReportService {
 
 	async getReportByEnrollId(id) {
 		const reports = await this.#client.get(`/enroll/${id}`);
+
+		return reports;
 	}
 }
 
