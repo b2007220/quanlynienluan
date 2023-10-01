@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -34,7 +34,7 @@ model User {
   role          Role     @default(STUDENT)
   course        Int?
   schoolId      String?
-  major         Major?  @relation(fields: [majorId], references: [id])
+  major         Major?   @relation(fields: [majorId], references: [id])
   majorId       Int?
   enrolls       Enroll[]
   uses          Use[]
