@@ -34,6 +34,7 @@ export default function Password() {
 	}, []);
 	const handlePasswordChange = async (values) => {
 		try {
+			console.log(values);
 			await userService.changePassword(userInfo.id, values.oldPassword, values.newPassword);
 			MySwal.fire({
 				icon: 'success',
@@ -77,7 +78,7 @@ export default function Password() {
 							{({ values, handleChange, handleSubmit }) => {
 								return (
 									<form onSubmit={handleSubmit}>
-										<div className={style.row25}>
+										<div className={style.row50}>
 											<div className={style.input__box}>
 												<span>Mật khẩu cũ</span>
 												<input
@@ -90,7 +91,7 @@ export default function Password() {
 												></input>
 											</div>
 										</div>
-										<div className={style.row25}>
+										<div className={style.row50}>
 											<div className={style.input__box}>
 												<span>Mật khẩu mới</span>
 												<input
@@ -104,7 +105,7 @@ export default function Password() {
 											</div>
 										</div>
 
-										<div className={style.row25}>
+										<div className={style.row50}>
 											<div className={style.input__box}>
 												<input type='submit' value='Cập nhật' onClick={handleSubmit}></input>
 											</div>

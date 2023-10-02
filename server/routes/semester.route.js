@@ -12,4 +12,6 @@ router
 	.delete(semesterController.deleteById);
 router.route('/:year/semesters').get(semesterController.getSemestersByYearId);
 
+router.route('/active/:id').patch(semesterController.activeSemester);
+
 module.exports = router;

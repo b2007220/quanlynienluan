@@ -6,14 +6,14 @@ import style from '../../css/style.module.css';
 
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import semesterService from '../../../services/semester.service';
 import yearService from '../../../services/year.service';
 import ChangeSemester from './changesemeter';
-import dayjs from 'dayjs';
-
 const validationSchema = Yup.object().shape({
 	name: Yup.string().oneOf(['FIRST', 'SECOND', 'SUMMER']),
 	startAt: Yup.date().required(),
@@ -75,6 +75,46 @@ export default function Semester() {
 			console.log(error);
 		}
 	};
+	const handleSemesterActive = async (semester) => {
+		try {
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger',
+				},
+				buttonsStyling: true,
+			});
+
+			swalWithBootstrapButtons
+				.fire({
+					title: 'Bạn có muốn kích hoạt học kì?',
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Có!',
+					cancelButtonText: 'Không!',
+					reverseButtons: true,
+				})
+				.then(async (result) => {
+					if (result.isConfirmed) {
+						const updatedSemester = await semesterService.activeSemester(semester.id);
+						setSemesterList((prev) => {
+							return {
+								...prev,
+								data: prev.data.map((e) => {
+									if (e.id === updatedSemester.id) return updatedSemester;
+									return e;
+								}),
+							};
+						});
+						swalWithBootstrapButtons.fire('Thành công!', 'Kích hoạt thành công.', 'success');
+					} else if (result.dismiss === Swal.DismissReason.cancel) {
+						swalWithBootstrapButtons.fire('Hủy bỏ', 'Thao tác được hủy bỏ.', 'error');
+					}
+				});
+		} catch (error) {
+			console.log(error);
+		}
+	};
 	console.log(semesterList);
 	return (
 		<div className={style.details}>
@@ -96,7 +136,13 @@ export default function Semester() {
 					{semesterList.data.map((semester) => (
 						<tbody key={semester.id}>
 							<tr>
-								<td>{semester.name}</td>
+								{semester.name === 'FIRST' ? (
+									<td>Học kì một</td>
+								) : semester.name === 'SECOND' ? (
+									<td>Học kì hai</td>
+								) : (
+									<td>Học kì hè</td>
+								)}
 								<td>{dayjs(semester.startAt).format('DD-MM-YYYY')}</td>
 								<td>{dayjs(semester.endAt).format('DD-MM-YYYY')}</td>
 								<td>{semester.year.name}</td>
@@ -107,6 +153,9 @@ export default function Semester() {
 									</IconButton>
 									<IconButton onClick={() => handleSemesterDelete(semester)} color='primary'>
 										<DeleteIcon></DeleteIcon>
+									</IconButton>
+									<IconButton onClick={() => handleSemesterActive(semester)} color='primary'>
+										<EditCalendarIcon></EditCalendarIcon>
 									</IconButton>
 								</td>
 							</tr>
@@ -119,6 +168,9 @@ export default function Semester() {
 					onChange={(_, page) => setPage(page - 1)}
 					variant='outlined'
 					shape='rounded'
+					sx={{
+						marginTop: '10px',
+					}}
 				/>
 			</div>
 			<div className={style.recentOrders}>
@@ -140,7 +192,7 @@ export default function Semester() {
 							<form onSubmit={handleSubmit}>
 								<div className={style.row100}>
 									<div className={style.input__box}>
-										<span>Tên năm học</span>
+										<span>Tên học kì</span>
 										<FormControl fullWidth>
 											<Select
 												name='name'

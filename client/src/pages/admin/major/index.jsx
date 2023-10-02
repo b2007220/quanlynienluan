@@ -104,6 +104,9 @@ export default function Major() {
 					onChange={(_, page) => setPage(page - 1)}
 					variant='outlined'
 					shape='rounded'
+					sx={{
+						marginTop: '10px',
+					}}
 				/>
 			</div>
 			<div className={style.recentOrders}>

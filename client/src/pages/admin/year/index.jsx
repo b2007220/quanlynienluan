@@ -21,11 +21,8 @@ export default function Year() {
 	const [yearList, setYearList] = useState({
 		data: [],
 	});
-
+	const [editYear, setEditYear] = useState(null);
 	const [isOpenYearChangeModal, setIsOpenYearChangeModal] = useState(false);
-
-	const handleOpenYearChangeModal = () => setIsOpenYearChangeModal(true);
-	const handleCloseYearChangeModal = () => setIsOpenYearChangeModal(false);
 
 	useEffect(() => {
 		yearService.getAllYears(page).then((res) => {
@@ -86,15 +83,10 @@ export default function Year() {
 							<tr>
 								<td>{year.name}</td>
 								<td>
-									<IconButton onClick={() => handleOpenYearChangeModal()} color='primary'>
+									<IconButton onClick={() => setEditYear(year)} color='primary'>
 										<CreateIcon></CreateIcon>
 									</IconButton>
-									<ChangeYear
-										id={year.id}
-										setYearList={setYearList}
-										open={isOpenYearChangeModal}
-										onClose={handleCloseYearChangeModal}
-									/>
+
 									<IconButton onClick={() => handleYearDelete(year)} color='primary'>
 										<DeleteIcon></DeleteIcon>
 									</IconButton>
@@ -109,6 +101,9 @@ export default function Year() {
 					onChange={(_, page) => setPage(page - 1)}
 					variant='outlined'
 					shape='rounded'
+					sx={{
+						marginTop: '10px',
+					}}
 				/>
 			</div>
 			<div className={style.recentOrders}>
@@ -147,6 +142,7 @@ export default function Year() {
 					}}
 				</Formik>
 			</div>
+			<ChangeYear year={editYear} setYearList={setYearList} open={!!editYear} onClose={() => setEditYear(null)} />
 		</div>
 	);
 }

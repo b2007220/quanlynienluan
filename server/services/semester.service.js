@@ -81,6 +81,25 @@ class SemesterService {
 		});
 		return semester;
 	}
+	async activeSemester(id) {
+		await this.#client.semester.updateMany({
+			where: {
+				isCurrent: true,
+			},
+			data: {
+				isCurrent: false,
+			},
+		});
+		const semester = await this.#client.semester.update({
+			where: {
+				id: parseInt(id),
+			},
+			data: {
+				isCurrent: true,
+			},
+		});
+		return semester;
+	}
 }
 
 module.exports = new SemesterService();

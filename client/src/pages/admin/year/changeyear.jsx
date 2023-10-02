@@ -8,12 +8,12 @@ import withReactContent from 'sweetalert2-react-content';
 const validationSchema = Yup.object().shape({
 	name: Yup.string().required('Vui lòng điền tên năm học'),
 });
-const ChangeYear = ({ id, open, onClose, setYearList }) => {
+const ChangeYear = ({ year, open, onClose, setYearList }) => {
 	const MySwal = withReactContent(Swal);
 
 	const handleYearChange = async (values) => {
 		try {
-			const updatedYear = await yearService.updateYearById(id, values);
+			const updatedYear = await yearService.updateYearById(year?.id, values);
 			setYearList((prev) => {
 				return {
 					...prev,
@@ -37,9 +37,7 @@ const ChangeYear = ({ id, open, onClose, setYearList }) => {
 	return (
 		<Dialog open={open} onClose={onClose}>
 			<Formik
-				initialValues={{
-					name: '',
-				}}
+				initialValues={year || { name: '' }}
 				validationSchema={validationSchema}
 				onSubmit={handleYearChange}
 			>

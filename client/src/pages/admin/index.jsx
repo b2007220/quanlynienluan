@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import userService from '../../services/user.service';
 import style from '../css/style.module.css';
+import dayjs from 'dayjs';
 
 export default function Admin_Home() {
 	const MySwal = withReactContent(Swal);
@@ -252,8 +253,8 @@ export default function Admin_Home() {
 								<td>{user.fullName}</td>
 								<td>{user.email}</td>
 								<td>{user.gender}</td>
-								<td>{user.createdAt}</td>
-								<td>{user.updatedAt}</td>
+								<td>{dayjs(user.createdAt).format('HH:mm DD-MM-YYYY')}</td>
+								<td>{dayjs(user.updatedAt).format('HH:mm DD-MM-YYYY')}</td>
 								<td>{user.role}</td>
 								<td>{user.active ? 'Hoạt động' : 'Vô hiệu'}</td>
 								<td>
@@ -287,6 +288,9 @@ export default function Admin_Home() {
 					onChange={(_, page) => setPage(page - 1)}
 					variant='outlined'
 					shape='rounded'
+					sx={{
+						marginTop: '10px',
+					}}
 				/>
 			</div>
 		</div>

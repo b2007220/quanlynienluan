@@ -59,6 +59,9 @@
 .recentOrders .row25 .input__box {
 	width: 25%;
 }
+.recentOrders .row50 .input__box {
+	width: 50%;
+}
 .recentOrders .row100 .input__box textarea {
 	resize: none;
 	padding: 10px;

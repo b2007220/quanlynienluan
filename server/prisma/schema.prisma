@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -24,7 +24,7 @@ enum Role {
 
 model User {
   id            Int      @id @default(autoincrement())
-  fullName      String
+  fullName      String?
   email         String   @unique
   password      String?
   gender        Gender   @default(HIDDEN)
@@ -33,7 +33,7 @@ model User {
   updatedAt     DateTime @default(now()) @updatedAt
   role          Role     @default(STUDENT)
   course        Int?
-  schoolId      String?
+  schoolId      String?  @unique
   major         Major?   @relation(fields: [majorId], references: [id])
   majorId       Int?
   enrolls       Enroll[]
@@ -66,7 +66,7 @@ model Topic {
   name      String
   describe  String
   link      String?
-  type      Type?
+  type      Type
   uses      Use[]
   isChecked Boolean @default(false)
 }

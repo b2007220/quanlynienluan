@@ -1,10 +1,24 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from '@mui/material';
+import {
+	Button,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogTitle,
+	Stack,
+	TextField,
+	FormControl,
+	Select,
+	MenuItem,
+} from '@mui/material';
 import { Formik } from 'formik';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import * as Yup from 'yup';
 import semesterService from '../../../services/semester.service';
-
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { useState, useEffect } from 'react';
+import yearService from '../../../services/year.service';
+import dayjs from 'dayjs';
 const validationSchema = Yup.object().shape({
 	name: Yup.string().oneOf(['FIRST', 'SECOND', 'SUMMER']),
 	startAt: Yup.date().required(),
@@ -13,7 +27,14 @@ const validationSchema = Yup.object().shape({
 });
 const ChangeSemester = ({ semester, open, onClose, setSemesterList }) => {
 	const MySwal = withReactContent(Swal);
-
+	const [yearList, setYearList] = useState({
+		data: [],
+	});
+	useEffect(() => {
+		yearService.getAllYears().then((res) => {
+			setYearList(res);
+		});
+	}, []);
 	const handleSemesterChange = async (values) => {
 		try {
 			const updatedSemester = await semesterService.updateSemesterById(semester?.id, values);
@@ -44,7 +65,7 @@ const ChangeSemester = ({ semester, open, onClose, setSemesterList }) => {
 				validationSchema={validationSchema}
 				onSubmit={handleSemesterChange}
 			>
-				{({ values, errors, handleChange, handleSubmit }) => {
+				{({ values, errors, handleChange, handleSubmit, setFieldValue }) => {
 					return (
 						<>
 							<form onSubmit={handleSubmit}>
@@ -56,15 +77,55 @@ const ChangeSemester = ({ semester, open, onClose, setSemesterList }) => {
 											marginTop: '10px',
 										}}
 									>
-										<TextField
-											label='Tên năm học'
-											placeholder='Tên năm học'
-											name='name'
-											error={!!errors.code}
-											helperText={errors.code}
-											value={values.code}
-											onChange={handleChange}
+										<FormControl fullWidth>
+											<Select
+												name='name'
+												value={values.name}
+												error={!!errors.name}
+												onChange={handleChange}
+												sx={{
+													borderRadius: '12px',
+
+													height: '45px',
+												}}
+											>
+												<MenuItem value='FIRST'>Học kỳ 1</MenuItem>
+												<MenuItem value='SECOND'>Học kỳ 2</MenuItem>
+												<MenuItem value='SUMMER'>Học kỳ hè</MenuItem>
+											</Select>
+										</FormControl>
+										<DatePicker
+											sx={{
+												borderRadius: '12px',
+											}}
+											value={dayjs(values.startAt)}
+											onChange={(d) => setFieldValue('startAt', d)}
+											error={!!errors.startAt}
 										/>
+										<DatePicker
+											value={dayjs(values.endAt)}
+											onChange={(d) => setFieldValue('endAt', d)}
+											error={!!errors.endAt}
+										/>
+										<FormControl fullWidth>
+											<Select
+												name='yearId'
+												value={values.yearId}
+												error={!!errors.yearId}
+												onChange={handleChange}
+												sx={{
+													borderRadius: '12px',
+
+													height: '45px',
+												}}
+											>
+												{yearList.data.map((year) => (
+													<MenuItem key={year.id} value={year.id}>
+														{year.name}
+													</MenuItem>
+												))}
+											</Select>
+										</FormControl>
 									</Stack>
 								</DialogContent>
 								<DialogActions>

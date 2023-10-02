@@ -52,6 +52,10 @@ class SemesterService {
 		const semester = await this.#client.get('/current');
 		return semester;
 	}
+	async activeSemester(id) {
+		const semester = await this.#client.patch(`/active/${id}`);
+		return semester;
+	}
 }
 
 export default new SemesterService();

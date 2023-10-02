@@ -60,7 +60,7 @@ export default function Login() {
 	const handleLogin = async (values) => {
 		try {
 			const { email, password } = values;
-			const res = await authService.login(email, password);
+			const res = await authService.login({ email, password });
 			tokenService.setToken(res.token);
 			const profile = await authService.getUserProfile();
 

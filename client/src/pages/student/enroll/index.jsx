@@ -19,6 +19,7 @@ import enrollService from '../../../services/enroll.service';
 const validationSchema = yup.object({
 	name: yup.string().required('Vui lòng nhập tên đề tài'),
 	describe: yup.string().required('Vui lòng nhập mô tả đề tài'),
+	gender: yup.string().required().oneOf(['BASIS', 'MASTER']),
 });
 export default function Enroll() {
 	const [page, setPage] = useState(0);
@@ -27,6 +28,7 @@ export default function Enroll() {
 	const [useList, setUseList] = useState({
 		data: [],
 	});
+	const [enrollInfo, setEnrollInfo] = useState(null);
 	useEffect(() => {
 		authService.getUserProfile().then((res) => {
 			setUser(res);
@@ -41,10 +43,12 @@ export default function Enroll() {
 	}, []);
 	const handleCreateNewTopic = (values) => {
 		try {
+			console.log(emrollInfo);
+			const { name, descripbe } = values;
 			const semester = semesterService.getCurrent();
-			const topic = topicService.createTopic(values);
-			const newUse = useService.createUse({ topic, teacher, semester });
-			const newEnroll = enrollService.createEnroll({ user, newUse });
+			// const topic = topicService.createTopic({ name, describe });
+			// const newUse = useService.createUse({ topic, teacher, semester });
+			// const newEnroll = enrollService.createEnroll({ user, newUse });
 		} catch (error) {
 			console.log(error);
 		}
@@ -53,6 +57,15 @@ export default function Enroll() {
 		try {
 			const enroll = enrollService.createEnroll({ user, use });
 			console.log(enroll);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	const handleFind = (values) => {
+		try {
+			const info = setEnrollInfo(values);
+			console.log(info);
+			// const uses = useService.getUsesFromTeacher(info);
 		} catch (error) {
 			console.log(error);
 		}
@@ -68,12 +81,12 @@ export default function Enroll() {
 						<span>Loại đề tài bạn tìm kiếm</span>
 						<div className={style.radio__group}>
 							<label className={style.radio}>
-								<input type='radio' name='type' />
+								<input type='radio' name='type' value='BASIS' />
 								Niên luận cơ sở
 								<span></span>
 							</label>
 							<label className={style.radio}>
-								<input type='radio' name='type' />
+								<input type='radio' name='type' value='MASTER' />
 								Niên luận ngành
 								<span></span>
 							</label>
@@ -95,6 +108,12 @@ export default function Enroll() {
 								))}
 							</Select>
 						</FormControl>
+					</div>
+					<div className={style.input__box}>
+						<span>Loại đề tài bạn tìm kiếm</span>
+						<div className={style.input__box}>
+							<input type='submit' value='Tìm kiếm' onClick={handleFind} />
+						</div>
 					</div>
 				</div>
 				<div className={style.card__container}>
