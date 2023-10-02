@@ -68,7 +68,7 @@ model Topic {
   link      String?
   type      Type
   uses      Use[]
-  isChecked Boolean @default(false)
+  isChecked Boolean @default(true)
 }
 
 model Use {
@@ -90,7 +90,6 @@ model Enroll {
   useId   Int
   reports Report[]
   state   State    @default(WAIT)
-  grade   Grade?
 }
 
 model Report {
@@ -126,11 +125,4 @@ model Semester {
   isCurrent Boolean      @default(false)
 }
 
-model Grade {
-  id            Int    @id @default(autoincrement())
-  diligentGrade Int    @default(0)
-  reportGrade   Int    @default(0)
-  programGrade  Int    @default(0)
-  enroll        Enroll @relation(fields: [enrollId], references: [id])
-  enrollId      Int    @unique
-}
+

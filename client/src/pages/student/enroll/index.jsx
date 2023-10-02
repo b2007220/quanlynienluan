@@ -4,7 +4,7 @@ import semesterService from '../../../services/semester.service';
 import authService from '../../../services/auth.service';
 import { useState } from 'react';
 import style from '../../css/style.module.css';
-import { Input, MenuItem, FormControl, Select, Button, Pagination } from '@mui/material';
+import { Input, MenuItem, FormControl, Select, Button, Pagination, RadioGroup } from '@mui/material';
 import userService from '../../../services/user.service';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -24,7 +24,7 @@ const validationSchema = yup.object({
 export default function Enroll() {
 	const [page, setPage] = useState(0);
 	const [teacherList, setTeacherList] = useState([]);
-	const [user, setUser] = useState([]);
+	const [user, setUser] = useState(null);
 	const [useList, setUseList] = useState({
 		data: [],
 	});
@@ -41,81 +41,107 @@ export default function Enroll() {
 			console.log(res);
 		});
 	}, []);
+	const handleFind = (values) => {
+		try {
+			const info = setEnrollInfo(values);
+
+			const uses = useService.getUsesFromTeacher(info);
+
+			setUseList(uses);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 	const handleCreateNewTopic = (values) => {
 		try {
-			console.log(emrollInfo);
-			const { name, descripbe } = values;
 			const semester = semesterService.getCurrent();
-			// const topic = topicService.createTopic({ name, describe });
-			// const newUse = useService.createUse({ topic, teacher, semester });
-			// const newEnroll = enrollService.createEnroll({ user, newUse });
+			const { name, describe, teacherId, type } = values;
+			const topic = topicService.createTopic({ name, describe, type, isChecked: false });
+			const newUse = useService.createUse({ topicId: topic.id, userId: teacherId, semesterId: semester.id });
+			const newEnroll = enrollService.createEnroll({ userId: user.id, useId: newUse.id });
 		} catch (error) {
 			console.log(error);
 		}
 	};
 	const handleCreateNewEnroll = (use) => {
 		try {
-			const enroll = enrollService.createEnroll({ user, use });
-			console.log(enroll);
+			const enroll = enrollService.createEnroll({ userId: user.id, useId: use.id });
 		} catch (error) {
 			console.log(error);
 		}
 	};
-	const handleFind = (values) => {
-		try {
-			const info = setEnrollInfo(values);
-			console.log(info);
-			// const uses = useService.getUsesFromTeacher(info);
-		} catch (error) {
-			console.log(error);
-		}
-	};
+
 	return (
 		<div className={style.details}>
 			<div className={style.recentOrders}>
 				<div className={style.cardHeader}>
 					<h2>Đăng kí đề tài</h2>
 				</div>
-				<div className={style.row50}>
-					<div className={style.input__box}>
-						<span>Loại đề tài bạn tìm kiếm</span>
-						<div className={style.radio__group}>
-							<label className={style.radio}>
-								<input type='radio' name='type' value='BASIS' />
-								Niên luận cơ sở
-								<span></span>
-							</label>
-							<label className={style.radio}>
-								<input type='radio' name='type' value='MASTER' />
-								Niên luận ngành
-								<span></span>
-							</label>
-						</div>
-					</div>
-					<div className={style.input__box}>
-						<span>Chọn giáo viên hướng dẫn</span>
-						<FormControl fullWidth>
-							<Select
-								sx={{
-									borderRadius: '12px',
-									height: '37px',
-								}}
-							>
-								{teacherList.map((user) => (
-									<MenuItem key={user.id} value={user.id}>
-										{user.fullName}
-									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
-					</div>
-					<div className={style.input__box}>
-						<span>Loại đề tài bạn tìm kiếm</span>
-						<div className={style.input__box}>
-							<input type='submit' value='Tìm kiếm' onClick={handleFind} />
-						</div>
-					</div>
-				</div>
+				<Formik
+					initialValues={{
+						type: '',
+						teacherId: '',
+					}}
+					validationSchema={validationSchema}
+					onSubmit={handleFind}
+				>
+					{({ values, errors, handleChange, handleSubmit }) => {
+						return (
+							<form onSubmit={handleSubmit}>
+								<div className={style.row50}>
+									<div className={style.input__box}>
+										<span>Loại đề tài bạn tìm kiếm</span>
+										<div className={style.radio__group}>
+											<FormControl fullWidth>
+												<RadioGroup
+													row
+													fullWidth
+													onChange={handleChange}
+													error={!!errors.type}
+													value={values.type}
+												>
+													<label className={style.radio}>
+														<input type='radio' name='type' value='BASIS' />
+														Niên luận cơ sở
+														<span></span>
+													</label>
+													<label className={style.radio}>
+														<input type='radio' name='type' value='MASTER' />
+														Niên luận ngành
+														<span></span>
+													</label>
+												</RadioGroup>
+											</FormControl>
+										</div>
+									</div>
+									<div className={style.input__box}>
+										<span>Chọn giáo viên hướng dẫn</span>
+										<FormControl fullWidth>
+											<Select
+												sx={{
+													borderRadius: '12px',
+													height: '37px',
+												}}
+											>
+												{teacherList.map((user) => (
+													<MenuItem key={user.id} value={user.id}>
+														{user.fullName}
+													</MenuItem>
+												))}
+											</Select>
+										</FormControl>
+									</div>
+									<div className={style.input__box}>
+										<span>Loại đề tài bạn tìm kiếm</span>
+										<div className={style.input__box}>
+											<input type='submit' value='Tìm kiếm' onClick={handleSubmit} />
+										</div>
+									</div>
+								</div>
+							</form>
+						);
+					}}
+				</Formik>
 				<div className={style.card__container}>
 					{useList.data.map((use) => (
 						<Box sx={{ minWidth: 275, maxWidth: 350, margin: 0.2 }} key={use.id}>
@@ -127,16 +153,15 @@ export default function Enroll() {
 									<Typography variant='h5' component='div'>
 										{use.topic.name}
 									</Typography>
-									<Typography sx={{ mb: 1.5 }} color='text.secondary'>
-										{use.userId}
-									</Typography>
 									<Typography variant='body2'>{use.describe}</Typography>
 								</CardContent>
 								<CardActions>
 									<Button size='small' href={use.topic.link}>
-										Them thong tin
+										Thêm thông tin đề tài
 									</Button>
-									<Button size='small'>Dang ki</Button>
+									<Button size='small' onClick={handleCreateNewEnroll}>
+										Đăng kí
+									</Button>
 								</CardActions>
 							</Card>
 						</Box>
@@ -161,6 +186,8 @@ export default function Enroll() {
 					initialValues={{
 						name: '',
 						describe: '',
+						type: '',
+						teacherId: '',
 					}}
 					validationSchema={validationSchema}
 					onSubmit={handleCreateNewTopic}
@@ -168,6 +195,54 @@ export default function Enroll() {
 					{({ values, errors, handleChange, handleSubmit }) => {
 						return (
 							<form onSubmit={handleSubmit}>
+								<div className={style.row100}>
+									<div className={style.input__box}>
+										<span>Loại đề tài bạn tìm kiếm</span>
+										<div className={style.radio__group}>
+											<label className={style.radio}>
+												<input
+													type='radio'
+													name='type'
+													value='BASIS'
+													onChange={handleChange}
+													error={!!errors.type}
+												/>
+												Niên luận cơ sở
+												<span></span>
+											</label>
+											<label className={style.radio}>
+												<input
+													type='radio'
+													name='type'
+													value='MASTER'
+													onChange={handleChange}
+													error={!!errors.type}
+												/>
+												Niên luận ngành
+												<span></span>
+											</label>
+										</div>
+									</div>
+								</div>
+								<div className={style.row100}>
+									<div className={style.input__box}>
+										<span>Chọn giáo viên hướng dẫn</span>
+										<FormControl fullWidth>
+											<Select
+												sx={{
+													borderRadius: '12px',
+													height: '37px',
+												}}
+											>
+												{teacherList.map((user) => (
+													<MenuItem key={user.id} value={user.id}>
+														{user.fullName}
+													</MenuItem>
+												))}
+											</Select>
+										</FormControl>
+									</div>
+								</div>
 								<div className={style.row100}>
 									<div className={style.input__box}>
 										<span>Tên đề tài</span>

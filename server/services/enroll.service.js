@@ -1,5 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
-
+const semesterService = require('./semester.service');
 class EnrollService {
 	#client;
 	constructor() {
@@ -50,20 +50,27 @@ class EnrollService {
 
 		return deletedEnroll;
 	}
-	async getByStudentIdInSemester(userId, semesterId) {
-		const enroll = await this.#client.enroll.findUnique({
+
+	async getByTeacherId(teacherId, page = 0, limit = 10) {
+		const enrolls = await this.#client.enroll.findMany({
 			where: {
-				userId: parseInt(userId),
 				use: {
-					semesterId: parseInt(semesterId),
+					userId: parseInt(teacherId),
+					semester: semesterService.getCurrentSemester(),
 				},
 			},
 			include: {
 				use: true,
 			},
+			skip: page * limit,
+			take: limit,
 		});
-
-		return enroll;
+		return {
+			data: enrolls,
+			page,
+			limit,
+			total: Math.floor((await this.#client.user.count()) / limit + 0.9),
+		};
 	}
 }
 

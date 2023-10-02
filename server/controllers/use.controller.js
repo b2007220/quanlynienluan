@@ -100,6 +100,17 @@ class UseController {
 			next(error);
 		}
 	}
+	/**
+	 * @type {import("express").RequestHandler}
+	 *
+	 */
+	async getUsesFromTeacher(req, res, next) {
+		try {
+			res.status(200).json(await useService.getUsesFromTeacher(req.info));
+		} catch (error) {
+			next(error);
+		}
+	}
 }
 
 module.exports = new UseController();

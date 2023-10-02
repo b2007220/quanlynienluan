@@ -78,6 +78,10 @@ class EnrollController {
 		}
 	}
 
+	/**
+	 * @type {import("express").RequestHandler}
+	 *
+	 */
 	async getByStudentIdInSemester(req, res, next) {
 		try {
 			const enroll = await enrollService.getByStudentIdInSemester(req.params.userId, req.params.semesterId);
@@ -87,6 +91,24 @@ class EnrollController {
 			}
 
 			res.send(enroll);
+		} catch (error) {
+			next(error);
+		}
+	}
+
+	/**
+	 * @type {import("express").RequestHandler}
+	 *
+	 */
+	async getByTeacherId(req, res, next) {
+		try {
+			const enrolls = await enrollService.getByTeacherId(req.params.teacherId);
+
+			if (!enrolls) {
+				res.status(404).json({ message: 'Enroll not found' });
+			}
+
+			res.send(enrolls);
 		} catch (error) {
 			next(error);
 		}

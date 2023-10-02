@@ -1,4 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient, Role } = require('@prisma/client');
 const passService = require('./pass.service');
 const exclude = require('../utils/exclude');
 
@@ -144,7 +144,7 @@ class UserService {
 	async getAllTeachers() {
 		const users = await this.#client.user.findMany({
 			where: {
-				role: 'TEACHER',
+				role: Role.TEACHER,
 			},
 		});
 		return users;

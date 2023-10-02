@@ -103,7 +103,32 @@ class UseService {
 				topic: {
 					isChecked: true,
 				},
-				semesterId: semesterService.getCurrentSemesterId(),
+				semester: semesterService.getCurrentSemester(),
+			},
+			include: {
+				topic: true,
+			},
+			skip: page * limit,
+			take: limit,
+		});
+
+		return {
+			data: uses,
+			page,
+			limit,
+			total: Math.floor((await this.#client.user.count()) / limit + 0.9),
+		};
+	}
+	async getUsesFromTeacher(page = 0, limit = 6, info) {
+		const uses = await this.#client.use.findMany({
+			where: {
+				topic: {
+					isChecked: true,
+					type: info.type,
+				},
+				teacher: {
+					id: parseInt(info.id),
+				},
 			},
 			include: {
 				topic: true,

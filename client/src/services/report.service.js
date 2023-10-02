@@ -35,7 +35,7 @@ class ReportService {
 		await this.#client.delete(`/${id}`);
 	}
 
-	async getReportByEnrollId(id) {
+	async getReportsByEnroll(id) {
 		const reports = await this.#client.get(`/enroll/${id}`);
 
 		return reports;

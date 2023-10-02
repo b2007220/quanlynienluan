@@ -81,7 +81,7 @@ class ReportController {
 	 * @type {import("express").RequestHandler}
 	 *
 	 */
-	async getReportByEnrollId(req, res, next) {
+	async getReportsByEnroll(req, res, next) {
 		try {
 			const reports = await reportService.getReportByEnrollId(req.params.id);
 

@@ -51,10 +51,13 @@ class ReportService {
 		return deletedReport;
 	}
 
-	async getReportByEnrollId(id) {
+	async getReportsByEnroll(id) {
 		const reports = await this.#client.report.findMany({
 			where: {
 				enrollId: parseInt(id),
+			},
+			include: {
+				enroll: true,
 			},
 		});
 

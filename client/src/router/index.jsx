@@ -14,6 +14,8 @@ import Student_Layout from '../pages/student_layout';
 import TeacherHomePage from '../pages/teacher';
 import TeacherInfoPage from '../pages/teacher/info';
 import Teacher_Layout from '../pages/teacher_layout';
+import TeacherEnrollsPage from '../pages/teacher/enroll';
+import TeacherUsesPage from '../pages/teacher/use';
 const router = createBrowserRouter([
 	{
 		path: '/',
@@ -48,6 +50,14 @@ const router = createBrowserRouter([
 			{
 				path: '/teacher/info',
 				Component: TeacherInfoPage,
+			},
+			{
+				path: '/teacher/uses',
+				Component: TeacherUsesPage,
+			},
+			{
+				path: '/teacher/enrolls',
+				Component: TeacherEnrollsPage,
 			},
 		],
 	},

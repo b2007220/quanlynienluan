@@ -129,7 +129,7 @@
 	vertical-align: middle;
 	color: var(--black1);
 }
-.radio-group {
+.radio__group {
 	display: flex;
 }
 .radio + .radio {

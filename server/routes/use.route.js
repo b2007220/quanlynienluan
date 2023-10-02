@@ -10,4 +10,6 @@ router.route('/user/:userId').get(useController.getAllFromUser);
 
 router.route('/semester').get(useController.getAllInSemester);
 
+router.route('/teacher').get(useController.getUsesFromTeacher);
+
 module.exports = router;

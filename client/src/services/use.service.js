@@ -45,9 +45,15 @@ class UseService {
 		return uses;
 	}
 
-	// async getUsesFromTeacher(info){
-	// 	const uses = await this.#client.get(`/${info./teacher`),
-	// }
+	async getUsesFromTeacher(page = 0, info) {
+		const uses = await this.#client.get(`/teacher`, {
+			info,
+			params: {
+				page,
+			},
+		});
+		return uses;
+	}
 }
 
 export default new UseService();

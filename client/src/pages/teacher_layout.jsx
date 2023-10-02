@@ -18,6 +18,8 @@ import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import authService from '../services/auth.service';
 import { setUser } from '../store/user';
 import LogoutIcon from '@mui/icons-material/Logout';
+import ChecklistIcon from '@mui/icons-material/Checklist';
+import ListAltIcon from '@mui/icons-material/ListAlt';
 const Layout = () => {
 	const location = useLocation();
 	const dispatch = useDispatch();
@@ -82,6 +84,32 @@ const Layout = () => {
 								color: '#000000',
 							}}
 							primary={'Thông tin'}
+						/>
+					</ListItemButton>
+				</ListItem>
+				<ListItem component={Link} to='/teacher/enrolls' disablePadding>
+					<ListItemButton>
+						<ListItemIcon>
+							<ChecklistIcon></ChecklistIcon>
+						</ListItemIcon>
+						<ListItemText
+							sx={{
+								color: '#000000',
+							}}
+							primary={'Danh sách đăng ký'}
+						/>
+					</ListItemButton>
+				</ListItem>
+				<ListItem component={Link} to='/teacher/uses' disablePadding>
+					<ListItemButton>
+						<ListItemIcon>
+							<ListAltIcon></ListAltIcon>
+						</ListItemIcon>
+						<ListItemText
+							sx={{
+								color: '#000000',
+							}}
+							primary={'Danh sách đề tài'}
 						/>
 					</ListItemButton>
 				</ListItem>
