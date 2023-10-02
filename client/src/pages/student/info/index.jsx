@@ -6,7 +6,8 @@ import majorService from '../../../services/major.service';
 import userService from '../../../services/user.service';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 const validationSchema = Yup.object().shape({
 	fullName: Yup.string().required('Fullname is required'),
 	gender: Yup.string().required().oneOf(['MALE', 'FEMALE', 'HIDDEN']),
@@ -24,6 +25,7 @@ const validationSchemaCreate = Yup.object().shape({
 });
 
 export default function Info() {
+	const MySwal = withReactContent(Swal);
 	const [userInfo, setUserInfo] = useState([]);
 	const [majorList, setMajorList] = useState({
 		data: [],

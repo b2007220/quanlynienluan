@@ -118,7 +118,7 @@ export default function Enroll() {
 				</div>
 				<div className={style.card__container}>
 					{useList.data.map((use) => (
-						<Box sx={{ minWidth: 275, maxWidth: 350 }} key={use.id}>
+						<Box sx={{ minWidth: 275, maxWidth: 350, margin: 0.2 }} key={use.id}>
 							<Card variant='outlined'>
 								<CardContent>
 									<Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
@@ -141,25 +141,11 @@ export default function Enroll() {
 							</Card>
 						</Box>
 					))}
-
-					<Box sx={{ minWidth: 275, maxWidth: 350 }}>
-						<Card variant='outlined'>
-							<CardContent>
-								<Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
-									1
-								</Typography>
-								<Typography variant='h5' component='div'></Typography>
-								<Typography sx={{ mb: 1.5 }} color='text.secondary'></Typography>
-								<Typography variant='body2'></Typography>
-							</CardContent>
-							<CardActions>
-								<Button size='small'>Them thong tin</Button>
-								<Button size='small'>Dang ki</Button>
-							</CardActions>
-						</Card>
-					</Box>
 				</div>
 				<Pagination
+					sx={{
+						marginTop: '10px',
+					}}
 					count={useList.total}
 					page={page + 1}
 					onChange={(_, page) => setPage(page - 1)}

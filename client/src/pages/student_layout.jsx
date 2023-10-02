@@ -18,7 +18,7 @@ import { useDispatch } from 'react-redux';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import authService from '../services/auth.service';
 import { setUser } from '../store/user';
-
+import AssignmentIcon from '@mui/icons-material/Assignment';
 const Layout = () => {
 	const location = useLocation();
 	const dispatch = useDispatch();
@@ -89,7 +89,7 @@ const Layout = () => {
 				<ListItem component={Link} to='/student/enroll' disablePadding>
 					<ListItemButton>
 						<ListItemIcon>
-							<LogoutIcon></LogoutIcon>
+							<AssignmentIcon></AssignmentIcon>
 						</ListItemIcon>
 						<ListItemText
 							sx={{
