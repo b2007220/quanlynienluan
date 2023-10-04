@@ -74,7 +74,7 @@ class SemesterService {
 		return semesters;
 	}
 	async getCurrentSemester() {
-		const semester = await this.#client.semester.findUnique({
+		const semester = await this.#client.semester.findMany({
 			where: {
 				isCurrent: true,
 			},
