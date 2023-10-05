@@ -126,7 +126,7 @@ class UserService {
 				id: parseInt(id),
 			},
 			data: {
-				password: await passService.hash(password,10),
+				password: await passService.hash(password, 10),
 			},
 		});
 		return updatedUser;

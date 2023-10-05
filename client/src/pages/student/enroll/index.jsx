@@ -19,7 +19,7 @@ import enrollService from '../../../services/enroll.service';
 const validationSchema = yup.object({
 	name: yup.string().required('Vui lòng nhập tên đề tài'),
 	describe: yup.string().required('Vui lòng nhập mô tả đề tài'),
-	gender: yup.string().required().oneOf(['BASIS', 'MASTER']),
+	type: yup.string().required().oneOf(['BASIS', 'MASTER']),
 });
 export default function Enroll() {
 	const [page, setPage] = useState(0);
@@ -40,7 +40,7 @@ export default function Enroll() {
 			setTeacherList(res);
 			console.log(res);
 		});
-	}, []);
+	}, [page]);
 	const handleFind = (values) => {
 		try {
 			const info = setEnrollInfo(values);

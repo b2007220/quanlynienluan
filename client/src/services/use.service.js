@@ -39,8 +39,12 @@ class UseService {
 		await this.#client.delete(`/${id}`);
 	}
 
-	async getAllUsesInSemester() {
-		const uses = await this.#client.get(`/semester`);
+	async getAllUsesInSemester(page = 0) {
+		const uses = await this.#client.get(`/semester`, {
+			params: {
+				page,
+			},
+		});
 
 		return uses;
 	}

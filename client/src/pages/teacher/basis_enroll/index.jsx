@@ -19,7 +19,7 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import enrollService from '../../services/enroll.service';
-export default function Teacher_Home() {
+export default function Enroll() {
 	const [page, setPage] = useState(0);
 	const [reportList, setReportList] = useState([]);
 	const [enrollList, setEnrollList] = useState({
@@ -63,11 +63,9 @@ export default function Teacher_Home() {
 					<TableCell component='th' scope='row'>
 						Họ tên
 					</TableCell>
-					<TableCell>MSSV</TableCell>
 					<TableCell>Đề tài</TableCell>
-					<TableCell>Loại đề tài</TableCell>
-					<TableCell>Năm học</TableCell>
-					<TableCell>Học kỳ</TableCell>
+					<TableCell>Trạng thái</TableCell>
+					<TableCell>Tương tác</TableCell>
 				</TableRow>
 				<TableRow>
 					<TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>

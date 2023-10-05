@@ -87,7 +87,7 @@ const Layout = () => {
 						/>
 					</ListItemButton>
 				</ListItem>
-				<ListItem component={Link} to='/teacher/enrolls' disablePadding>
+				<ListItem component={Link} to='/teacher/basis_enrolls' disablePadding>
 					<ListItemButton>
 						<ListItemIcon>
 							<ChecklistIcon></ChecklistIcon>
@@ -96,7 +96,20 @@ const Layout = () => {
 							sx={{
 								color: '#000000',
 							}}
-							primary={'Danh sách đăng ký'}
+							primary={'Niên luận cơ sở'}
+						/>
+					</ListItemButton>
+				</ListItem>
+				<ListItem component={Link} to='/teacher/master_enrolls' disablePadding>
+					<ListItemButton>
+						<ListItemIcon>
+							<ChecklistIcon></ChecklistIcon>
+						</ListItemIcon>
+						<ListItemText
+							sx={{
+								color: '#000000',
+							}}
+							primary={'Niên luận ngành'}
 						/>
 					</ListItemButton>
 				</ListItem>
