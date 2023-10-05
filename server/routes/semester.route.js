@@ -3,7 +3,8 @@ const router = require('express').Router();
 const semesterController = require('../controllers/semester.controller');
 
 router.route('/').post(semesterController.create).get(semesterController.getAll);
-router.route('/current').get(semesterController.getCurrentSemester);
+
+router.route('/current').get(semesterController.getCurrent);
 
 router
 	.route('/:id')

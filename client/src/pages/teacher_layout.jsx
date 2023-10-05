@@ -1,10 +1,12 @@
+import ChecklistIcon from '@mui/icons-material/Checklist';
 import ContactEmergencyIcon from '@mui/icons-material/ContactEmergency';
 import DensityMediumIcon from '@mui/icons-material/DensityMedium';
 import HomeIcon from '@mui/icons-material/Home';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import LogoutIcon from '@mui/icons-material/Logout';
 import {
 	Box,
 	Button,
-	Container,
 	List,
 	ListItem,
 	ListItemButton,
@@ -13,35 +15,25 @@ import {
 	SwipeableDrawer,
 } from '@mui/material';
 import { Fragment, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import authService from '../services/auth.service';
 import { setUser } from '../store/user';
-import LogoutIcon from '@mui/icons-material/Logout';
-import ChecklistIcon from '@mui/icons-material/Checklist';
-import ListAltIcon from '@mui/icons-material/ListAlt';
 const Layout = () => {
-	const location = useLocation();
-	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	useEffect(() => {
-		authService
-			.getUserProfile()
-			.then((user) => {
-				dispatch(setUser(user));
-				if (user.role === 'STUDENT') {
-					navigate('/student');
-				}
-				if (user.role === 'ADMIN') {
-					navigate('/admin');
-				}
-			})
-			.catch((error) => {
-				console.log(error);
-				navigate('/');
-			});
-	}, []);
+	const user = useSelector(async (state) => state.user);
+
+	if (user.active === 'false') {
+		navigate('/signout');
+	}
+	if (user.role === 'STUDENT') {
+		navigate('/student');
+	}
+	if (user.role === 'ADMIN') {
+		navigate('/admin');
+	}
+
 	const toggleDrawer = (anchor, open) => (event) => {
 		if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
 			return;
@@ -53,6 +45,7 @@ const Layout = () => {
 	const [state, setState] = useState({
 		left: false,
 	});
+	if (!user) return null;
 	const list = (anchor) => (
 		<Box
 			sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}

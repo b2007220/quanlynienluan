@@ -94,6 +94,22 @@ class ReportController {
 			next(error);
 		}
 	}
+	/**
+	 * @type {import("express").RequestHandler}
+	 *
+	 */
+	async getFromStudent(req, res, next) {
+		try {
+			const reports = await reportService.getFromStudent(req.user.id);
+
+			if (!reports) {
+				res.status(404).json({ message: 'Report not found' });
+			}
+			res.send(reports);
+		} catch (error) {
+			next(error);
+		}
+	}
 }
 
 module.exports = new ReportController();

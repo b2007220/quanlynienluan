@@ -8,9 +8,9 @@ class EnrollService {
 	}
 
 	async createEnroll(enroll) {
-		const newenroll = await this.#client.post('/', enroll);
+		const newEnroll = await this.#client.post('/', enroll);
 
-		return newenroll;
+		return newEnroll;
 	}
 
 	async getAllEnrolls(page = 0) {
@@ -47,6 +47,12 @@ class EnrollService {
 		});
 
 		return enrolls;
+	}
+
+	async getFromStudent() {
+		const enroll = await this.#client.get(`/student`);
+
+		return enroll;
 	}
 }
 

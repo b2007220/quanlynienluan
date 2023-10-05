@@ -16,34 +16,27 @@ import {
 	ListItemText,
 	SwipeableDrawer,
 } from '@mui/material';
-import { Fragment, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
-import authService from '../services/auth.service';
-import { setUser } from '../store/user';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { Fragment, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 const Layout = () => {
-	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	useEffect(() => {
-		authService
-			.getUserProfile()
-			.then((user) => {
-				dispatch(setUser(user));
-				if (user.role === 'STUDENT') {
-					navigate('/student');
-				}
-				if (user.role === 'TEACHER') {
-					navigate('/teacher');
-				}
-			})
-			.catch((error) => {
-				console.log(error);
-				navigate('/');
-			});
-	}, []);
+	const user = useSelector(async (state) => state.user);
+	console.log(user);
+
+	if (user.role === 'TEACHER') {
+		navigate('/teacher');
+	}
+	if (user.role === 'STUDENT') {
+		navigate('/student');
+	}
+	if (user.active === 'false') {
+		navigate('/signout');
+	}
+
 	const toggleDrawer = (anchor, open) => (event) => {
 		if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
 			return;
@@ -55,6 +48,7 @@ const Layout = () => {
 	const [state, setState] = useState({
 		left: false,
 	});
+	if (!user) return null;
 	const list = (anchor) => (
 		<Box
 			sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}

@@ -26,7 +26,7 @@ const validationSchemaCreate = Yup.object().shape({
 
 export default function Info() {
 	const MySwal = withReactContent(Swal);
-	const [userInfo, setUserInfo] = useState([]);
+	const [userInfo, setUserInfo] = useState({});
 	const [majorList, setMajorList] = useState({
 		data: [],
 	});
@@ -44,6 +44,7 @@ export default function Info() {
 				console.log(error);
 			});
 	}, []);
+
 	const handleInfoChange = async () => {
 		try {
 			const updatedUserInfo = await userService.updateUserById(userInfo.id, userInfo);
@@ -94,14 +95,9 @@ export default function Info() {
 					<h2>Thông tin cá nhân</h2>
 				</div>
 				<Formik
-					initialValues={{
-						fullName: userInfo.fullName,
-						email: userInfo.email,
-						schoolId: userInfo.schoolId,
-						majorId: '',
-						gender: userInfo.gender,
-						course: userInfo.course,
-					}}
+					initialValues={
+						userInfo || { fullName: '', majorId: '', email: '', course: '', gender: '', studentId: '' }
+					}
 					validationSchema={validationSchema}
 					onSubmit={handleInfoChange}
 				>
@@ -114,7 +110,6 @@ export default function Info() {
 										<input
 											type='text'
 											autoComplete='off'
-											error={!!errors.fullName}
 											value={values.fullName}
 											onChange={handleChange}
 											name='fullName'
@@ -145,7 +140,14 @@ export default function Info() {
 								<div className={style.row50}>
 									<div className={style.input__box}>
 										<span>Email</span>
-										<input type='email' name='email' value={values.email} disabled required></input>
+										<input
+											type='email'
+											name='email'
+											value={values.email}
+											onChange={handleChange}
+											disabled
+											required
+										></input>
 									</div>
 									<div className={style.input__box}>
 										<span>MSSV</span>
@@ -167,6 +169,7 @@ export default function Info() {
 											min='42'
 											name='khoa'
 											value={values.course}
+											onChange={handleChange}
 											required
 										></input>
 									</div>

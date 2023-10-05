@@ -98,10 +98,10 @@ class SemesterController {
 	 * @type {import("express").RequestHandler}
 	 *
 	 */
-	async getCurrentSemester(req, res, next) {
+	async getCurrent(req, res, next) {
 		try {
-			const semester = await semesterService.getCurrentSemester();
-			if (!semester) {
+			const semesters = await semesterService.getCurrent();
+			if (!semesters) {
 				res.status(404).json({ message: 'Semester not found' });
 			}
 		} catch (error) {

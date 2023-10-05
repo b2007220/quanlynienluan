@@ -16,12 +16,15 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import topicService from '../../../services/topic.service';
 import enrollService from '../../../services/enroll.service';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 const validationSchema = yup.object({
 	name: yup.string().required('Vui lòng nhập tên đề tài'),
 	describe: yup.string().required('Vui lòng nhập mô tả đề tài'),
 	type: yup.string().required().oneOf(['BASIS', 'MASTER']),
 });
 export default function Enroll() {
+	const MySwal = withReactContent(Swal);
 	const [page, setPage] = useState(0);
 	const [teacherList, setTeacherList] = useState([]);
 	const [user, setUser] = useState(null);
@@ -43,9 +46,7 @@ export default function Enroll() {
 	const handleFind = (values) => {
 		try {
 			const info = setEnrollInfo(values);
-
 			const uses = useService.getUsesFromTeacher(info);
-
 			setUseList(uses);
 		} catch (error) {
 			console.log(error);
@@ -64,7 +65,24 @@ export default function Enroll() {
 	};
 	const handleCreateNewEnroll = async (use) => {
 		try {
-			const enroll = await enrollService.createEnroll({ userId: user.id, useId: use.id });
+			console.log(use);
+			// const res = await enrollService.createEnroll({ userId: user.id, useId: use.id });
+
+			// if (res.status === 'success') {
+			// 	MySwal.fire({
+			// 		icon: 'success',
+			// 		title: 'Đăng kí đề tài thành công',
+			// 		showConfirmButton: false,
+			// 		timer: 1500,
+			// 	});}
+			// } else {
+			// 	MySwal.fire({
+			// 		icon: 'error',
+			// 		title: 'Bạn đã có đề tài',
+			// 		showConfirmButton: false,
+			// 		timer: 1500,
+			// 	});
+			// }
 		} catch (error) {
 			console.log(error);
 		}
@@ -158,7 +176,7 @@ export default function Enroll() {
 									<Button size='small' href={use.topic.link}>
 										Thêm thông tin đề tài
 									</Button>
-									<Button size='small' onClick={()=> handleCreateNewEnroll(use)}>
+									<Button size='small' onClick={() => handleCreateNewEnroll(use)}>
 										Đăng kí
 									</Button>
 								</CardActions>

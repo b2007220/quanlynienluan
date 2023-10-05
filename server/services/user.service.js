@@ -127,6 +127,7 @@ class UserService {
 			},
 			data: {
 				password: await passService.hash(password),
+				isSetPassword: true,
 			},
 		});
 		return updatedUser;

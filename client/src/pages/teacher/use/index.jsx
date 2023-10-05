@@ -37,15 +37,16 @@ export default function Use() {
 	}, [page]);
 	const handleCreateNewUse = async (values) => {
 		try {
-			const semester = semesterService.getCurrent();
-			const topic = await topicService.createTopic(values);
-			const newUse = await useService.createUse({ topicId: topic.id, user, semesterId: semester.id });
-			setUseList((prev) => {
-				return {
-					...prev,
-					data: [...prev.data, newUse],
-				};
-			});
+			const semesters = semesterService.getCurrent();
+			console.log(semesters);
+			// const topic = await topicService.createTopic(values);
+			// const newUse = await useService.createUse({ topicId: topic.id, user, semesterId: semester.id });
+			// setUseList((prev) => {
+			// 	return {
+			// 		...prev,
+			// 		data: [...prev.data, newUse],
+			// 	};
+			// });
 		} catch (error) {
 			console.log(error);
 		}

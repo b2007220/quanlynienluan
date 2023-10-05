@@ -21,20 +21,8 @@ export default function Student_Home() {
 	const [reportList, setReportList] = useState([]);
 	const [enroll, setEnroll] = useState([]);
 	useEffect(() => {
-		authService
-			.getUserProfile()
-			.then((user) => {
-				const semester = semesterService.getCurrent();
-				enrollService.getEnrollByStudentIdInSmester(user.id, semester.id).then((enroll) => {
-					setEnroll(enroll);
-				});
-				reportService.getReportByEnrollId(enroll.id).then((report) => {
-					setReportList(report);
-				});
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+		const enroll =  enrollService.getFromStudent();
+		console.log(enroll);
 	}, []);
 
 	const handleCreateNewReport = async (values) => {

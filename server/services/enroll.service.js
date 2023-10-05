@@ -7,7 +7,6 @@ class EnrollService {
 	}
 
 	async create(enroll) {
-		console.log(enroll);
 		const newEnroll = await this.#client.enroll.create({
 			data: {
 				useId: enroll.useId,
@@ -75,6 +74,37 @@ class EnrollService {
 			limit,
 			total: Math.floor((await this.#client.user.count()) / limit + 0.9),
 		};
+	}
+
+	async getFromStudent(id) {
+		const enroll = await this.#client.enroll.findMany({
+			where: {
+				userId: parseInt(id),
+				use: {
+					semester: semesterService.getCurrentSemester(),
+				},
+			},
+			include: {
+				use: true,
+			},
+		});
+
+		return enroll;
+	}
+	async haveEnroll(id) {
+		const enroll = await this.#client.enroll.findMany({
+			where: {
+				userId: parseInt(id),
+				use: {
+					semester: semesterService.getCurrentSemester(),
+				},
+			},
+			include: {
+				use: true,
+			},
+		});
+
+		return enroll.length > 0;
 	}
 }
 

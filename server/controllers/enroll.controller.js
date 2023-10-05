@@ -6,6 +6,9 @@ class EnrollController {
 	 */
 	async create(req, res, next) {
 		try {
+			// if ((await enrollService.haveEnroll(req.user.id)) == true) {
+			// 	res.status.json({ message: 'User already enrolled' });
+			// }
 			res.status(201).json(await enrollService.create(req.body));
 		} catch (error) {
 			next(error);
@@ -109,6 +112,21 @@ class EnrollController {
 			}
 
 			res.send(enrolls);
+		} catch (error) {
+			next(error);
+		}
+	}
+	/**
+	 * @type {import("express").RequestHandler}
+	 *
+	 */
+	async getFromStudent(req, res, next) {
+		try {
+			const enroll = await enrollService.getFromStudent(req.user.id);
+			if (!enroll) {
+				res.status(404).json({ message: 'Enroll not found' });
+			}
+			res.send(enroll);
 		} catch (error) {
 			next(error);
 		}

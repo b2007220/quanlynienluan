@@ -40,6 +40,11 @@ class ReportService {
 
 		return reports;
 	}
+	
+	async getFromStudent(){
+		const reports = await this.#client.get('/student');
+		return reports;
+	}
 }
 
 export default new ReportService();

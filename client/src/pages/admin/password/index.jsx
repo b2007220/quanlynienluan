@@ -24,20 +24,37 @@ export default function Password() {
 
 	const handlePasswordChange = async (values) => {
 		try {
-			console.log(values);
-			await userService.changePassword(values.oldPassword, values.newPassword);
-			MySwal.fire({
-				icon: 'success',
-				title: 'Đặt mật khẩu thành công',
-				showConfirmButton: false,
-				timer: 1500,
-			});
+			const res = await userService.changePassword(values.oldPassword, values.newPassword);
+			if (res.status === 'success') {
+				MySwal.fire({
+					icon: 'success',
+					title: 'Đặt mật khẩu thành công',
+					showConfirmButton: false,
+					timer: 1500,
+				});
+			} else {
+				MySwal.fire({
+					icon: 'error',
+					title: 'Mật khẩu cũ không đúng',
+					showConfirmButton: false,
+					timer: 1500,
+				});
+			}
 		} catch (error) {
 			console.log(error);
 		}
 	};
 	const handlePasswordCreate = async (values) => {
 		try {
+			if (values.password !== values.confirmPassword) {
+				MySwal.fire({
+					icon: 'error',
+					title: 'Mật khẩu không khớp',
+					showConfirmButton: false,
+					timer: 1500,
+				});
+				return;
+			}
 			await userService.createPassword(values.password);
 			MySwal.fire({
 				icon: 'success',
@@ -75,7 +92,7 @@ export default function Password() {
 											<div className={style.input__box}>
 												<span>Mật khẩu cũ</span>
 												<input
-													type='text'
+													type='password'
 													autoComplete='off'
 													onChange={handleChange}
 													value={values.oldPassword}
@@ -88,7 +105,7 @@ export default function Password() {
 											<div className={style.input__box}>
 												<span>Mật khẩu mới</span>
 												<input
-													type='text'
+													type='password'
 													autoComplete='off'
 													required
 													onChange={handleChange}
@@ -126,28 +143,30 @@ export default function Password() {
 							{({ values, handleChange, handleSubmit }) => {
 								return (
 									<form onSubmit={handleSubmit}>
-										<div className={style.row100}>
+										<div className={style.row50}>
 											<div className={style.input__box}>
 												<span>Mật khẩu</span>
 												<input
 													name='password'
+													type='password'
 													onChange={handleChange}
 													value={values.password}
 												></input>
 											</div>
 										</div>
-										<div className={style.row100}>
+										<div className={style.row50}>
 											<div className={style.input__box}>
 												<span>Xác nhận mật khẩu</span>
 												<input
 													name='confirmPassword'
 													onChange={handleChange}
+													type='password'
 													value={values.confirmPassword}
 												></input>
 											</div>
 										</div>
 
-										<div className={style.row100}>
+										<div className={style.row50}>
 											<div className={style.input__box}>
 												<input
 													type='submit'

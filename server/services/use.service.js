@@ -8,15 +8,17 @@ class UseService {
 	}
 
 	async create(use) {
-		const newUse = await this.#client.use.create({
-			data: {
-				userId: use.user.id,
-				topicId: use.topicId,
-			},
-			include: {
-				topic: true,
-			},
-		});
+		console.log(use);
+		// const newUse = await this.#client.use.create({
+		// 	data: {
+		// 		userId: use.user.id,
+		// 		topicId: use.topicId,
+		// 		semesterId: use.semesterId,
+		// 	},
+		// 	include: {
+		// 		topic: true,
+		// 	},
+		// });
 
 		return newUse;
 	}
