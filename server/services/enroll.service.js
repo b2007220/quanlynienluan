@@ -7,8 +7,12 @@ class EnrollService {
 	}
 
 	async create(enroll) {
+		console.log(enroll);
 		const newEnroll = await this.#client.enroll.create({
-			data: enroll,
+			data: {
+				useId: enroll.useId,
+				userId: enroll.userId
+			}
 		});
 
 		return newEnroll;

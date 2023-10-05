@@ -102,7 +102,10 @@ export default function Semester() {
 								...prev,
 								data: prev.data.map((e) => {
 									if (e.id === updatedSemester.id) return updatedSemester;
-									return e;
+									return {
+										...e,
+										isCurrent: false,
+									};
 								}),
 							};
 						});

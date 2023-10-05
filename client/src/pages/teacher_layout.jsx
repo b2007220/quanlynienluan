@@ -143,7 +143,7 @@ const Layout = () => {
 		</Box>
 	);
 	return (
-		<Container>
+		<>
 			<div>
 				{['left'].map((anchor) => (
 					<Fragment key={anchor}>
@@ -162,7 +162,7 @@ const Layout = () => {
 				))}
 			</div>
 			<Outlet />
-		</Container>
+		</>
 	);
 };
 

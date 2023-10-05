@@ -1,14 +1,15 @@
 const bcrypt = require('bcrypt');
 
-class PassService {
-	#saltRounds = 10;
+const saltRounds = 10;
 
+class PassService {
 	hash(password) {
-		return bcrypt.hash(password, this.#saltRounds);
+		return bcrypt.hash(password, saltRounds);
 	}
 
 	verify(password, hash) {
 		return bcrypt.compare(password, hash);
 	}
 }
+
 module.exports = new PassService();

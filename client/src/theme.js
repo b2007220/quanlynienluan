@@ -7,6 +7,13 @@ const theme = createTheme({
 				root: {},
 			},
 		},
+		MuiInputBase: {
+			styleOverrides: {
+				root: {
+					borderRadius: '10px !important',
+				}
+			}
+		}
 	},
 });
 

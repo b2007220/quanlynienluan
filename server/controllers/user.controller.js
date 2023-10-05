@@ -154,16 +154,13 @@ class UserController {
 	 */
 	async changePassword(req, res, next) {
 		try {
-			const user = await userService.getPassword(req.params.id);
-			if (!user) {
-				res.status(404).json({ message: 'User not found' });
+			const password = await userService.getPassword(req.user.id);
+
+			if (! await passService.verify(req.body.oldPassword, password)) {
+				return res.status(400).json({ message: 'Wrong password' });
 			}
 
-			if (!passService.verify(req.body.oldpassword, user.password)) {
-				res.status(400).json({ message: 'Wrong password' });
-			}
-
-			res.send(await userService.changePassword(req.params.id, req.body.newpassword));
+			res.send(await userService.changePassword(req.user.id, req.body.newPassword));
 		} catch (error) {
 			next(error);
 		}

@@ -4,7 +4,7 @@ class UseService {
 	#client;
 
 	constructor() {
-		this.#client = createClient('uses');
+		this.#client = createClient('use');
 	}
 
 	async createUse(use) {

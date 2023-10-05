@@ -1,17 +1,18 @@
-import { Button, Pagination } from '@mui/material';
+import { Button, Pagination, IconButton } from '@mui/material';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Formik } from 'formik';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as yup from 'yup';
 import authService from '../../../services/auth.service';
 import semesterService from '../../../services/semester.service';
 import topicService from '../../../services/topic.service';
 import useService from '../../../services/use.service';
 import style from '../../css/style.module.css';
+import LinkIcon from '@mui/icons-material/Link';
 import ChangeUse from './changeuse';
 const validationSchema = yup.object({
 	name: yup.string().required('Vui lòng nhập tên đề tài'),
@@ -22,7 +23,7 @@ const validationSchema = yup.object({
 export default function Use() {
 	const [editUse, setEditUse] = useState(null);
 	const [page, setPage] = useState(0);
-	const [user, setUser] = useState(null);
+	const [user, setUser] = useState([]);
 	const [useList, setUseList] = useState({
 		data: [],
 	});
@@ -30,15 +31,15 @@ export default function Use() {
 		authService.getUserProfile().then((res) => {
 			setUser(res);
 		});
-		useService.getUsesFromTeacher().then((res) => {
+		useService.getUsesFromTeacher(page).then((res) => {
 			setUseList(res);
 		});
 	}, [page]);
-	const handleCreateNewUse = (values) => {
+	const handleCreateNewUse = async (values) => {
 		try {
 			const semester = semesterService.getCurrent();
-			const topic = topicService.createTopic(values);
-			const newUse = useService.createUse({ topicId: topic.id, userId: teacherId, semesterId: semester.id });
+			const topic = await topicService.createTopic(values);
+			const newUse = await useService.createUse({ topicId: topic.id, user, semesterId: semester.id });
 			setUseList((prev) => {
 				return {
 					...prev,
@@ -70,11 +71,11 @@ export default function Use() {
 									<Typography variant='body2'>{use.describe}</Typography>
 								</CardContent>
 								<CardActions>
-									<Button size='small' href={use.topic.link}>
-										Thêm thông tin đề tài
-									</Button>
+									<IconButton size='small' href={use.topic.link}>
+										<LinkIcon></LinkIcon>
+									</IconButton>
 									<Button size='small' onClick={() => setEditUse(use)}>
-										Chỉnh sửa thông tin đề tài
+										Chỉnh sửa
 									</Button>
 								</CardActions>
 							</Card>
@@ -106,7 +107,7 @@ export default function Use() {
 					validationSchema={validationSchema}
 					onSubmit={handleCreateNewUse}
 				>
-					{({ values, errors, handleChange, handleSubmit }) => {
+					{({ values, handleChange, handleSubmit }) => {
 						return (
 							<form onSubmit={handleSubmit}>
 								<div className={style.row100}>
@@ -114,13 +115,7 @@ export default function Use() {
 										<span>Loại đề tài</span>
 										<div className={style.radio__group}>
 											<label className={style.radio}>
-												<input
-													type='radio'
-													name='type'
-													value='BASIS'
-													onChange={handleChange}
-													error={!!errors.type}
-												/>
+												<input type='radio' name='type' value='BASIS' onChange={handleChange} />
 												Niên luận cơ sở
 												<span></span>
 											</label>
@@ -130,7 +125,6 @@ export default function Use() {
 													name='type'
 													value='MASTER'
 													onChange={handleChange}
-													error={!!errors.type}
 												/>
 												Niên luận ngành
 												<span></span>
@@ -146,7 +140,6 @@ export default function Use() {
 											rows='3'
 											onChange={handleChange}
 											value={values.name}
-											error={!!errors.name}
 										></textarea>
 									</div>
 								</div>
@@ -158,7 +151,6 @@ export default function Use() {
 											rows='5'
 											onChange={handleChange}
 											value={values.describe}
-											error={!!errors.describe}
 										></textarea>
 									</div>
 								</div>
@@ -170,7 +162,6 @@ export default function Use() {
 											rows='5'
 											onChange={handleChange}
 											value={values.link}
-											error={!!errors.link}
 										></textarea>
 									</div>
 								</div>

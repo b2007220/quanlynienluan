@@ -1,9 +1,8 @@
 import { Formik } from 'formik';
-import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import * as Yup from 'yup';
-import authService from '../../../services/auth.service';
 import userService from '../../../services/user.service';
 import style from '../../css/style.module.css';
 
@@ -21,21 +20,12 @@ const validationSchemaCreate = Yup.object().shape({
 export default function Password() {
 	const MySwal = withReactContent(Swal);
 
-	const [userInfo, setUserInfo] = useState([]);
-	useEffect(() => {
-		authService
-			.getUserProfile()
-			.then((user) => {
-				setUserInfo(user);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	}, []);
+	const user = useSelector((state) => state.user);
+
 	const handlePasswordChange = async (values) => {
 		try {
 			console.log(values);
-			await userService.changePassword(userInfo.id, values.oldPassword, values.newPassword);
+			await userService.changePassword(values.oldPassword, values.newPassword);
 			MySwal.fire({
 				icon: 'success',
 				title: 'Đặt mật khẩu thành công',
@@ -48,7 +38,7 @@ export default function Password() {
 	};
 	const handlePasswordCreate = async (values) => {
 		try {
-			await userService.createPassword(userInfo.id, values.password);
+			await userService.createPassword(values.password);
 			MySwal.fire({
 				icon: 'success',
 				title: 'Đặt mật khẩu thành công',
@@ -59,9 +49,12 @@ export default function Password() {
 			console.log(error);
 		}
 	};
+
+	if (!user) return null;
+
 	return (
 		<div className={style.details}>
-			{userInfo.isSetPassword ? (
+			{user.isSetPassword ? (
 				<>
 					<div className={style.recentOrders}>
 						<div className={style.cardHeader}>

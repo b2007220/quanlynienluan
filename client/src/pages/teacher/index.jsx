@@ -1,43 +1,85 @@
-import DoneIcon from '@mui/icons-material/Done';
-import FileOpenIcon from '@mui/icons-material/FileOpen';
-
-import { useEffect, useState } from 'react';
-import authService from '../../services/auth.service';
-import reportService from '../../services/report.service';
-import style from '../css/style.module.css';
-import Box from '@mui/material/Box';
-import Collapse from '@mui/material/Collapse';
+import { ArrowDropDown } from '@mui/icons-material';
 import IconButton from '@mui/material/IconButton';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { useEffect, useState } from 'react';
+import authService from '../../services/auth.service';
 import enrollService from '../../services/enroll.service';
+import reportService from '../../services/report.service';
+import style from '../css/style.module.css';
+import { Collapse } from '@mui/material';
+
+function Row({ row }) {
+	const [open, setOpen] = useState(false);
+
+	const toggleCollapse = () => setOpen(!open);
+
+	return (
+		<>
+			<TableRow>
+				<TableCell>
+					<IconButton onClick={toggleCollapse}>
+						<ArrowDropDown sx={{
+							transition: 'all 0.3s ease',
+							transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
+						}} />
+					</IconButton>
+
+					Tran Phuoc An
+				</TableCell>
+				<TableCell></TableCell>
+				<TableCell></TableCell>
+				<TableCell></TableCell>
+				<TableCell></TableCell>
+				<TableCell></TableCell>
+			</TableRow>
+
+			<TableRow>
+				<TableCell colSpan={6}>
+					<Collapse in={open} timeout='auto' unmountOnExit>
+						<Table >
+							<TableHead>
+								<TableCell>Ngày báo cáo</TableCell>
+								<TableCell>Nội dung</TableCell>
+								<TableCell>File</TableCell>
+								<TableCell>Trạng thái</TableCell>
+								<TableCell></TableCell>
+							</TableHead>
+
+							<TableBody>
+								<TableRow>
+									<TableCell>
+
+									</TableCell>
+									<TableCell></TableCell>
+									<TableCell></TableCell>
+									<TableCell></TableCell>
+									<TableCell>
+										<button className={style.btn__edit}>Xem</button>
+									</TableCell>
+								</TableRow>
+							</TableBody>
+						</Table>
+					</Collapse>
+				</TableCell>
+			</TableRow>
+		</>
+	);
+}
+
 export default function Teacher_Home() {
 	const [page, setPage] = useState(0);
 	const [reportList, setReportList] = useState([]);
 	const [enrollList, setEnrollList] = useState({
 		data: [],
 	});
-	const [open, setOpen] = useState(false);
 	useEffect(() => {
-		authService.getUserProfile().then((user) => {
-			enrollService.getEnrollsFromTeacher(user.id).then((enrolls) => {
-				setEnrollList(enrolls);
-			});
-			enrollList.data.map((enroll) => {
-				reportService.getReportsByEnroll(enroll.id).then((reports) => {
-					setReportList(reports);
-				});
-			});
-		});
+		
 	}, [page]);
+
 	// const handleSearchReport = async (userId) => {
 	// 	try {
 	// 		const reports = await reportService.getReportsFromUser(userId);
@@ -54,52 +96,24 @@ export default function Teacher_Home() {
 				<div className={style.cardHeader}>
 					<h2>Lịch sử báo cáo</h2>
 				</div>
-				<TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-					<TableCell>
-						<IconButton aria-label='expand row' size='small' onClick={() => setOpen(!open)}>
-							{open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-						</IconButton>
-					</TableCell>
-					<TableCell component='th' scope='row'>
-						Họ tên
-					</TableCell>
-					<TableCell>MSSV</TableCell>
-					<TableCell>Đề tài</TableCell>
-					<TableCell>Loại đề tài</TableCell>
-					<TableCell>Năm học</TableCell>
-					<TableCell>Học kỳ</TableCell>
-				</TableRow>
-				<TableRow>
-					<TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-						<Collapse in={open} timeout='auto' unmountOnExit>
-							<Box sx={{ margin: 1 }}>
-								<Typography variant='h6' gutterBottom component='div'>
-									Tiến độ báo cáo
-								</Typography>
-								<Table size='small' aria-label='purchases'>
-									<TableHead>
-										<TableRow>
-											<TableCell>Ngày báo cáo</TableCell>
-											<TableCell>Công việc đã hoàn thành</TableCell>
-											<TableCell>Công việc sắp tới</TableCell>
-											<TableCell>Thời hạn</TableCell>
-										</TableRow>
-									</TableHead>
-									<TableBody>
-										<TableRow>
-											<TableCell component='th' scope='row'>
-												chuối
-											</TableCell>
-											<TableCell>chuối</TableCell>
-											<TableCell>chuối</TableCell>
-											<TableCell>chuối</TableCell>
-										</TableRow>
-									</TableBody>
-								</Table>
-							</Box>
-						</Collapse>
-					</TableCell>
-				</TableRow>
+				<Table>
+					<TableHead>
+						<TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+							<TableCell component='th' scope='row'>
+								Họ tên
+							</TableCell>
+							<TableCell>MSSV</TableCell>
+							<TableCell>Đề tài</TableCell>
+							<TableCell>Loại đề tài</TableCell>
+							<TableCell>Năm học</TableCell>
+							<TableCell>Học kỳ</TableCell>
+						</TableRow>
+					</TableHead>
+
+					<TableBody>
+						<Row />
+					</TableBody>
+				</Table>
 			</div>
 		</div>
 	);

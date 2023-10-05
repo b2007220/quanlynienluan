@@ -73,10 +73,10 @@ model Topic {
 
 model Use {
   id           Int       @id @default(autoincrement())
-  topic        Topic     @relation(fields: [topicId], references: [id])
+  topic        Topic?    @relation(fields: [topicId], references: [id])
   topicId      Int
   enrolls      Enroll[]
-  userIncharge User      @relation(fields: [userId], references: [id])
+  userIncharge User?     @relation(fields: [userId], references: [id])
   userId       Int
   semester     Semester? @relation(fields: [semesterId], references: [id])
   semesterId   Int?
@@ -84,9 +84,9 @@ model Use {
 
 model Enroll {
   id      Int      @id @default(autoincrement())
-  user    User     @relation(fields: [userId], references: [id])
+  user    User?    @relation(fields: [userId], references: [id])
   userId  Int
-  use     Use      @relation(fields: [useId], references: [id])
+  use     Use?     @relation(fields: [useId], references: [id])
   useId   Int
   reports Report[]
   state   State    @default(WAIT)
@@ -124,5 +124,3 @@ model Semester {
   uses      Use[]
   isCurrent Boolean      @default(false)
 }
-
-

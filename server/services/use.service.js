@@ -9,7 +9,13 @@ class UseService {
 
 	async create(use) {
 		const newUse = await this.#client.use.create({
-			data: use,
+			data: {
+				userId: use.user.id,
+				topicId: use.topicId,
+			},
+			include: {
+				topic: true,
+			}
 		});
 
 		return newUse;
@@ -124,11 +130,12 @@ class UseService {
 			where: {
 				topic: {
 					isChecked: true,
-					type: info.type,
+				
 				},
-				teacher: {
+				userIncharge: {
 					id: parseInt(info.id),
 				},
+				
 			},
 			include: {
 				topic: true,
@@ -141,7 +148,7 @@ class UseService {
 			data: uses,
 			page,
 			limit,
-			total: Math.floor((await this.#client.user.count()) / limit + 0.9),
+			total: Math.floor((await this.#client.use.count()) / limit + 0.9),
 		};
 	}
 }

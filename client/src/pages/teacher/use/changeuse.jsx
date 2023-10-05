@@ -4,31 +4,29 @@ import {
 	DialogActions,
 	DialogContent,
 	DialogTitle,
-	Stack,
-	TextField,
-	FormLabel,
 	FormControl,
+	FormLabel,
 	Radio,
 	RadioGroup,
+	Stack,
+	TextField,
 } from '@mui/material';
 import { Formik } from 'formik';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import majorService from '../../../services/major.service';
 import useService from '../../../services/use.service';
 
 import * as Yup from 'yup';
-import useService from '../../../services/use.service';
 const validationSchema = Yup.object().shape({
 	code: Yup.string().required('Vui lòng điền mã ngành'),
 	majorName: Yup.string().required('Vui lòng điền tên ngành'),
 });
 const ChangeUse = ({ use, open, onClose, setUseList }) => {
 	const MySwal = withReactContent(Swal);
-	const handleMajorChange = async (values) => {
+	const handleUseChange = async (values) => {
 		try {
 			const updatedUse = await useService.updateUseById(use?.id, values);
-			handleUseChange((prev) => {
+			setUseList((prev) => {
 				return {
 					...prev,
 					data: prev.data.map((e) => {

@@ -126,7 +126,7 @@ class UserService {
 				id: parseInt(id),
 			},
 			data: {
-				password: await passService.hash(password, 10),
+				password: await passService.hash(password),
 			},
 		});
 		return updatedUser;
@@ -138,6 +138,11 @@ class UserService {
 				id: parseInt(id),
 			},
 		});
+
+		if (!user) {
+			throw new Error('User not found');
+		}
+
 		return user.password;
 	}
 

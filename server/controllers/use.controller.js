@@ -106,7 +106,7 @@ class UseController {
 	 */
 	async getUsesFromTeacher(req, res, next) {
 		try {
-			res.status(200).json(await useService.getUsesFromTeacher(req.info));
+			res.status(200).json(await useService.getUsesFromTeacher(req.query.page, req.query.limit, req.user));
 		} catch (error) {
 			next(error);
 		}

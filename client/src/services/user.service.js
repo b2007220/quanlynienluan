@@ -65,13 +65,13 @@ class UserService {
 
 		return updatedUser;
 	}
-	async changePassword(id, oldPassword, newPassword) {
-		const updatedUser = await this.#client.patch(`/${id}/password/change`, { oldPassword, newPassword });
+	async changePassword(oldPassword, newPassword) {
+		const updatedUser = await this.#client.patch(`/password/change`, { oldPassword, newPassword });
 
 		return updatedUser;
 	}
-	async createPassword(id, password) {
-		const updatedUser = await this.#client.patch(`/${id}/password/create`, { password });
+	async createPassword(password) {
+		const updatedUser = await this.#client.patch(`/password/create`, { password });
 
 		return updatedUser;
 	}

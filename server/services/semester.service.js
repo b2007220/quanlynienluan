@@ -97,6 +97,9 @@ class SemesterService {
 			data: {
 				isCurrent: true,
 			},
+			include: {
+				year: true
+			}
 		});
 		return semester;
 	}

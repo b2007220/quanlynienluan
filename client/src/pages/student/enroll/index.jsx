@@ -28,7 +28,6 @@ export default function Enroll() {
 	const [useList, setUseList] = useState({
 		data: [],
 	});
-	const [enrollInfo, setEnrollInfo] = useState(null);
 	useEffect(() => {
 		authService.getUserProfile().then((res) => {
 			setUser(res);
@@ -65,7 +64,7 @@ export default function Enroll() {
 	};
 	const handleCreateNewEnroll = (use) => {
 		try {
-			const enroll = enrollService.createEnroll({ userId: user.id, useId: use.id });
+			const enroll = await enrollService.createEnroll({ userId: user.id, useId: use.id });
 		} catch (error) {
 			console.log(error);
 		}
@@ -159,7 +158,7 @@ export default function Enroll() {
 									<Button size='small' href={use.topic.link}>
 										Thêm thông tin đề tài
 									</Button>
-									<Button size='small' onClick={handleCreateNewEnroll}>
+									<Button size='small' onClick={()=> handleCreateNewEnroll(use)}>
 										Đăng kí
 									</Button>
 								</CardActions>

@@ -17,84 +17,91 @@ import Teacher_Layout from '../pages/teacher_layout';
 import TeacherUsesPage from '../pages/teacher/use';
 import TeacherBasisEnrollsPage from '../pages/teacher/basis_enroll';
 import TeacherMasterEnrollsPage from '../pages/teacher/master_enroll';
+import PageLayout from '../pages/_layout';
 const router = createBrowserRouter([
 	{
 		path: '/',
-		Component: Login_Layout,
-	},
-	{
-		path: '/student',
-		Component: Student_Layout,
+		Component: PageLayout,
 		children: [
+			{
+				path: '/',
+				Component: Login_Layout,
+			},
 			{
 				path: '/student',
-				Component: StudentHomePage,
+				Component: Student_Layout,
+				children: [
+					{
+						path: '/student',
+						Component: StudentHomePage,
+					},
+					{
+						path: '/student/info',
+						Component: StudentInfoPage,
+					},
+					{
+						path: '/student/enroll',
+						Component: StudentEnrollPage,
+					},
+				],
 			},
-			{
-				path: '/student/info',
-				Component: StudentInfoPage,
-			},
-			{
-				path: '/student/enroll',
-				Component: StudentEnrollPage,
-			},
-		],
-	},
-	{
-		path: '/teacher',
-		Component: Teacher_Layout,
-		children: [
 			{
 				path: '/teacher',
-				Component: TeacherHomePage,
+				Component: Teacher_Layout,
+				children: [
+					{
+						path: '/teacher',
+						Component: TeacherHomePage,
+					},
+					{
+						path: '/teacher/info',
+						Component: TeacherInfoPage,
+					},
+					{
+						path: '/teacher/uses',
+						Component: TeacherUsesPage,
+					},
+					{
+						path: '/teacher/basis_enrolls',
+						Component: TeacherBasisEnrollsPage,
+					},
+					{
+						path: '/teacher/master_enrolls',
+						Component: TeacherMasterEnrollsPage,
+					},
+				],
 			},
-			{
-				path: '/teacher/info',
-				Component: TeacherInfoPage,
-			},
-			{
-				path: '/teacher/uses',
-				Component: TeacherUsesPage,
-			},
-			{
-				path: '/teacher/basis_enrolls',
-				Component: TeacherBasisEnrollsPage,
-			},
-			{
-				path: '/teacher/master_enrolls',
-				Component: TeacherMasterEnrollsPage,
-			},
-		],
-	},
-	{
-		path: '/admin',
-		Component: Admin_Layout,
-		children: [
 			{
 				path: '/admin',
-				Component: AdminHomePage,
+				Component: Admin_Layout,
+				children: [
+					{
+						path: '/admin',
+						Component: AdminHomePage,
+					},
+					{
+						path: '/admin/major',
+						Component: AdminMajorPage,
+					},
+					{
+						path: '/admin/password',
+						Component: AdminPasswordPage,
+					},
+					{
+						path: '/admin/year',
+						Component: AdminYearPage,
+					},
+					{
+						path: '/admin/semester',
+						Component: AdminSemesterPage,
+					},
+				],
 			},
 			{
-				path: '/admin/major',
-				Component: AdminMajorPage,
-			},
-			{
-				path: '/admin/password',
-				Component: AdminPasswordPage,
-			},
-			{
-				path: '/admin/year',
-				Component: AdminYearPage,
-			},
-			{
-				path: '/admin/semester',
-				Component: AdminSemesterPage,
+				path: '/signout',
+				Component: SignOut,
 			},
 		],
-	},
-	{
-		path: '/signout',
-		Component: SignOut,
 	},
 ]);
 

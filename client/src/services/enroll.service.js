@@ -13,7 +13,7 @@ class EnrollService {
 		return newenroll;
 	}
 
-	async getAllEnrolls() {
+	async getAllEnrolls(page = 0) {
 		const enrolls = await this.#client.get('/', {
 			params: {
 				page,
