@@ -15,7 +15,7 @@ class UseService {
 			},
 			include: {
 				topic: true,
-			}
+			},
 		});
 
 		return newUse;
@@ -130,12 +130,10 @@ class UseService {
 			where: {
 				topic: {
 					isChecked: true,
-				
 				},
 				userIncharge: {
 					id: parseInt(info.id),
 				},
-				
 			},
 			include: {
 				topic: true,

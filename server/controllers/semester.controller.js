@@ -114,7 +114,6 @@ class SemesterController {
 	 */
 	async activeSemester(req, res, next) {
 		try {
-
 			const semester = await semesterService.getById(req.params.id);
 
 			if (!semester) {

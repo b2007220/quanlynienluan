@@ -22,12 +22,13 @@ function Row({ row }) {
 			<TableRow>
 				<TableCell>
 					<IconButton onClick={toggleCollapse}>
-						<ArrowDropDown sx={{
-							transition: 'all 0.3s ease',
-							transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
-						}} />
+						<ArrowDropDown
+							sx={{
+								transition: 'all 0.3s ease',
+								transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
+							}}
+						/>
 					</IconButton>
-
 					Tran Phuoc An
 				</TableCell>
 				<TableCell></TableCell>
@@ -40,7 +41,7 @@ function Row({ row }) {
 			<TableRow>
 				<TableCell colSpan={6}>
 					<Collapse in={open} timeout='auto' unmountOnExit>
-						<Table >
+						<Table>
 							<TableHead>
 								<TableCell>Ngày báo cáo</TableCell>
 								<TableCell>Nội dung</TableCell>
@@ -51,9 +52,7 @@ function Row({ row }) {
 
 							<TableBody>
 								<TableRow>
-									<TableCell>
-
-									</TableCell>
+									<TableCell></TableCell>
 									<TableCell></TableCell>
 									<TableCell></TableCell>
 									<TableCell></TableCell>
@@ -76,9 +75,7 @@ export default function Teacher_Home() {
 	const [enrollList, setEnrollList] = useState({
 		data: [],
 	});
-	useEffect(() => {
-		
-	}, [page]);
+	useEffect(() => {}, [page]);
 
 	// const handleSearchReport = async (userId) => {
 	// 	try {

@@ -156,7 +156,7 @@ class UserController {
 		try {
 			const password = await userService.getPassword(req.user.id);
 
-			if (! await passService.verify(req.body.oldPassword, password)) {
+			if (!(await passService.verify(req.body.oldPassword, password))) {
 				return res.status(400).json({ message: 'Wrong password' });
 			}
 

@@ -62,7 +62,7 @@ export default function Enroll() {
 			console.log(error);
 		}
 	};
-	const handleCreateNewEnroll = (use) => {
+	const handleCreateNewEnroll = async (use) => {
 		try {
 			const enroll = await enrollService.createEnroll({ userId: user.id, useId: use.id });
 		} catch (error) {

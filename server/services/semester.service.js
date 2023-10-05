@@ -98,8 +98,8 @@ class SemesterService {
 				isCurrent: true,
 			},
 			include: {
-				year: true
-			}
+				year: true,
+			},
 		});
 		return semester;
 	}

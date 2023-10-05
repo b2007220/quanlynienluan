@@ -11,9 +11,9 @@ const theme = createTheme({
 			styleOverrides: {
 				root: {
 					borderRadius: '10px !important',
-				}
-			}
-		}
+				},
+			},
+		},
 	},
 });
 

@@ -11,8 +11,8 @@ class EnrollService {
 		const newEnroll = await this.#client.enroll.create({
 			data: {
 				useId: enroll.useId,
-				userId: enroll.userId
-			}
+				userId: enroll.userId,
+			},
 		});
 
 		return newEnroll;
