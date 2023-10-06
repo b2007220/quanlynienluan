@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material';
+import { colors, createTheme } from '@mui/material';
 
 const theme = createTheme({
 	components: {
@@ -11,6 +11,15 @@ const theme = createTheme({
 			styleOverrides: {
 				root: {
 					borderRadius: '10px !important',
+				},
+			},
+		},
+		MuiTableRow: {
+			styleOverrides: {
+				root: {
+					'&:hover': {
+						color: '#fff !important',
+					},
 				},
 			},
 		},
