@@ -81,7 +81,7 @@ class EnrollService {
 			where: {
 				userId: parseInt(id),
 				use: {
-					semester: semesterService.getCurrentSemester(),
+					semester: semesterService.getCurrent(),
 				},
 			},
 			include: {

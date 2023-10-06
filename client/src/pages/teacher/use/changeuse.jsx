@@ -23,6 +23,7 @@ const validationSchema = Yup.object().shape({
 	majorName: Yup.string().required('Vui lòng điền tên ngành'),
 });
 const ChangeUse = ({ use, open, onClose, setUseList }) => {
+	console.log(use);
 	const MySwal = withReactContent(Swal);
 	const handleUseChange = async (values) => {
 		try {
@@ -50,7 +51,9 @@ const ChangeUse = ({ use, open, onClose, setUseList }) => {
 	return (
 		<Dialog open={open} onClose={onClose}>
 			<Formik
-				initialValues={use || { name: '', type: '', describe: '', link: '' }}
+				initialValues={
+					{ name: '', type: '', describe: '', link: '' }
+				}
 				enableReinitialize
 				validationSchema={validationSchema}
 				onSubmit={handleUseChange}
@@ -70,21 +73,14 @@ const ChangeUse = ({ use, open, onClose, setUseList }) => {
 										<FormControl>
 											<FormLabel id='demo-radio-buttons-group-label'>Loại</FormLabel>
 											<RadioGroup
+												row
 												aria-labelledby='demo-radio-buttons-group-label'
 												onChange={handleChange}
 												value={values.type}
 												name='radio-buttons-group'
 											>
-												<FormControlLabel
-													value='BASIS'
-													control={<Radio />}
-													label='Niên luận cơ sở'
-												/>
-												<FormControlLabel
-													value='MASTER'
-													control={<Radio />}
-													label='Niên luận ngành'
-												/>
+												<FormControlLabel value='BASIS' control={<Radio />} label='Cơ sở' />
+												<FormControlLabel value='MASTER' control={<Radio />} label='Ngành' />
 											</RadioGroup>
 										</FormControl>
 										<TextField
@@ -100,7 +96,6 @@ const ChangeUse = ({ use, open, onClose, setUseList }) => {
 											label='Miêu tả đề tài'
 											placeholder='Miêu tả đề tài'
 											name='describe'
-											row={3}
 											error={!!errors.describe}
 											helperText={errors.describe}
 											value={values.describe}
@@ -110,11 +105,10 @@ const ChangeUse = ({ use, open, onClose, setUseList }) => {
 											label='Link tham khảo'
 											placeholder='Link tham khảo'
 											name='link'
-											row={4}
 											error={!!errors.link}
 											helperText={errors.link}
 											value={values.link}
-											onChange={link}
+											onChange={handleChange}
 										/>
 									</Stack>
 								</DialogContent>

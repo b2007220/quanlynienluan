@@ -8,7 +8,7 @@ import '../index.css';
 const PageLayout = () => {
 	const dispatch = useDispatch();
 
-	useEffect(() =>  {
+	useEffect(() => {
 		authService.getUserProfile().then((res) => {
 			dispatch(setUser(res));
 		});

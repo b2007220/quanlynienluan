@@ -14,6 +14,7 @@ import useService from '../../../services/use.service';
 import style from '../../css/style.module.css';
 import LinkIcon from '@mui/icons-material/Link';
 import ChangeUse from './changeuse';
+import EditIcon from '@mui/icons-material/Edit';
 const validationSchema = yup.object({
 	name: yup.string().required('Vui lòng nhập tên đề tài'),
 	describe: yup.string().required('Vui lòng nhập mô tả đề tài'),
@@ -35,23 +36,22 @@ export default function Use() {
 			setUseList(res);
 		});
 	}, [page]);
+
 	const handleCreateNewUse = async (values) => {
 		try {
-			const semesters = semesterService.getCurrent();
-			console.log(semesters);
-			// const topic = await topicService.createTopic(values);
-			// const newUse = await useService.createUse({ topicId: topic.id, user, semesterId: semester.id });
-			// setUseList((prev) => {
-			// 	return {
-			// 		...prev,
-			// 		data: [...prev.data, newUse],
-			// 	};
-			// });
+			const semester = await semesterService.getCurrent();
+			const topic = await topicService.createTopic(values);
+			const newUse = await useService.createUse({ topicId: topic.id, user, semesterId: semester.id });
+			setUseList((prev) => {
+				return {
+					...prev,
+					data: [...prev.data, newUse],
+				};
+			});
 		} catch (error) {
 			console.log(error);
 		}
 	};
-
 	return (
 		<div className={style.details}>
 			<div className={style.recentOrders}>
@@ -60,24 +60,20 @@ export default function Use() {
 				</div>
 				<div className={style.card__container}>
 					{useList.data.map((use) => (
-						<Box sx={{ minWidth: 275, maxWidth: 350, margin: 0.2 }} key={use.id}>
-							<Card variant='outlined'>
+						<Box sx={{ margin: 0.2 }} key={use.id}>
+							<Card variant='outlined' sx={{ width: 350, height: 190, margin: 0.2 }}>
 								<CardContent>
 									<Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
-										{use.topic.type === 1 ? 'Niên luận cơ sở' : 'Niên luận ngành'}
-									</Typography>
-									<Typography variant='h5' component='div'>
 										{use.topic.name}
 									</Typography>
-									<Typography variant='body2'>{use.describe}</Typography>
+									<Typography variant='h5' component='div'>
+										{use.describe}
+									</Typography>
 								</CardContent>
-								<CardActions>
+								<CardActions disableSpacing>
 									<IconButton size='small' href={use.topic.link}>
 										<LinkIcon></LinkIcon>
 									</IconButton>
-									<Button size='small' onClick={() => setEditUse(use)}>
-										Chỉnh sửa
-									</Button>
 								</CardActions>
 							</Card>
 						</Box>
@@ -176,7 +172,6 @@ export default function Use() {
 					}}
 				</Formik>
 			</div>
-			<ChangeUse use={editUse} setUseList={setUseList} open={!!editUse} onClose={() => setEditUse(null)} />
 		</div>
 	);
 }

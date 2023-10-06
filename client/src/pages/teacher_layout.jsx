@@ -22,17 +22,11 @@ import { setUser } from '../store/user';
 const Layout = () => {
 	const navigate = useNavigate();
 
-	const user = useSelector(async (state) => state.user);
-
-	if (user.active === 'false') {
-		navigate('/signout');
-	}
-	if (user.role === 'STUDENT') {
-		navigate('/student');
-	}
-	if (user.role === 'ADMIN') {
-		navigate('/admin');
-	}
+	const user = useSelector((state) => state.user);
+	if (!user) return null;
+	if (!user.active) navigate('/');
+	if (user.role === 'STUDENT') navigate('/student');
+	if (user.role === 'ADMIN') navigate('/admin');
 
 	const toggleDrawer = (anchor, open) => (event) => {
 		if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -45,7 +39,7 @@ const Layout = () => {
 	const [state, setState] = useState({
 		left: false,
 	});
-	if (!user) return null;
+
 	const list = (anchor) => (
 		<Box
 			sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}

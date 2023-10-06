@@ -74,12 +74,12 @@ class SemesterService {
 		return semesters;
 	}
 	async getCurrent() {
-		const semesters = await this.#client.semester.findMany({
+		const semester = await this.#client.semester.findFirst({
 			where: {
 				isCurrent: true,
 			},
 		});
-		return semesters;
+		return semester;
 	}
 	async activeSemester(id) {
 		await this.#client.semester.updateMany({

@@ -6,6 +6,7 @@ class UseController {
 	 */
 	async create(req, res, next) {
 		try {
+			console.log(req.body);
 			res.status(201).json(await useService.create(req.body));
 		} catch (error) {
 			next(error);

@@ -49,8 +49,8 @@ class SemesterService {
 		return semesters;
 	}
 	async getCurrent() {
-		const semesters = await this.#client.get('/current');
-		return semesters;
+		const semester = await this.#client.get('/current');
+		return semester;
 	}
 	async activeSemester(id) {
 		const semester = await this.#client.patch(`/active/${id}`);

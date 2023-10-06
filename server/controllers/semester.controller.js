@@ -100,10 +100,11 @@ class SemesterController {
 	 */
 	async getCurrent(req, res, next) {
 		try {
-			const semesters = await semesterService.getCurrent();
-			if (!semesters) {
+			const semester = await semesterService.getCurrent();
+			if (!semester) {
 				res.status(404).json({ message: 'Semester not found' });
 			}
+			return res.send(semester);
 		} catch (error) {
 			next(error);
 		}
