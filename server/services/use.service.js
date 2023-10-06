@@ -64,6 +64,9 @@ class UseService {
 			where: {
 				id: parseInt(id),
 			},
+			include: {
+				topic: true,
+			},
 		});
 
 		return use;
@@ -81,13 +84,12 @@ class UseService {
 	}
 
 	async delete(id) {
-		const deleteduse = await this.#client.use.delete({
+		await this.#client.use.delete({
 			where: {
 				id: parseInt(id),
 			},
 		});
-
-		return deleteduse;
+		return true;
 	}
 
 	async getUseByStudentIdInSemester(userId) {

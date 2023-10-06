@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Outlet } from 'react-router-dom';
+import '../index.css';
 import authService from '../services/auth.service';
 import { setUser } from '../store/user';
-import '../index.css';
 
 const PageLayout = () => {
 	const dispatch = useDispatch();

@@ -5,29 +5,35 @@ import {
 	DialogContent,
 	DialogTitle,
 	FormControl,
+	FormControlLabel,
 	FormLabel,
 	Radio,
 	RadioGroup,
 	Stack,
 	TextField,
-	FormControlLabel,
 } from '@mui/material';
 import { Formik } from 'formik';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import useService from '../../../services/use.service';
-
-import * as Yup from 'yup';
-const validationSchema = Yup.object().shape({
-	code: Yup.string().required('Vui lòng điền mã ngành'),
-	majorName: Yup.string().required('Vui lòng điền tên ngành'),
+import topicService from '../../../services/topic.service';
+import * as yup from 'yup';
+const validationSchema = yup.object({
+	name: yup.string().required('Vui lòng nhập tên đề tài'),
+	describe: yup.string().required('Vui lòng nhập mô tả đề tài'),
+	type: yup.string().required().oneOf(['BASIS', 'MASTER']),
+	link: yup.string().required('Vui lòng nhập link tham khảo'),
 });
+
 const ChangeUse = ({ use, open, onClose, setUseList }) => {
-	console.log(use);
 	const MySwal = withReactContent(Swal);
+
 	const handleUseChange = async (values) => {
 		try {
-			const updatedUse = await useService.updateUseById(use?.id, values);
+			console.log(values);
+			const topic = await topicService.updateTopicById(use?.topic.id, values);
+			console.log(topic);
+			const updatedUse = await useService.getUseById(use.id);
 			setUseList((prev) => {
 				return {
 					...prev,
@@ -52,7 +58,12 @@ const ChangeUse = ({ use, open, onClose, setUseList }) => {
 		<Dialog open={open} onClose={onClose}>
 			<Formik
 				initialValues={
-					{ name: '', type: '', describe: '', link: '' }
+					{
+						name: use?.topic.name,
+						describe: use?.topic.describe,
+						link: use?.topic.link,
+						type: use?.topic.type,
+					} || { name: '', type: '', describe: '', link: '' }
 				}
 				enableReinitialize
 				validationSchema={validationSchema}

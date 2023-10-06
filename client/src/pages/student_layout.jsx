@@ -21,6 +21,10 @@ import { Link, Outlet, useNavigate } from 'react-router-dom';
 const Layout = () => {
 	const navigate = useNavigate();
 
+	const [state, setState] = useState({
+		left: false,
+	});
+
 	const user = useSelector((state) => state.user);
 
 	if (!user) return null;
@@ -35,10 +39,6 @@ const Layout = () => {
 
 		setState({ ...state, [anchor]: open });
 	};
-
-	const [state, setState] = useState({
-		left: false,
-	});
 
 	const list = (anchor) => (
 		<Box

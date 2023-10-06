@@ -36,6 +36,15 @@ export default function Login() {
 
 			const profile = await authService.getUserProfile();
 
+			if (!profile.active) {
+				MySwal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: 'Tài khoản của bạn đã bị khóa!',
+				});
+				return;
+			}
+
 			dispatch(setUser(profile));
 
 			const userRole = profile.role;
@@ -63,6 +72,15 @@ export default function Login() {
 			const res = await authService.login({ email, password });
 			tokenService.setToken(res.token);
 			const profile = await authService.getUserProfile();
+
+			if (!profile.active) {
+				MySwal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: 'Tài khoản của bạn đã bị khóa!',
+				});
+				return;
+			}
 
 			dispatch(setUser(profile));
 

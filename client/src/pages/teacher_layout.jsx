@@ -14,16 +14,20 @@ import {
 	ListItemText,
 	SwipeableDrawer,
 } from '@mui/material';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-import authService from '../services/auth.service';
-import { setUser } from '../store/user';
 const Layout = () => {
 	const navigate = useNavigate();
 
+	const [state, setState] = useState({
+		left: false,
+	});
+	
 	const user = useSelector((state) => state.user);
+
 	if (!user) return null;
+
 	if (!user.active) navigate('/');
 	if (user.role === 'STUDENT') navigate('/student');
 	if (user.role === 'ADMIN') navigate('/admin');
@@ -36,9 +40,7 @@ const Layout = () => {
 		setState({ ...state, [anchor]: open });
 	};
 
-	const [state, setState] = useState({
-		left: false,
-	});
+	
 
 	const list = (anchor) => (
 		<Box

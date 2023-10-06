@@ -79,7 +79,7 @@ class UseController {
 	async deleteById(req, res, next) {
 		try {
 			const use = await useService.getById(req.params.id);
-
+			
 			if (!use) {
 				res.status(404).json({ message: 'use not found' });
 			}
