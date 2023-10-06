@@ -105,6 +105,7 @@ class EnrollController {
 	 */
 	async getByTeacherId(req, res, next) {
 		try {
+			
 			const enrolls = await enrollService.getByTeacherId(req.params.teacherId);
 
 			if (!enrolls) {

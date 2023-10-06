@@ -11,6 +11,7 @@ import topicService from '../../../services/topic.service';
 import useService from '../../../services/use.service';
 import style from '../../css/style.module.css';
 import ChangeUse from './changeuse';
+import { useSelector } from 'react-redux';
 const validationSchema = yup.object({
 	name: yup.string().required('Vui lòng nhập tên đề tài'),
 	describe: yup.string().required('Vui lòng nhập mô tả đề tài'),
@@ -29,6 +30,9 @@ export default function Use() {
 			setUseList(res);
 		});
 	}, [page]);
+
+	const user = useSelector((state) => state.user);
+	if (!user) return null;
 
 	const handleCreateNewUse = async (values) => {
 		try {
@@ -71,7 +75,6 @@ export default function Use() {
 				})
 				.then(async (result) => {
 					if (result.isConfirmed) {
-						
 						await useService.deleteUseById(use.id);
 
 						setUseList((prev) => {

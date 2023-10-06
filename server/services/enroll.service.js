@@ -54,16 +54,16 @@ class EnrollService {
 		return deletedEnroll;
 	}
 
-	async getByTeacherId(teacherId, page = 0, limit = 10) {
+	async getByTeacherId(id, page = 0, limit = 10) {
 		const enrolls = await this.#client.enroll.findMany({
 			where: {
 				use: {
-					userId: parseInt(teacherId),
-					semester: semesterService.getCurrent(),
+					userId: parseInt(id),
 				},
 			},
 			include: {
 				use: true,
+				user: true,
 			},
 			skip: page * limit,
 			take: limit,

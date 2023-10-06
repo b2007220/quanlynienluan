@@ -1,4 +1,5 @@
 import { ArrowDropDown } from '@mui/icons-material';
+import { Collapse } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -6,16 +7,21 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useEffect, useState } from 'react';
-import authService from '../../services/auth.service';
+import style from '../css/style.module.css';
+import Typography from '@mui/material/Typography';
+import { useSelector } from 'react-redux';
 import enrollService from '../../services/enroll.service';
 import reportService from '../../services/report.service';
-import style from '../css/style.module.css';
-import { Collapse } from '@mui/material';
-
-function Row({ row }) {
+function Row({ enroll }) {
 	const [open, setOpen] = useState(false);
-
+	const [reportList, setReportList] = useState([]);
 	const toggleCollapse = () => setOpen(!open);
+
+	useEffect(() => {
+		reportService.getReportsByEnroll(enroll.id).then((res) => {
+			setReportList(res);
+		});
+	}, []);
 
 	return (
 		<>
@@ -29,18 +35,21 @@ function Row({ row }) {
 							}}
 						/>
 					</IconButton>
-					Tran Phuoc An
+					{enroll.user.fullName}
 				</TableCell>
-				<TableCell></TableCell>
-				<TableCell></TableCell>
-				<TableCell></TableCell>
-				<TableCell></TableCell>
-				<TableCell></TableCell>
+				<TableCell>{enroll.user.schoolId}</TableCell>
+				<TableCell>{enroll.use}</TableCell>
+				<TableCell>{enroll.user.name}</TableCell>
+				<TableCell>{enroll.user.name}</TableCell>
+				<TableCell>{enroll.user.name}</TableCell>
 			</TableRow>
 
 			<TableRow>
 				<TableCell colSpan={6}>
 					<Collapse in={open} timeout='auto' unmountOnExit>
+						<Typography variant='h6' gutterBottom component='div'>
+							Tiến độ báo cáo
+						</Typography>
 						<Table>
 							<TableHead>
 								<TableCell>Ngày báo cáo</TableCell>
@@ -71,11 +80,19 @@ function Row({ row }) {
 
 export default function Teacher_Home() {
 	const [page, setPage] = useState(0);
-	const [reportList, setReportList] = useState([]);
 	const [enrollList, setEnrollList] = useState({
 		data: [],
 	});
-	useEffect(() => {}, [page]);
+
+	const user = useSelector((state) => state.user);
+	if (!user) return null;
+
+	useEffect(() => {
+		enrollService.getAllFromTeacher(user.id).then((res) => {
+			setEnrollList(res);
+			console.log(res);
+		});
+	}, [page]);
 
 	// const handleSearchReport = async (userId) => {
 	// 	try {
@@ -104,11 +121,14 @@ export default function Teacher_Home() {
 							<TableCell>Loại đề tài</TableCell>
 							<TableCell>Năm học</TableCell>
 							<TableCell>Học kỳ</TableCell>
+							<TableCell>Thao tác</TableCell>
 						</TableRow>
 					</TableHead>
 
 					<TableBody>
-						<Row />
+						{enrollList.data.map((enroll) => (
+							<Row key={enroll.id} enroll={enroll} />
+						))}
 					</TableBody>
 				</Table>
 			</div>

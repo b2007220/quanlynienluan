@@ -39,8 +39,8 @@ class EnrollService {
 		await this.#client.delete(`/${id}`);
 	}
 
-	async getEnrollsFromTeacher(page = 0, teacherId) {
-		const enrolls = await this.#client.get(`/teacher/${teacherId}`, {
+	async getEnrollsFromTeacher(page = 0, id) {
+		const enrolls = await this.#client.get(`/teacher/${id}`, {
 			params: {
 				page,
 			},
@@ -53,6 +53,15 @@ class EnrollService {
 		const enroll = await this.#client.get(`/student`);
 
 		return enroll;
+	}
+	async getAllFromTeacher(id, page = 0) {
+		console.log(id);
+		const enrolls = await this.#client.get(`/teacher/${id}`, {
+			params: {
+				page,
+			},
+		});
+		return enrolls;
 	}
 }
 
