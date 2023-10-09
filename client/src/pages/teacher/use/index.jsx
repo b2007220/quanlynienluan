@@ -26,7 +26,7 @@ export default function Use() {
 		data: [],
 	});
 	useEffect(() => {
-		useService.getUsesFromTeacher(page).then((res) => {
+		useService.getUsesFromIncharge(page).then((res) => {
 			setUseList(res);
 		});
 	}, [page]);

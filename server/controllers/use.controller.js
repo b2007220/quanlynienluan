@@ -78,7 +78,7 @@ class UseController {
 	async deleteById(req, res, next) {
 		try {
 			const use = await useService.getById(req.params.id);
-			
+
 			if (!use) {
 				res.status(404).json({ message: 'use not found' });
 			}
@@ -106,7 +106,18 @@ class UseController {
 	 */
 	async getUsesFromTeacher(req, res, next) {
 		try {
-			res.status(200).json(await useService.getUsesFromTeacher(req.query.page, req.query.limit, req.user));
+			res.status(200).json(await useService.getUsesFromTeacher(req.query.page, req.query.limit, req.info));
+		} catch (error) {
+			next(error);
+		}
+	}
+	/**
+	 * @type {import("express").RequestHandler}
+	 *
+	 */
+	async getUsesFromIncharge(req, res, next) {
+		try {
+			res.status(200).json(await useService.getUsesFromIncharge((req.query.page, req.query.limit, req.user)));
 		} catch (error) {
 			next(error);
 		}

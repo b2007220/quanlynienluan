@@ -55,7 +55,6 @@ class EnrollService {
 		return enroll;
 	}
 	async getAllFromTeacher(id, page = 0) {
-		console.log(id);
 		const enrolls = await this.#client.get(`/teacher/${id}`, {
 			params: {
 				page,

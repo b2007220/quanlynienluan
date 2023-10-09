@@ -8,6 +8,8 @@ router.route('/user/:userId').get(useController.getAllFromUser);
 
 router.route('/semester').get(useController.getAllInSemester);
 
+router.route('/incharge').get(useController.getUsesFromIncharge);
+
 router.route('/teacher').get(useController.getUsesFromTeacher);
 
 router.route('/:id').get(useController.getById).put(useController.updateById).delete(useController.deleteById);

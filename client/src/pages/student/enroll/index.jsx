@@ -45,8 +45,7 @@ export default function Enroll() {
 	}, [page]);
 	const handleFind = (values) => {
 		try {
-			const info = setEnrollInfo(values);
-			const uses = useService.getUsesFromTeacher(info);
+			const uses = useService.getUsesFromTeacher(values);
 			setUseList(uses);
 		} catch (error) {
 			console.log(error);
@@ -148,11 +147,10 @@ export default function Enroll() {
 											</Select>
 										</FormControl>
 									</div>
+								</div>
+								<div className={style.row100}>
 									<div className={style.input__box}>
-										<span>Loại đề tài bạn tìm kiếm</span>
-										<div className={style.input__box}>
-											<input type='submit' value='Tìm kiếm' onClick={handleSubmit} />
-										</div>
+										<input type='submit' value='Tìm kiếm' onClick={handleSubmit} />
 									</div>
 								</div>
 							</form>
@@ -161,16 +159,12 @@ export default function Enroll() {
 				</Formik>
 				<div className={style.card__container}>
 					{useList.data.map((use) => (
-						<Box sx={{ minWidth: 275, maxWidth: 350, margin: 0.2 }} key={use.id}>
-							<Card variant='outlined'>
+						<Box sx={{ width: 350, margin: 0.3, borderRadius: 12}} key={use.id}>
+							<Card variant='outlined' sx={{height: 200}}>
 								<CardContent>
-									<Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
-										{use.topic.type === 1 ? 'Niên luận cơ sở' : 'Niên luận ngành'}
-									</Typography>
-									<Typography variant='h5' component='div'>
+									<Typography variant='h6' component='div'>
 										{use.topic.name}
 									</Typography>
-									<Typography variant='body2'>{use.describe}</Typography>
 								</CardContent>
 								<CardActions>
 									<Button size='small' href={use.topic.link}>

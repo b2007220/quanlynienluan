@@ -112,7 +112,7 @@ class UseService {
 				topic: {
 					isChecked: true,
 				},
-				semester: semesterService.getCurrentSemester(),
+				semester: semesterService.getCurrent(),
 			},
 			include: {
 				topic: true,
@@ -128,14 +128,39 @@ class UseService {
 			total: Math.floor((await this.#client.user.count()) / limit + 0.9),
 		};
 	}
-	async getUsesFromTeacher(page = 0, limit = 6, info) {
+	async getUsesFromIncharge(page = 0, limit = 6, user) {
 		const uses = await this.#client.use.findMany({
 			where: {
 				topic: {
 					isChecked: true,
 				},
 				userIncharge: {
-					id: parseInt(info.id),
+					id: parseInt(user.id),
+				},
+			},
+			include: {
+				topic: true,
+			},
+			skip: page * limit,
+			take: limit,
+		});
+
+		return {
+			data: uses,
+			page,
+			limit,
+			total: Math.floor((await this.#client.use.count()) / limit + 0.9),
+		};
+	}
+	async getUsesFromTeacher(page = 0, limit = 6, info) {
+		const uses = await this.#client.use.findMany({
+			where: {
+				topic: {
+					isChecked: true,
+					type: info.type,
+				},
+				userIncharge: {
+					id: parseInt(info.teacherId),
 				},
 			},
 			include: {

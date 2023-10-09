@@ -12,16 +12,18 @@ import Typography from '@mui/material/Typography';
 import { useSelector } from 'react-redux';
 import enrollService from '../../services/enroll.service';
 import reportService from '../../services/report.service';
+import Pagination from '@mui/material/Pagination';
+
 function Row({ enroll }) {
 	const [open, setOpen] = useState(false);
 	const [reportList, setReportList] = useState([]);
 	const toggleCollapse = () => setOpen(!open);
 
-	useEffect(() => {
-		reportService.getReportsByEnroll(enroll.id).then((res) => {
-			setReportList(res);
-		});
-	}, []);
+	// useEffect(() => {
+	// 	reportService.getReportsByEnroll(enroll.id).then((res) => {
+	// 		setReportList(res);
+	// 	});
+	// }, []);
 
 	return (
 		<>
@@ -38,9 +40,12 @@ function Row({ enroll }) {
 					{enroll.user.fullName}
 				</TableCell>
 				<TableCell>{enroll.user.schoolId}</TableCell>
-				<TableCell>{enroll.use}</TableCell>
-				<TableCell>{enroll.user.name}</TableCell>
-				<TableCell>{enroll.user.name}</TableCell>
+				<TableCell></TableCell>
+				{enroll.state === 'WAIT' && <TableCell>Chờ duyệt</TableCell>}
+				{enroll.state === 'IN_PROCESS' && <TableCell>Đang thực hiện</TableCell>}
+				{enroll.state === 'DONE' && <TableCell>Hoàn thành</TableCell>}
+				{enroll.state === 'PROPOSE' && <TableCell>Đề xuất</TableCell>}
+				<TableCell>{enroll.use.semesterId}</TableCell>
 				<TableCell>{enroll.user.name}</TableCell>
 			</TableRow>
 
@@ -85,7 +90,6 @@ export default function Teacher_Home() {
 	});
 
 	const user = useSelector((state) => state.user);
-	if (!user) return null;
 
 	useEffect(() => {
 		enrollService.getAllFromTeacher(user.id).then((res) => {
@@ -103,7 +107,7 @@ export default function Teacher_Home() {
 	// 		console.log(error);
 	// 	}
 	// };
-
+	if (!user) return null;
 	return (
 		<div className={style.detail}>
 			<div className={style.recentOrders}>
@@ -131,11 +135,17 @@ export default function Teacher_Home() {
 						))}
 					</TableBody>
 				</Table>
+				<Pagination
+					sx={{
+						marginTop: '10px',
+					}}
+					count={enrollList.total}
+					page={page + 1}
+					onChange={(_, page) => setPage(page - 1)}
+					variant='outlined'
+					shape='rounded'
+				/>
 			</div>
 		</div>
 	);
 }
-// {enroll.state === 'WAIT' && <td className={style.status__wait}>Chờ duyệt</td>}
-// 						{enroll.state === 'IN_PROCESS' && <td className={style.status__process}>Đang thực hiện</td>}
-// 						{enroll.state === 'DONE' && <td className={style.status__finish}>Hoàn thành</td>}
-// 						{enroll.state === 'PROPOSE' && <td className={style.status__request}>Đề xuất</td>}
