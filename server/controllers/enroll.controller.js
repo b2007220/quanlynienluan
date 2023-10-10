@@ -132,6 +132,40 @@ class EnrollController {
 			next(error);
 		}
 	}
+	/**
+	 * @type {import("express").RequestHandler}
+	 *
+	 */
+	async getByTeacherMasterId(req, res, next) {
+		try {
+			const enrolls = await enrollService.getByTeacherMasterId(req.params.teacherId);
+
+			if (!enrolls) {
+				res.status(404).json({ message: 'Enroll not found' });
+			}
+
+			res.send(enrolls);
+		} catch (error) {
+			next(error);
+		}
+	}
+	/**
+	 * @type {import("express").RequestHandler}
+	 *
+	 */
+	async getByTeacherBasisId(req, res, next) {
+		try {
+			const enrolls = await enrollService.getByTeacherBasisId(req.params.teacherId);
+
+			if (!enrolls) {
+				res.status(404).json({ message: 'Enroll not found' });
+			}
+
+			res.send(enrolls);
+		} catch (error) {
+			next(error);
+		}
+	}
 }
 
 module.exports = new EnrollController();

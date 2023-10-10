@@ -62,6 +62,22 @@ class EnrollService {
 		});
 		return enrolls;
 	}
+	async getAllFromTeacherMaster(id, page = 0) {
+		const enrolls = await this.#client.get(`/teacher/master/${id}`, {
+			params: {
+				page,
+			},
+		});
+		return enrolls;
+	}
+	async getAllFromTeacherBasis(id, page = 0) {
+		const enrolls = await this.#client.get(`/teacher/basis/${id}`, {
+			params: {
+				page,
+			},
+		});
+		return enrolls;
+	}
 }
 
 export default new EnrollService();

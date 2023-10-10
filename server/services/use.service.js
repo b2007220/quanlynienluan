@@ -129,11 +129,13 @@ class UseService {
 		};
 	}
 	async getUsesFromIncharge(page = 0, limit = 6, user) {
+		console.log(user);
 		const uses = await this.#client.use.findMany({
 			where: {
 				topic: {
 					isChecked: true,
 				},
+				semester: semesterService.getCurrent(),
 				userIncharge: {
 					id: parseInt(user.id),
 				},
@@ -159,6 +161,7 @@ class UseService {
 					isChecked: true,
 					type: info.type,
 				},
+				semester: semesterService.getCurrent(),
 				userIncharge: {
 					id: parseInt(info.teacherId),
 				},

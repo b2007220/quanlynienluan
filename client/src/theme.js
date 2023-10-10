@@ -29,13 +29,6 @@ const theme = createTheme({
 			styleOverrides: {
 				root: {
 					fontFamily: 'Montserrat , sans-serif !important',
-					height: '120px !important',
-					overflow: "hidden",
-					 textOverflow: "ellipsis",
-					'&:hover': {
-						overflow: 'visible',
-						size : '12px !important',
-					},
 				},
 			},
 		},

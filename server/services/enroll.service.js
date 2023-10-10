@@ -1,4 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient, Role, Type } = require('@prisma/client');
 const semesterService = require('./semester.service');
 class EnrollService {
 	#client;
@@ -64,6 +64,12 @@ class EnrollService {
 			include: {
 				use: true,
 				user: true,
+				use: {
+					include: {
+						semester: true,
+						topic: true,
+					},
+				},
 			},
 			skip: page * limit,
 			take: limit,
@@ -105,6 +111,66 @@ class EnrollService {
 		});
 
 		return enroll.length > 0;
+	}
+	async getByTeacherBasisId(id, page = 0, limit = 10) {
+		const enrolls = await this.#client.enroll.findMany({
+			where: {
+				use: {
+					userId: parseInt(id),
+					topic: {
+						type: Type.BASIS,
+					},
+					semester: semesterService.getCurrent(),
+				},
+			},
+			include: {
+				use: true,
+				user: true,
+				use: {
+					include: {
+						topic: true,
+					},
+				},
+			},
+			skip: page * limit,
+			take: limit,
+		});
+		return {
+			data: enrolls,
+			page,
+			limit,
+			total: Math.floor((await this.#client.user.count()) / limit + 0.9),
+		};
+	}
+	async getByTeacherMasterId(id, page = 0, limit = 10) {
+		const enrolls = await this.#client.enroll.findMany({
+			where: {
+				use: {
+					userId: parseInt(id),
+					topic: {
+						type: Type.MASTER,
+					},
+					semester: semesterService.getCurrent(),
+				},
+			},
+			include: {
+				use: true,
+				user: true,
+				use: {
+					include: {
+						topic: true,
+					},
+				},
+			},
+			skip: page * limit,
+			take: limit,
+		});
+		return {
+			data: enrolls,
+			page,
+			limit,
+			total: Math.floor((await this.#client.user.count()) / limit + 0.9),
+		};
 	}
 }
 
