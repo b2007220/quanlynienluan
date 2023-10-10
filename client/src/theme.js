@@ -29,6 +29,7 @@ const theme = createTheme({
 			styleOverrides: {
 				root: {
 					fontFamily: 'Montserrat , sans-serif !important',
+					overflow: 'auto !important',
 				},
 			},
 		},

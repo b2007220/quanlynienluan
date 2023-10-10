@@ -17,6 +17,17 @@ class EnrollService {
 		return newEnroll;
 	}
 
+	async createEnrollFromUse(use, user) {
+		const newEnroll = await this.#client.enroll.create({
+			data: {
+				useId: use.id,
+				userId: user.id,
+			},
+		});
+
+		return newEnroll;
+	}
+
 	async getAll() {
 		const enrolls = await this.#client.enroll.findMany();
 
@@ -83,7 +94,7 @@ class EnrollService {
 	}
 
 	async getFromStudent(id) {
-		const enroll = await this.#client.enroll.findMany({
+		const enroll = await this.#client.enroll.findFirst({
 			where: {
 				userId: parseInt(id),
 				use: {
@@ -109,7 +120,7 @@ class EnrollService {
 				use: true,
 			},
 		});
-
+		console.log(enroll);
 		return enroll.length > 0;
 	}
 	async getByTeacherBasisId(id, page = 0, limit = 10) {

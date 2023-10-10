@@ -1,11 +1,11 @@
 const router = require('express').Router();
 
 const enrollController = require('../controllers/enroll.controller');
+const { route } = require('./auth.route');
 
 router.route('/').post(enrollController.create).get(enrollController.getAll);
-
+router.route('/use').post(enrollController.createEnrollFromUse);
 router.route('/student').get(enrollController.getFromStudent);
-
 router.route('/teacher/:teacherId').get(enrollController.getByTeacherId);
 router.route('/teacher/master/:teacherId').get(enrollController.getByTeacherMasterId);
 router.route('/teacher/basis/:teacherId').get(enrollController.getByTeacherBasisId);

@@ -7,12 +7,13 @@ class UseService {
 		this.#client = new PrismaClient();
 	}
 
-	async create(use) {
+	async create(use) {	
+		const semester = await semesterService.getCurrent();
 		const newUse = await this.#client.use.create({
 			data: {
-				userId: use.user.id,
+				userId: use.userId,
 				topicId: use.topicId,
-				semesterId: use.semesterId,
+				semesterId: semester.id,
 			},
 			include: {
 				topic: true,
@@ -129,7 +130,6 @@ class UseService {
 		};
 	}
 	async getUsesFromIncharge(page = 0, limit = 6, user) {
-		console.log(user);
 		const uses = await this.#client.use.findMany({
 			where: {
 				topic: {
@@ -154,16 +154,16 @@ class UseService {
 			total: Math.floor((await this.#client.use.count()) / limit + 0.9),
 		};
 	}
-	async getUsesFromTeacher(page = 0, limit = 6, info) {
+	async getUsesFromTeacher(page = 0, limit = 6, type, teacherId) {
 		const uses = await this.#client.use.findMany({
 			where: {
 				topic: {
 					isChecked: true,
-					type: info.type,
+					type: type,
 				},
 				semester: semesterService.getCurrent(),
 				userIncharge: {
-					id: parseInt(info.teacherId),
+					id: parseInt(teacherId),
 				},
 			},
 			include: {

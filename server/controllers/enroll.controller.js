@@ -6,15 +6,25 @@ class EnrollController {
 	 */
 	async create(req, res, next) {
 		try {
-			// if ((await enrollService.haveEnroll(req.user.id)) == true) {
-			// 	res.status.json({ message: 'User already enrolled' });
-			// }
 			res.status(201).json(await enrollService.create(req.body));
 		} catch (error) {
 			next(error);
 		}
 	}
-
+	/**
+	 * @type {import("express").RequestHandler}
+	 */
+	async createEnrollFromUse(req, res, next) {
+		try {	
+			if ((await enrollService.haveEnroll(req.user.id)) == true) {
+				res.status(400).json({ message: 'User already have an enroll' });
+			}
+			res.status(201).json(await enrollService.createEnrollFromUse(req.body,req.user));
+		} catch (error) {
+			next(error);
+		}
+		
+	}
 	/**
 	 * @type {import("express").RequestHandler}
 	 *
@@ -166,6 +176,7 @@ class EnrollController {
 			next(error);
 		}
 	}
+
 }
 
 module.exports = new EnrollController();

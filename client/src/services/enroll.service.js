@@ -13,6 +13,12 @@ class EnrollService {
 		return newEnroll;
 	}
 
+	async createEnrollFromUse(use){
+		const newEnroll = await this.#client.post('/use', use);
+
+		return newEnroll;
+	}
+	
 	async getAllEnrolls(page = 0) {
 		const enrolls = await this.#client.get('/', {
 			params: {

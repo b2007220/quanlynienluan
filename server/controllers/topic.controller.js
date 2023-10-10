@@ -1,11 +1,14 @@
 const topicService = require('../services/topic.service');
-
+const enrollService = require('../services/enroll.service');
 class TopicController {
 	/**
 	 * @type {import("express").RequestHandler}
 	 */
 	async create(req, res, next) {
 		try {
+			if ((await enrollService.haveEnroll(req.user.id)) == true) {
+				res.status(400).json({ message: 'User already have an enroll' });
+			}
 			res.status(201).json(await topicService.create(req.body));
 		} catch (error) {
 			next(error);
