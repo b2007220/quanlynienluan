@@ -63,6 +63,16 @@ class ReportService {
 
 		return reports;
 	}
+
+	async getReportByEnrollId(id) {
+		const reports = await this.#client.report.findMany({
+			where: {
+				enrollId: parseInt(id),
+			},
+		});
+
+		return reports;
+	}
 }
 
 module.exports = new ReportService();

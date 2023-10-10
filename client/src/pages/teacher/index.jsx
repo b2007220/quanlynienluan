@@ -13,17 +13,17 @@ import { useSelector } from 'react-redux';
 import enrollService from '../../services/enroll.service';
 import reportService from '../../services/report.service';
 import Pagination from '@mui/material/Pagination';
-
+import dayjs from 'dayjs';
 function Row({ enroll }) {
 	const [open, setOpen] = useState(false);
 	const [reportList, setReportList] = useState([]);
 	const toggleCollapse = () => setOpen(!open);
 
-	// useEffect(() => {
-	// 	reportService.getReportsByEnroll(enroll.id).then((res) => {
-	// 		setReportList(res);
-	// 	});
-	// }, []);
+	useEffect(() => {
+		reportService.getReportsByEnroll(enroll.id).then((res) => {
+			setReportList(res);
+		});
+	}, []);
 
 	return (
 		<>
@@ -65,15 +65,17 @@ function Row({ enroll }) {
 							</TableHead>
 
 							<TableBody>
-								<TableRow>
-									<TableCell></TableCell>
-									<TableCell></TableCell>
-									<TableCell></TableCell>
-									<TableCell></TableCell>
-									<TableCell>
-										<button className={style.btn__edit}>Xem</button>
-									</TableCell>
-								</TableRow>
+								{reportList.map((report) => (
+									<TableRow key={report.id}>
+										<TableCell>{dayjs(report.createdAt).format('HH:mm DD-MM-YYYY')}</TableCell>
+										<TableCell>{dayjs(report.promiseAt).format('HH:mm DD-MM-YYYY')}</TableCell>
+										<TableCell>{report.doneJob}</TableCell>
+										<TableCell>{report.nextJob}</TableCell>
+										<TableCell>
+											<button className={style.btn__edit}>Xem</button>
+										</TableCell>
+									</TableRow>
+								))}
 							</TableBody>
 						</Table>
 					</Collapse>
