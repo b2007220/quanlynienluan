@@ -34,6 +34,9 @@ const theme = createTheme({
 			},
 		},
 	},
+	"&:hover .MuiTableCell-root, &:hover .MuiTableCell-root span.material-icons-outlined": {
+		color: "red"
+	  }
 });
 
 export default theme;

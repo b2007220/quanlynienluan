@@ -108,12 +108,13 @@ class UseService {
 	}
 
 	async getAllInSemester(page = 0, limit = 6) {
+		const semester = await semesterService.getCurrent();
 		const uses = await this.#client.use.findMany({
 			where: {
 				topic: {
 					isChecked: true,
 				},
-				semester: semesterService.getCurrent(),
+				semesterId: semester.id,
 			},
 			include: {
 				topic: true,
@@ -130,12 +131,13 @@ class UseService {
 		};
 	}
 	async getUsesFromIncharge(page = 0, limit = 6, user) {
+		const semester = await semesterService.getCurrent();
 		const uses = await this.#client.use.findMany({
 			where: {
 				topic: {
 					isChecked: true,
 				},
-				semester: semesterService.getCurrent(),
+				semesterId: semester.id,
 				userIncharge: {
 					id: parseInt(user.id),
 				},
@@ -155,13 +157,14 @@ class UseService {
 		};
 	}
 	async getUsesFromTeacher(page = 0, limit = 6, type, teacherId) {
+		const semester = await semesterService.getCurrent();
 		const uses = await this.#client.use.findMany({
 			where: {
 				topic: {
 					isChecked: true,
 					type: type,
 				},
-				semester: semesterService.getCurrent(),
+				semesterId: semester.id,
 				userIncharge: {
 					id: parseInt(teacherId),
 				},

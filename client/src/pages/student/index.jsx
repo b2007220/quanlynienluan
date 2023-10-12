@@ -21,8 +21,9 @@ export default function Student_Home() {
 	const [reportList, setReportList] = useState([]);
 	const [enroll, setEnroll] = useState([]);
 	useEffect(() => {
-		const enroll =  enrollService.getFromStudent();
-		console.log(enroll);
+		reportService.getFromStudent().then((res) => {
+			setEnroll(res);
+		});
 	}, []);
 
 	const handleCreateNewReport = async (values) => {
@@ -62,6 +63,7 @@ export default function Student_Home() {
 							<td>Nội dung đã thực hiện</td>
 							<td>Nội dung công việc tiếp theo</td>
 							<td>Thời hạn thực hiện</td>
+							<td>Chỉnh sửa</td>
 						</tr>
 					</thead>
 					{reportList.map((report) => (
@@ -71,6 +73,7 @@ export default function Student_Home() {
 								<td>{report.doneJob}</td>
 								<td>{report.nextJob}</td>
 								<td>{report.promiseAt}</td>
+								<td></td>
 							</tr>
 						</tbody>
 					))}

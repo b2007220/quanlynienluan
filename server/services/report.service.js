@@ -73,6 +73,23 @@ class ReportService {
 
 		return reports;
 	}
+
+	async getFromStudent(id) {
+		const semester = await semesterService.getCurrent();
+		const reports = await this.#client.report.findMany({
+			where: {
+				enroll: {
+					userId: parseInt(id),
+					semesterId: semester.id,
+				},
+			},
+			include: {
+				enroll: true,
+			},
+		});
+
+		return reports;
+	}
 }
 
 module.exports = new ReportService();

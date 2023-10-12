@@ -6,10 +6,11 @@ class TopicController {
 	 */
 	async create(req, res, next) {
 		try {
-			if ((await enrollService.haveEnroll(req.user.id)) == true) {
-				res.status(400).json({ message: 'User already have an enroll' });
+			if ((await enrollService.haveEnroll(req.user.id)) === true) {
+				res.status(400).json({ message: 'User already has an enrollment' });
+			} else {
+				res.status(201).json(await topicService.create(req.body));
 			}
-			res.status(201).json(await topicService.create(req.body));
 		} catch (error) {
 			next(error);
 		}

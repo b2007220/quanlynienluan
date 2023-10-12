@@ -173,11 +173,14 @@ export default function Enroll() {
 				</Formik>
 				<div className={style.card__container}>
 					{useList.data.map((use) => (
-						<Box sx={{ width: 350, margin: 0.3, borderRadius: 12 }} key={use.id}>
-							<Card variant='outlined' sx={{ height: 200 }}>
-								<CardContent>
+						<Box sx={{ width: 350, margin: 0.3, borderRadius: 12, minHeight: 300 }} key={use.id}>
+							<Card>
+								<CardContent sx={{ minHeight: 260 }}>
 									<Typography variant='h6' component='div'>
 										{use.topic.name}
+									</Typography>
+									<Typography variant='body2' color='text.secondary'>
+										{use.topic.describe}
 									</Typography>
 								</CardContent>
 								<CardActions>

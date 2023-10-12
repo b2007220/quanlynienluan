@@ -94,11 +94,12 @@ class EnrollService {
 	}
 
 	async getFromStudent(id) {
+		const semester = await semesterService.getCurrent();
 		const enroll = await this.#client.enroll.findFirst({
 			where: {
 				userId: parseInt(id),
 				use: {
-					semester: semesterService.getCurrent(),
+					semesterId: semester.id,
 				},
 			},
 			include: {
@@ -109,11 +110,12 @@ class EnrollService {
 		return enroll;
 	}
 	async haveEnroll(id) {
+		const semester = await semesterService.getCurrent();
 		const enroll = await this.#client.enroll.findMany({
 			where: {
 				userId: parseInt(id),
 				use: {
-					semester: semesterService.getCurrent(),
+					semesterId: semester.id,
 				},
 			},
 			include: {
@@ -124,6 +126,7 @@ class EnrollService {
 		return enroll.length > 0;
 	}
 	async getByTeacherBasisId(id, page = 0, limit = 10) {
+		const semester = await semesterService.getCurrent();
 		const enrolls = await this.#client.enroll.findMany({
 			where: {
 				use: {
@@ -131,7 +134,7 @@ class EnrollService {
 					topic: {
 						type: Type.BASIS,
 					},
-					semester: semesterService.getCurrent(),
+					semesterId: semester.id,
 				},
 			},
 			include: {
@@ -154,6 +157,7 @@ class EnrollService {
 		};
 	}
 	async getByTeacherMasterId(id, page = 0, limit = 10) {
+		const semester = await semesterService.getCurrent();
 		const enrolls = await this.#client.enroll.findMany({
 			where: {
 				use: {
@@ -161,7 +165,7 @@ class EnrollService {
 					topic: {
 						type: Type.MASTER,
 					},
-					semester: semesterService.getCurrent(),
+					semesterId: semester.id,
 				},
 			},
 			include: {

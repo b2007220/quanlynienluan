@@ -27,7 +27,13 @@ function Row({ enroll }) {
 
 	return (
 		<>
-			<TableRow>
+			<TableRow
+				sx={{
+					'&:hover .MuiTableCell-root, &:hover .MuiTableCell-root span.material-icons-outlined': {
+						color: '#fff',
+					},
+				}}
+			>
 				<TableCell>
 					<IconButton onClick={toggleCollapse}>
 						<ArrowDropDown
@@ -49,7 +55,13 @@ function Row({ enroll }) {
 				<TableCell>{enroll.user.name}</TableCell>
 			</TableRow>
 
-			<TableRow>
+			<TableRow
+				sx={{
+					'&:hover .MuiTableCell-root, &:hover .MuiTableCell-root span.material-icons-outlined': {
+						color: '#fff',
+					},
+				}}
+			>
 				<TableCell colSpan={6}>
 					<Collapse in={open} timeout='auto' unmountOnExit>
 						<Typography variant='h6' gutterBottom component='div'>
@@ -114,9 +126,22 @@ export default function Teacher_Home() {
 				<div className={style.cardHeader}>
 					<h2>Lịch sử báo cáo</h2>
 				</div>
-				<Table>
+				<Table
+					sx={{
+						'& .MuiTableRow-root:hover': {
+							backgroundColor: '#243b55',
+						},
+					}}
+				>
 					<TableHead>
-						<TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+						<TableRow
+							sx={{
+								'& > *': { borderBottom: 'unset' },
+								'&:hover .MuiTableCell-root, &:hover .MuiTableCell-root span.material-icons-outlined': {
+									color: '#fff',
+								},
+							}}
+						>
 							<TableCell component='th' scope='row'>
 								Họ tên
 							</TableCell>
