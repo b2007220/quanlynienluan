@@ -16,7 +16,10 @@ import Pagination from '@mui/material/Pagination';
 
 function Row({ enroll }) {
 	const [open, setOpen] = useState(false);
-	const [reportList, setReportList] = useState([]);
+	const [page, setPage] = useState(0);
+	const [reportList, setReportList] = useState({
+		data: [],
+	});
 	const toggleCollapse = () => setOpen(!open);
 
 	// useEffect(() => {

@@ -7,7 +7,7 @@ class UseService {
 		this.#client = new PrismaClient();
 	}
 
-	async create(use) {	
+	async create(use) {
 		const semester = await semesterService.getCurrent();
 		const newUse = await this.#client.use.create({
 			data: {
@@ -41,7 +41,7 @@ class UseService {
 			data: uses,
 			page,
 			limit,
-			total: Math.floor((await this.#client.user.count()) / limit + 0.9),
+			total: Math.floor((await this.#client.use.count()) / limit + 0.9),
 		};
 	}
 
@@ -127,7 +127,18 @@ class UseService {
 			data: uses,
 			page,
 			limit,
-			total: Math.floor((await this.#client.user.count()) / limit + 0.9),
+			total: Math.floor(
+				(await this.#client.use.count({
+					where: {
+						topic: {
+							isChecked: true,
+						},
+						semesterId: semester.id,
+					},
+				})) /
+					limit +
+					0.9,
+			),
 		};
 	}
 	async getUsesFromIncharge(page = 0, limit = 6, user) {
@@ -153,7 +164,21 @@ class UseService {
 			data: uses,
 			page,
 			limit,
-			total: Math.floor((await this.#client.use.count()) / limit + 0.9),
+			total: Math.floor(
+				(await this.#client.use.count({
+					where: {
+						topic: {
+							isChecked: true,
+						},
+						semesterId: semester.id,
+						userIncharge: {
+							id: parseInt(user.id),
+						},
+					},
+				})) /
+					limit +
+					0.9,
+			),
 		};
 	}
 	async getUsesFromTeacher(page = 0, limit = 6, type, teacherId) {
@@ -180,7 +205,22 @@ class UseService {
 			data: uses,
 			page,
 			limit,
-			total: Math.floor((await this.#client.use.count()) / limit + 0.9),
+			total: Math.floor(
+				(await this.#client.use.count({
+					where: {
+						topic: {
+							isChecked: true,
+							type: type,
+						},
+						semesterId: semester.id,
+						userIncharge: {
+							id: parseInt(teacherId),
+						},
+					},
+				})) /
+					limit +
+					0.9,
+			),
 		};
 	}
 }

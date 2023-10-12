@@ -27,6 +27,7 @@ export default function Year() {
 	useEffect(() => {
 		yearService.getAllYears(page).then((res) => {
 			setYearList(res);
+			console.log(res);
 		});
 	}, [page]);
 

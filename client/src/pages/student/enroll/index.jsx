@@ -173,9 +173,9 @@ export default function Enroll() {
 				</Formik>
 				<div className={style.card__container}>
 					{useList.data.map((use) => (
-						<Box sx={{ width: 350, margin: 0.3, borderRadius: 12, minHeight: 300 }} key={use.id}>
+						<Box sx={{ width: 350, margin: 0.3, borderRadius: 12 }} key={use.id}>
 							<Card>
-								<CardContent sx={{ minHeight: 260 }}>
+								<CardContent sx={{ height: 320 }}>
 									<Typography variant='h6' component='div'>
 										{use.topic.name}
 									</Typography>
@@ -187,7 +187,11 @@ export default function Enroll() {
 									<Button size='small' href={use.topic.link}>
 										Thêm thông tin đề tài
 									</Button>
-									<Button size='small' onClick={() => handleCreateNewEnroll(use)}>
+									<Button
+										sx={{ marginLeft: 'auto' }}
+										size='small'
+										onClick={() => handleCreateNewEnroll(use)}
+									>
 										Đăng kí
 									</Button>
 								</CardActions>

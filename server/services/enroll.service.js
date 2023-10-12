@@ -65,7 +65,7 @@ class EnrollService {
 		return deletedEnroll;
 	}
 
-	async getByTeacherId(id, page = 0, limit = 10) {
+	async getByTeacherId(id, page = 0, limit = 6) {
 		const enrolls = await this.#client.enroll.findMany({
 			where: {
 				use: {
@@ -89,7 +89,17 @@ class EnrollService {
 			data: enrolls,
 			page,
 			limit,
-			total: Math.floor((await this.#client.user.count()) / limit + 0.9),
+			total: Math.floor(
+				(await this.#client.enroll.count({
+					where: {
+						use: {
+							userId: parseInt(id),
+						},
+					},
+				})) /
+					limit +
+					0.9,
+			),
 		};
 	}
 
@@ -125,7 +135,7 @@ class EnrollService {
 		console.log(enroll);
 		return enroll.length > 0;
 	}
-	async getByTeacherBasisId(id, page = 0, limit = 10) {
+	async getByTeacherBasisId(id, page = 0, limit = 5) {
 		const semester = await semesterService.getCurrent();
 		const enrolls = await this.#client.enroll.findMany({
 			where: {
@@ -153,7 +163,21 @@ class EnrollService {
 			data: enrolls,
 			page,
 			limit,
-			total: Math.floor((await this.#client.user.count()) / limit + 0.9),
+			total: Math.floor(
+				(await this.#client.enroll.count({
+					where: {
+						use: {
+							userId: parseInt(id),
+							topic: {
+								type: Type.BASIS,
+							},
+							semesterId: semester.id,
+						},
+					},
+				})) /
+					limit +
+					0.9,
+			),
 		};
 	}
 	async getByTeacherMasterId(id, page = 0, limit = 10) {
@@ -184,7 +208,21 @@ class EnrollService {
 			data: enrolls,
 			page,
 			limit,
-			total: Math.floor((await this.#client.user.count()) / limit + 0.9),
+			total: Math.floor(
+				(await this.#client.enroll.count({
+					where: {
+						use: {
+							userId: parseInt(id),
+							topic: {
+								type: Type.MASTER,
+							},
+							semesterId: semester.id,
+						},
+					},
+				})) /
+					limit +
+					0.9,
+			),
 		};
 	}
 }

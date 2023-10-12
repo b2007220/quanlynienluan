@@ -102,7 +102,7 @@ class UserService {
 				id: parseInt(id),
 			},
 			data: {
-				role: 'TEACHER',
+				role: Role.TEACHER,
 			},
 		});
 		return updatedUser;
@@ -114,7 +114,7 @@ class UserService {
 				id: parseInt(id),
 			},
 			data: {
-				role: 'STUDENT',
+				role: Role.STUDENT,
 			},
 		});
 		return updatedUser;
@@ -128,6 +128,18 @@ class UserService {
 			data: {
 				password: await passService.hash(password),
 				isSetPassword: true,
+			},
+		});
+		return updatedUser;
+	}
+
+	async changeAdmin(id) {
+		const updatedUser = await this.#client.user.update({
+			where: {
+				id: parseInt(id),
+			},
+			data: {
+				role: Role.ADMIN,
 			},
 		});
 		return updatedUser;

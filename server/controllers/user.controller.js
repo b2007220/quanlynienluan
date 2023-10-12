@@ -152,6 +152,24 @@ class UserController {
 	 * @type {import("express").RequestHandler}
 	 *
 	 */
+
+	async changeAdmin(req, res, next) {
+		try {
+			const user = await userService.getById(req.params.id);
+
+			if (!user) {
+				res.status(404).json({ message: 'User not found' });
+			}
+
+			res.send(await userService.changeAdmin(req.params.id));
+		} catch (error) {
+			next(error);
+		}
+	}
+	/**
+	 * @type {import("express").RequestHandler}
+	 *
+	 */
 	async changePassword(req, res, next) {
 		try {
 			const password = await userService.getPassword(req.user.id);

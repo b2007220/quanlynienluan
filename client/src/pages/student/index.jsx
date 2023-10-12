@@ -3,12 +3,15 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Formik } from 'formik';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
-import authService from '../../services/auth.service';
 import enrollService from '../../services/enroll.service';
 import reportService from '../../services/report.service';
-import semesterService from '../../services/semester.service';
 import style from '../css/style.module.css';
+import dayjs from 'dayjs';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import Pagination from '@mui/material/Pagination';
 
 const yesterday = new Date(Date.now() - 86400000);
 const validationSchema = Yup.object().shape({
@@ -18,30 +21,36 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function Student_Home() {
-	const [reportList, setReportList] = useState([]);
-	const [enroll, setEnroll] = useState([]);
+	const MySwal = withReactContent(Swal);
+	const [page, setPage] = useState(0);
+	const [reportList, setReportList] = useState({
+		data: [],
+	});
+
+	const [enroll, setEnroll] = useState();
+	const user = useSelector((state) => state.user);
 	useEffect(() => {
-		reportService.getFromStudent().then((res) => {
-			setEnroll(res);
+		enrollService.getFromStudent().then((enroll) => {
+			setEnroll(enroll);
+			reportService.getReportsByEnroll(enroll.id, page).then((res) => {
+				setReportList(res);
+				console.log(res);
+			});
 		});
-	}, []);
+	}, [page]);
 
 	const handleCreateNewReport = async (values) => {
 		try {
-			if (enroll.id === undefined) {
-				MySwal.fire({
-					icon: 'error',
-					title: 'Bạn chưa đăng ký đề tài',
-					showConfirmButton: false,
-					timer: 1500,
-				});
-				return;
-			}
-			const newReport = await reportService.createReport(values);
-			setReportList([...userList, newReport]);
+			const newReport = await reportService.createReport({ ...values, enrollId: enroll.id });
+			setReportList((prev) => {
+				return {
+					...prev,
+					data: [...prev.data, newReport],
+				};
+			});
 			MySwal.fire({
 				icon: 'success',
-				title: 'Xóa thành công',
+				title: 'Thêm báo cáo thành công',
 				showConfirmButton: false,
 				timer: 1500,
 			});
@@ -49,7 +58,7 @@ export default function Student_Home() {
 			console.log(error);
 		}
 	};
-
+	if (!user) return null;
 	return (
 		<div className={style.details}>
 			<div className={style.recentOrders}>
@@ -66,18 +75,28 @@ export default function Student_Home() {
 							<td>Chỉnh sửa</td>
 						</tr>
 					</thead>
-					{reportList.map((report) => (
+					{reportList.data.map((report) => (
 						<tbody key={report.id}>
 							<tr>
-								<td>{report.createAt}</td>
+								<td>{dayjs(report.createAt).format('DD-MM-YYYY')}</td>
 								<td>{report.doneJob}</td>
 								<td>{report.nextJob}</td>
-								<td>{report.promiseAt}</td>
+								<td>{dayjs(report.promiseAt).format('DD-MM-YYYY')}</td>
 								<td></td>
 							</tr>
 						</tbody>
 					))}
 				</table>
+				<Pagination
+					count={reportList.total}
+					page={page + 1}
+					onChange={(_, page) => setPage(page - 1)}
+					variant='outlined'
+					shape='rounded'
+					sx={{
+						marginTop: '10px',
+					}}
+				/>
 			</div>
 			<div className={style.recentOrders}>
 				<div className={style.cardHeader}>
@@ -88,12 +107,11 @@ export default function Student_Home() {
 						doneJob: '',
 						nextJob: '',
 						promiseAt: '',
-						enrollId: enroll.id,
 					}}
 					validationSchema={validationSchema}
 					onSubmit={handleCreateNewReport}
 				>
-					{({ values, errors, handleChange, handleSubmit }) => {
+					{({ values, errors, handleChange, handleSubmit, setFieldValue }) => {
 						return (
 							<form onSubmit={handleSubmit}>
 								<div className={style.row100}>
@@ -101,8 +119,9 @@ export default function Student_Home() {
 										<span>Thời hạn</span>
 										<LocalizationProvider dateAdapter={AdapterDayjs}>
 											<DatePicker
-												value={values.endAt}
-												error={!!errors.endAt}
+												value={dayjs(values.promiseAt)}
+												error={!!errors.promiseAt}
+												onChange={(d) => setFieldValue('promiseAt', d)}
 												slotProps={{
 													textField: {
 														variant: 'standard',

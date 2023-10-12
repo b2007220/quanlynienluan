@@ -83,7 +83,8 @@ class ReportController {
 	 */
 	async getReportsByEnroll(req, res, next) {
 		try {
-			const reports = await reportService.getReportByEnrollId(req.params.id);
+			const { page, limit } = req.query;
+			const reports = await reportService.getReportByEnrollId(req.params.id, page, limit);
 
 			if (!reports) {
 				res.status(404).json({ message: 'Report not found' });

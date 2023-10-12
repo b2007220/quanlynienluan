@@ -10,7 +10,7 @@ import withReactContent from 'sweetalert2-react-content';
 import userService from '../../services/user.service';
 import style from '../css/style.module.css';
 import dayjs from 'dayjs';
-
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 export default function Admin_Home() {
 	const MySwal = withReactContent(Swal);
 	const [userList, setUserList] = useState({
@@ -137,6 +137,50 @@ export default function Admin_Home() {
 						swalWithBootstrapButtons.fire(
 							'Thành công!',
 							'Tài khoản đã chuyển đổi thành giáo viên.',
+							'success',
+						);
+					} else if (result.dismiss === Swal.DismissReason.cancel) {
+						swalWithBootstrapButtons.fire('Hủy bỏ', 'Tài khoản không thay đổi.', 'error');
+					}
+				});
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	const handleChangeAdmin = async (user) => {
+		try {
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger',
+				},
+				buttonsStyling: true,
+			});
+
+			await swalWithBootstrapButtons
+				.fire({
+					title: 'Bạn có muốn đổi tài khoản này thành quản trị viên?',
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Có!',
+					cancelButtonText: 'Không!',
+					reverseButtons: true,
+				})
+				.then(async (result) => {
+					if (result.isConfirmed) {
+						const updatedUser = await userService.changeAdmin(user.id);
+						setUserList((prev) => {
+							return {
+								...prev,
+								data: prev.data.map((e) => {
+									if (e.id === updatedUser.id) return updatedUser;
+									return e;
+								}),
+							};
+						});
+						swalWithBootstrapButtons.fire(
+							'Thành công!',
+							'Tài khoản đã chuyển đổi thành quản trị viên.',
 							'success',
 						);
 					} else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -274,6 +318,9 @@ export default function Admin_Home() {
 											<SchoolIcon></SchoolIcon>
 										</IconButton>
 									)}
+									<IconButton onClick={() => handleChangeAdmin(user)} color='primary'>
+										<AdminPanelSettingsIcon></AdminPanelSettingsIcon>
+									</IconButton>
 									<IconButton onClick={() => handleDeleteAccount(user)} color='primary'>
 										<DeleteIcon></DeleteIcon>
 									</IconButton>

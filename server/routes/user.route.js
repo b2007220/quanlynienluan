@@ -8,6 +8,8 @@ router.route('/:id/unactive').patch(userController.unactiveUser);
 
 router.route('/:id/teacher').patch(userController.changeTeacher);
 
+router.route('/:id/admin').patch(userController.changeAdmin);
+
 router.route('/:id/student').patch(userController.changeStudent);
 
 router.route('/password/create').patch(userController.createPassword);

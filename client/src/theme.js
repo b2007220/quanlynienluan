@@ -17,11 +17,7 @@ const theme = createTheme({
 		MuiTableCell: {
 			styleOverrides: {
 				root: {
-					'&:hover': {
-						color: '#fff !important',
-					},
 					fontFamily: 'Montserrat , sans-serif !important',
-					color: '#222 !important',
 				},
 			},
 		},
@@ -34,9 +30,6 @@ const theme = createTheme({
 			},
 		},
 	},
-	"&:hover .MuiTableCell-root, &:hover .MuiTableCell-root span.material-icons-outlined": {
-		color: "red"
-	  }
 });
 
 export default theme;

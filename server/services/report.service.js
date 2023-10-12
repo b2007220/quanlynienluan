@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
-
+const semesterService = require('./semester.service');
+const enrollService = require('./enroll.service');
 class ReportService {
 	#client;
 	constructor() {
@@ -64,24 +65,36 @@ class ReportService {
 		return reports;
 	}
 
-	async getReportByEnrollId(id) {
+	async getReportByEnrollId(id, page = 0, limit = 10) {
 		const reports = await this.#client.report.findMany({
 			where: {
 				enrollId: parseInt(id),
 			},
+			skip: page * limit,
+			take: limit,
 		});
 
-		return reports;
+		return {
+			data: reports,
+			page,
+			limit,
+			total: Math.floor(
+				(await this.#client.report.count({
+					where: {
+						enrollId: parseInt(id),
+					},
+				})) /
+					limit +
+					0.9,
+			),
+		};
 	}
 
 	async getFromStudent(id) {
-		const semester = await semesterService.getCurrent();
+		const enroll = await enrollService.getFromStudent(id);
 		const reports = await this.#client.report.findMany({
 			where: {
-				enroll: {
-					userId: parseInt(id),
-					semesterId: semester.id,
-				},
+				enrollId: enroll.id,
 			},
 			include: {
 				enroll: true,

@@ -115,7 +115,8 @@ class EnrollController {
 	 */
 	async getByTeacherId(req, res, next) {
 		try {
-			const enrolls = await enrollService.getByTeacherId(req.params.teacherId);
+			const { page, limit } = req.query;
+			const enrolls = await enrollService.getByTeacherId(req.params.teacherId, page, limit);
 
 			if (!enrolls) {
 				res.status(404).json({ message: 'Enroll not found' });

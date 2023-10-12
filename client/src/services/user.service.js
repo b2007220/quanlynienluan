@@ -65,6 +65,12 @@ class UserService {
 
 		return updatedUser;
 	}
+
+	async changeAdmin(id) {
+		const updatedUser = await this.#client.patch(`/${id}/admin`);
+
+		return updatedUser;
+	}
 	async changePassword(oldPassword, newPassword) {
 		const updatedUser = await this.#client.patch(`/password/change`, { oldPassword, newPassword });
 

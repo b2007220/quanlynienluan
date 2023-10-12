@@ -16,14 +16,17 @@ import Pagination from '@mui/material/Pagination';
 import dayjs from 'dayjs';
 function Row({ enroll }) {
 	const [open, setOpen] = useState(false);
-	const [reportList, setReportList] = useState([]);
+	const [page, setPage] = useState(0);
+	const [reportList, setReportList] = useState({
+		data: [],
+	});
 	const toggleCollapse = () => setOpen(!open);
 
 	useEffect(() => {
-		reportService.getReportsByEnroll(enroll.id).then((res) => {
+		reportService.getReportsByEnroll(enroll.id, page).then((res) => {
 			setReportList(res);
 		});
-	}, []);
+	}, [page]);
 
 	return (
 		<>
@@ -77,7 +80,7 @@ function Row({ enroll }) {
 							</TableHead>
 
 							<TableBody>
-								{reportList.map((report) => (
+								{reportList.data.map((report) => (
 									<TableRow key={report.id}>
 										<TableCell>{dayjs(report.createdAt).format('HH:mm DD-MM-YYYY')}</TableCell>
 										<TableCell>{dayjs(report.promiseAt).format('HH:mm DD-MM-YYYY')}</TableCell>
@@ -106,21 +109,12 @@ export default function Teacher_Home() {
 	const user = useSelector((state) => state.user);
 
 	useEffect(() => {
-		enrollService.getAllFromTeacher(user.id).then((res) => {
+		enrollService.getAllFromTeacher(user.id, page).then((res) => {
 			setEnrollList(res);
 			console.log(res);
 		});
 	}, [page]);
 
-	// const handleSearchReport = async (userId) => {
-	// 	try {
-	// 		const reports = await reportService.getReportsFromUser(userId);
-	// 		setReportList([]);
-	// 		setReportList(reports);
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// };
 	if (!user) return null;
 	return (
 		<div className={style.detail}>
@@ -163,14 +157,14 @@ export default function Teacher_Home() {
 					</TableBody>
 				</Table>
 				<Pagination
-					sx={{
-						marginTop: '10px',
-					}}
 					count={enrollList.total}
 					page={page + 1}
 					onChange={(_, page) => setPage(page - 1)}
 					variant='outlined'
 					shape='rounded'
+					sx={{
+						marginTop: '10px',
+					}}
 				/>
 			</div>
 		</div>
