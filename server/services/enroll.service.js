@@ -78,6 +78,11 @@ class EnrollService {
 				use: {
 					include: {
 						semester: true,
+						semester:{
+							include:{
+								year: true,
+							},
+						},
 						topic: true,
 					},
 				},
@@ -132,7 +137,6 @@ class EnrollService {
 				use: true,
 			},
 		});
-		console.log(enroll);
 		return enroll.length > 0;
 	}
 	async getByTeacherBasisId(id, page = 0, limit = 5) {

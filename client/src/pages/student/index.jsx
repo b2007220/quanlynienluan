@@ -1,17 +1,20 @@
+import Pagination from '@mui/material/Pagination';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import dayjs from 'dayjs';
 import { Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import * as Yup from 'yup';
 import enrollService from '../../services/enroll.service';
 import reportService from '../../services/report.service';
 import style from '../css/style.module.css';
-import dayjs from 'dayjs';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import Pagination from '@mui/material/Pagination';
+import CreateIcon from '@mui/icons-material/Create';
+import IconButton from '@mui/material/IconButton';
+import ChangeReport from './changereport';
 
 const yesterday = new Date(Date.now() - 86400000);
 const validationSchema = Yup.object().shape({
@@ -27,7 +30,8 @@ export default function Student_Home() {
 		data: [],
 	});
 
-	const [enroll, setEnroll] = useState();
+	const [enroll, setEnroll] = useState(null);
+	const [editReport, setEditReport] = useState(null);
 	const user = useSelector((state) => state.user);
 	useEffect(() => {
 		enrollService.getFromStudent().then((enroll) => {
@@ -82,7 +86,11 @@ export default function Student_Home() {
 								<td>{report.doneJob}</td>
 								<td>{report.nextJob}</td>
 								<td>{dayjs(report.promiseAt).format('DD-MM-YYYY')}</td>
-								<td></td>
+								<td>
+									<IconButton onClick={() => setEditReport(report)} color='primary'>
+										<CreateIcon></CreateIcon>
+									</IconButton>
+								</td>
 							</tr>
 						</tbody>
 					))}
@@ -117,18 +125,16 @@ export default function Student_Home() {
 								<div className={style.row100}>
 									<div className={style.input__box}>
 										<span>Thời hạn</span>
-										<LocalizationProvider dateAdapter={AdapterDayjs}>
-											<DatePicker
-												value={dayjs(values.promiseAt)}
-												error={!!errors.promiseAt}
-												onChange={(d) => setFieldValue('promiseAt', d)}
-												slotProps={{
-													textField: {
-														variant: 'standard',
-													},
-												}}
-											/>
-										</LocalizationProvider>
+										<DatePicker
+											value={dayjs(values.promiseAt)}
+											error={!!errors.promiseAt}
+											onChange={(d) => setFieldValue('promiseAt', d)}
+											slotProps={{
+												textField: {
+													variant: 'standard',
+												},
+											}}
+										/>
 									</div>
 								</div>
 								<div className={style.row100}>
@@ -157,7 +163,7 @@ export default function Student_Home() {
 								</div>
 								<div className={style.row100}>
 									<div className={style.input__box}>
-										<input type='submit' value='Cập nhật' onClick={handleSubmit}></input>
+										<input type='submit' value='Thêm báo cáo' onClick={handleSubmit}></input>
 									</div>
 								</div>
 							</form>
@@ -165,6 +171,12 @@ export default function Student_Home() {
 					}}
 				</Formik>
 			</div>
+			<ChangeReport
+				report={editReport}
+				setReportList={setReportList}
+				open={!!editReport}
+				onClose={() => setEditReport(null)}
+			/>
 		</div>
 	);
 }

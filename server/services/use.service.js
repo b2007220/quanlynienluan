@@ -22,7 +22,6 @@ class UseService {
 
 		return newUse;
 	}
-
 	async getAll(page = 0, limit = 6) {
 		const uses = await this.#client.use.findMany({
 			where: {

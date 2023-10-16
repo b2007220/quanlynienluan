@@ -14,7 +14,12 @@ import enrollService from '../../services/enroll.service';
 import reportService from '../../services/report.service';
 import Pagination from '@mui/material/Pagination';
 import dayjs from 'dayjs';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
+import useService from '../../services/use.service';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 function Row({ enroll }) {
+	const MySwal = withReactContent(Swal);
 	const [open, setOpen] = useState(false);
 	const [page, setPage] = useState(0);
 	const [reportList, setReportList] = useState({
@@ -27,7 +32,24 @@ function Row({ enroll }) {
 			setReportList(res);
 		});
 	}, [page]);
-
+	const handleReuse = async (use) => {
+		try {
+			await useService.createUse(use);
+			MySwal.fire({
+				icon: 'success',
+				title: 'Thêm đề tài sử dụng thành công',
+				showConfirmButton: false,
+				timer: 1500,
+			});
+		} catch (error) {
+			MySwal.fire({
+				icon: 'error',
+				title: 'Đề tài đã có ở học kì này',
+				showConfirmButton: false,
+				timer: 1500,
+			});
+		}
+	};
 	return (
 		<>
 			<TableRow
@@ -48,14 +70,21 @@ function Row({ enroll }) {
 					</IconButton>
 					{enroll.user.fullName}
 				</TableCell>
-				<TableCell>{enroll.user.schoolId}</TableCell>
-				<TableCell></TableCell>
+				<TableCell>{enroll.user.schoolId ? enroll.user.schoolId : 'Chưa có'}</TableCell>
+				<TableCell>{enroll.use.topic.name}</TableCell>
 				{enroll.state === 'WAIT' && <TableCell>Chờ duyệt</TableCell>}
 				{enroll.state === 'IN_PROCESS' && <TableCell>Đang thực hiện</TableCell>}
 				{enroll.state === 'DONE' && <TableCell>Hoàn thành</TableCell>}
 				{enroll.state === 'PROPOSE' && <TableCell>Đề xuất</TableCell>}
-				<TableCell>{enroll.use.semesterId}</TableCell>
-				<TableCell>{enroll.user.name}</TableCell>
+				{enroll.use.semester.name === 'FIRST' && <TableCell>Học kì 1</TableCell>}
+				{enroll.use.semester.name === 'SECOND' && <TableCell>Học kì 2</TableCell>}
+				{enroll.use.semester.name === 'SUMMER' && <TableCell>Học kì hè</TableCell>}
+				<TableCell>{enroll.use.semester.year.name}</TableCell>
+				<TableCell>
+					<IconButton onClick={() => handleReuse(enroll.use)} color='primary'>
+						<AutorenewIcon></AutorenewIcon>
+					</IconButton>
+				</TableCell>
 			</TableRow>
 
 			<TableRow
@@ -76,19 +105,15 @@ function Row({ enroll }) {
 								<TableCell>Nội dung</TableCell>
 								<TableCell>File</TableCell>
 								<TableCell>Trạng thái</TableCell>
-								<TableCell></TableCell>
 							</TableHead>
 
 							<TableBody>
 								{reportList.data.map((report) => (
 									<TableRow key={report.id}>
-										<TableCell>{dayjs(report.createdAt).format('HH:mm DD-MM-YYYY')}</TableCell>
-										<TableCell>{dayjs(report.promiseAt).format('HH:mm DD-MM-YYYY')}</TableCell>
+										<TableCell>{dayjs(report.createdAt).format('DD-MM-YYYY')}</TableCell>
+										<TableCell>{dayjs(report.promiseAt).format('DD-MM-YYYY')}</TableCell>
 										<TableCell>{report.doneJob}</TableCell>
 										<TableCell>{report.nextJob}</TableCell>
-										<TableCell>
-											<button className={style.btn__edit}>Xem</button>
-										</TableCell>
 									</TableRow>
 								))}
 							</TableBody>
@@ -144,8 +169,8 @@ export default function Teacher_Home() {
 							<TableCell>MSSV</TableCell>
 							<TableCell>Đề tài</TableCell>
 							<TableCell>Loại đề tài</TableCell>
-							<TableCell>Năm học</TableCell>
 							<TableCell>Học kỳ</TableCell>
+							<TableCell>Năm học</TableCell>
 							<TableCell>Thao tác</TableCell>
 						</TableRow>
 					</TableHead>

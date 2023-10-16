@@ -13,17 +13,21 @@ import {
 	ListItemIcon,
 	ListItemText,
 	SwipeableDrawer,
+	Container,
 } from '@mui/material';
 import { Fragment, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+
 const Layout = () => {
 	const navigate = useNavigate();
 
 	const [state, setState] = useState({
 		left: false,
 	});
-	
+
 	const user = useSelector((state) => state.user);
 
 	if (!user) return null;
@@ -39,8 +43,6 @@ const Layout = () => {
 
 		setState({ ...state, [anchor]: open });
 	};
-
-	
 
 	const list = (anchor) => (
 		<Box
@@ -132,26 +134,29 @@ const Layout = () => {
 		</Box>
 	);
 	return (
-		<>
-			<div>
-				{['left'].map((anchor) => (
-					<Fragment key={anchor}>
-						<Button onClick={toggleDrawer(anchor, true)}>
-							<DensityMediumIcon></DensityMediumIcon>
-						</Button>
-						<SwipeableDrawer
-							anchor={anchor}
-							open={state[anchor]}
-							onClose={toggleDrawer(anchor, false)}
-							onOpen={toggleDrawer(anchor, true)}
-						>
-							{list(anchor)}
-						</SwipeableDrawer>
-					</Fragment>
-				))}
-			</div>
+		<LocalizationProvider dateAdapter={AdapterDayjs}>
+			<Container maxWidth='100%'>
+				<div>
+					{['left'].map((anchor) => (
+						<Fragment key={anchor}>
+							<Button onClick={toggleDrawer(anchor, true)}>
+								<DensityMediumIcon></DensityMediumIcon>
+							</Button>
+							<SwipeableDrawer
+								anchor={anchor}
+								open={state[anchor]}
+								onClose={toggleDrawer(anchor, false)}
+								onOpen={toggleDrawer(anchor, true)}
+							>
+								{list(anchor)}
+							</SwipeableDrawer>
+						</Fragment>
+					))}
+				</div>
+			</Container>
+
 			<Outlet />
-		</>
+		</LocalizationProvider>
 	);
 };
 

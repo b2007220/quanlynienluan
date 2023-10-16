@@ -1,3 +1,4 @@
+const semesterService = require('../services/semester.service');
 const useService = require('../services/use.service');
 
 class UseController {
@@ -6,12 +7,17 @@ class UseController {
 	 */
 	async create(req, res, next) {
 		try {
-			res.status(201).json(await useService.create(req.body));
+			const currentSemester = await semesterService.getCurrent();
+			if (currentSemester.id !== req.body.semesterId) {
+				res.status(201).json(await useService.create(req.body));
+			}
+			else{
+				res.status(400).json({message: "Use have already been created in this semester."});
+			}
 		} catch (error) {
 			next(error);
 		}
 	}
-
 	/**
 	 * @type {import("express").RequestHandler}
 	 *
@@ -106,8 +112,14 @@ class UseController {
 	 */
 	async getUsesFromTeacher(req, res, next) {
 		try {
-			
-			res.status(200).json(await useService.getUsesFromTeacher( req.query.page, req.query.limit,req.query.type, req.query.teacherId,));
+			res.status(200).json(
+				await useService.getUsesFromTeacher(
+					req.query.page,
+					req.query.limit,
+					req.query.type,
+					req.query.teacherId,
+				),
+			);
 		} catch (error) {
 			next(error);
 		}
