@@ -1,20 +1,19 @@
-import style from '../../css/style.module.css';
-import { useEffect, useState } from 'react';
-import authService from '../../../services/auth.service';
-import { Select, MenuItem, FormControl } from '@mui/material';
-import majorService from '../../../services/major.service';
-import userService from '../../../services/user.service';
+import { FormControl, MenuItem, Select } from '@mui/material';
 import { Formik } from 'formik';
-import * as Yup from 'yup';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import { useSelector } from 'react-redux';
+import * as Yup from 'yup';
+import majorService from '../../../services/major.service';
+import userService from '../../../services/user.service';
+import style from '../../css/style.module.css';
 
 const validationSchema = Yup.object().shape({
 	fullName: Yup.string().required('Fullname is required'),
 	gender: Yup.string().required().oneOf(['MALE', 'FEMALE', 'HIDDEN']),
 	schoolId: Yup.string().required('SchoolID is required'),
-	// majorId: Yup.number().required('Major is required'),
+	majorId: Yup.number().required('Major is required'),
 	course: Yup.number().required('Course is required'),
 });
 const validationSchemaChange = Yup.object().shape({
@@ -92,10 +91,10 @@ export default function Info() {
 					initialValues={
 						user || { fullName: '', majorId: '', email: '', course: '', gender: '', studentId: '' }
 					}
-					// validationSchema={validationSchema}
+					validationSchema={validationSchema}
 					onSubmit={handleInfoChange}
 				>
-					{({ values, errors, setFieldValue, handleChange, handleSubmit }) => {
+					{({ values, errors, handleChange, handleSubmit }) => {
 						return (
 							<form onSubmit={handleSubmit}>
 								<div className={style.row50}>
@@ -116,7 +115,7 @@ export default function Info() {
 											<Select
 												name='majorId'
 												value={values.majorId}
-												error={!!errors.fullName}
+												error={!!errors.majorId}
 												onChange={handleChange}
 												sx={{
 													borderRadius: '12px',
@@ -125,7 +124,7 @@ export default function Info() {
 											>
 												{majorList.data.map((major) => (
 													<MenuItem key={major.id} value={major.id}>
-														{major.majorName}
+														{major.code}-{major.majorName}
 													</MenuItem>
 												))}
 											</Select>
@@ -165,7 +164,7 @@ export default function Info() {
 											className={style.input__box_input}
 											type='number'
 											min='42'
-											name='khoa'
+											name='course'
 											value={values.course}
 											onChange={handleChange}
 											required
@@ -176,10 +175,7 @@ export default function Info() {
 										<Select
 											value={values.gender}
 											name='gender'
-											displayEmpty
-											onChange={(event) => {
-												setFieldValue('gender', event.target.value);
-											}}
+											onChange={handleChange}
 											sx={{
 												borderRadius: '12px',
 												height: '37px',

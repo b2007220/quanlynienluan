@@ -14,6 +14,7 @@ import * as Yup from 'yup';
 import semesterService from '../../../services/semester.service';
 import yearService from '../../../services/year.service';
 import ChangeSemester from './changesemeter';
+
 const validationSchema = Yup.object().shape({
 	name: Yup.string().oneOf(['FIRST', 'SECOND', 'SUMMER']),
 	startAt: Yup.date().required(),
@@ -245,7 +246,6 @@ export default function Semester() {
 												onChange={handleChange}
 												sx={{
 													borderRadius: '12px',
-
 													height: '45px',
 												}}
 											>

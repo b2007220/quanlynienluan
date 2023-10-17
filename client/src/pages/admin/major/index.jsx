@@ -138,7 +138,7 @@ export default function Major() {
 								</div>
 								<div className={style.row100}>
 									<div className={style.input__box}>
-										<span>Mã ngành</span>
+										<span>Tên ngành</span>
 										<input
 											className={style.input__box_input}
 											type='input'
