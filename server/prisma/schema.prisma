@@ -34,7 +34,7 @@ model User {
   role          Role     @default(STUDENT)
   course        Int?
   schoolId      String?  @unique
-  major         Major?   @relation(fields: [majorId], references: [id])
+  major         Major?   @relation(fields: [majorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   majorId       Int?
   enrolls       Enroll[]
   uses          Use[]
@@ -73,20 +73,20 @@ model Topic {
 
 model Use {
   id           Int       @id @default(autoincrement())
-  topic        Topic?    @relation(fields: [topicId], references: [id])
+  topic        Topic?    @relation(fields: [topicId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   topicId      Int
   enrolls      Enroll[]
-  userIncharge User?     @relation(fields: [userId], references: [id])
+  userIncharge User?     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId       Int
-  semester     Semester? @relation(fields: [semesterId], references: [id])
+  semester     Semester? @relation(fields: [semesterId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   semesterId   Int?
 }
 
 model Enroll {
   id      Int      @id @default(autoincrement())
-  user    User?    @relation(fields: [userId], references: [id])
+  user    User?    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId  Int
-  use     Use?     @relation(fields: [useId], references: [id])
+  use     Use?     @relation(fields: [useId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   useId   Int
   reports Report[]
   state   State    @default(WAIT)
@@ -98,7 +98,7 @@ model Report {
   nextJob   String
   createdAt DateTime @default(now())
   promiseAt DateTime
-  enroll    Enroll   @relation(fields: [enrollId], references: [id])
+  enroll    Enroll   @relation(fields: [enrollId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   enrollId  Int
 }
 
@@ -119,7 +119,7 @@ model Semester {
   name      SemesterName
   startAt   DateTime
   endAt     DateTime
-  year      Year?        @relation(fields: [yearId], references: [id])
+  year      Year?        @relation(fields: [yearId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   yearId    Int?
   uses      Use[]
   isCurrent Boolean      @default(false)
