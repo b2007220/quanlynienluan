@@ -183,7 +183,6 @@ export default function Info() {
 											sx={{
 												borderRadius: '12px',
 												height: '37px',
-
 											}}
 										>
 											<MenuItem value='MALE'>Nam</MenuItem>
@@ -192,7 +191,7 @@ export default function Info() {
 										</Select>
 									</div>
 								</div>
-								
+
 								<div className={style.row100}>
 									<div className={style.input__box}>
 										<input
