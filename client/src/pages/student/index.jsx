@@ -47,19 +47,27 @@ export default function Student_Home() {
 	if (!user) return null;
 	const handleCreateNewReport = async (values) => {
 		try {
-			const newReport = await reportService.createReport({ ...values, enrollId: enroll.id });
-			setReportList((prev) => {
-				return {
-					...prev,
-					data: [...prev.data, newReport],
-				};
-			});
-			MySwal.fire({
-				icon: 'success',
-				title: 'Thêm báo cáo thành công',
-				showConfirmButton: false,
-				timer: 1500,
-			});
+			if (enroll.state !== 'WAIT') {
+				const newReport = await reportService.createReport({ ...values, enrollId: enroll.id });
+				setReportList((prev) => {
+					return {
+						...prev,
+						data: [...prev.data, newReport],
+					};
+				});
+				MySwal.fire({
+					icon: 'success',
+					title: 'Thêm báo cáo thành công',
+					showConfirmButton: false,
+					timer: 1500,
+				});
+			} else {
+				MySwal.fire({
+					icon: 'error',
+					title: 'Thêm báo cáo thất bại',
+					text: 'Đề tài chưa được duyệt',
+				});
+			}
 		} catch (error) {
 			console.log(error);
 		}
