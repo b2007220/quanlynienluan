@@ -30,9 +30,10 @@ export default function Student_Home() {
 		data: [],
 	});
 
-	const [enroll, setEnroll] = useState(null);
+	const [enroll, setEnroll] = useState();
 	const [editReport, setEditReport] = useState(null);
 	const user = useSelector((state) => state.user);
+
 	useEffect(() => {
 		enrollService.getFromStudent().then((enroll) => {
 			setEnroll(enroll);
@@ -41,8 +42,9 @@ export default function Student_Home() {
 				console.log(res);
 			});
 		});
+		console.log(enroll);
 	}, [page]);
-
+	if (!user) return null;
 	const handleCreateNewReport = async (values) => {
 		try {
 			const newReport = await reportService.createReport({ ...values, enrollId: enroll.id });
@@ -62,12 +64,13 @@ export default function Student_Home() {
 			console.log(error);
 		}
 	};
-	if (!user) return null;
+
 	return (
 		<div className={style.details}>
 			<div className={style.recentOrders}>
 				<div className={style.cardHeader}>
 					<h2>Lịch sử báo cáo</h2>
+					{/* <h3>{enroll.use.topic.name}</h3> */}
 				</div>
 				<table>
 					<thead>
@@ -129,11 +132,6 @@ export default function Student_Home() {
 											value={dayjs(values.promiseAt)}
 											error={!!errors.promiseAt}
 											onChange={(d) => setFieldValue('promiseAt', d)}
-											slotProps={{
-												textField: {
-													variant: 'standard',
-												},
-											}}
 										/>
 									</div>
 								</div>

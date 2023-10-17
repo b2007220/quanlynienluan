@@ -221,7 +221,6 @@ export default function Semester() {
 											value={values.startAt}
 											onChange={(d) => setFieldValue('startAt', d)}
 											error={!!errors.startAt}
-											slotProps={{ textField: { variant: 'standard' } }}
 										/>
 									</div>
 								</div>
@@ -232,11 +231,6 @@ export default function Semester() {
 											value={values.endAt}
 											onChange={(d) => setFieldValue('endAt', d)}
 											error={!!errors.endAt}
-											slotProps={{
-												textField: {
-													variant: 'standard',
-												},
-											}}
 										/>
 									</div>
 								</div>
@@ -266,7 +260,9 @@ export default function Semester() {
 								</div>
 								<div className={style.row100}>
 									<div className={style.input__box}>
-										<input type='submit' value='Tạo học kì' onClick={handleSubmit}></input>
+										<input 
+										className={style.input__box_input}
+										type='submit' value='Tạo học kì' onClick={handleSubmit}></input>
 									</div>
 								</div>
 							</form>

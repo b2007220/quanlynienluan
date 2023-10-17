@@ -1,4 +1,5 @@
 const enrollService = require('../services/enroll.service');
+const topicService = require('../services/topic.service');
 
 class EnrollController {
 	/**
@@ -79,13 +80,16 @@ class EnrollController {
 	 */
 	async deleteById(req, res, next) {
 		try {
+			console.log(req.params.id);
 			const enroll = await enrollService.getById(req.params.id);
-
 			if (!enroll) {
 				res.status(404).json({ message: 'Enroll not found' });
 			}
-
-			res.send(await enrollService.delete(req.params.id));
+			if (enroll.state === 'PROPOSE') {
+				res.send(await topicService.delete(enroll.use.topicId));
+			} else {
+				res.send(await enrollService.delete(req.params.id));
+			}
 		} catch (error) {
 			next(error);
 		}

@@ -215,7 +215,12 @@ export default function Use() {
 								</div>
 								<div className={style.row100}>
 									<div className={style.input__box}>
-										<input type='submit' value='Thêm' onClick={handleSubmit}></input>
+										<input
+											className={style.input__box_input}
+											type='submit'
+											value='Thêm'
+											onClick={handleSubmit}
+										></input>
 									</div>
 								</div>
 							</form>

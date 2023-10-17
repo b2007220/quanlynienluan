@@ -72,13 +72,22 @@ function Row({ enroll }) {
 				</TableCell>
 				<TableCell>{enroll.user.schoolId ? enroll.user.schoolId : 'Chưa có'}</TableCell>
 				<TableCell>{enroll.use.topic.name}</TableCell>
-				{enroll.state === 'WAIT' && <TableCell>Chờ duyệt</TableCell>}
-				{enroll.state === 'IN_PROCESS' && <TableCell>Đang thực hiện</TableCell>}
-				{enroll.state === 'DONE' && <TableCell>Hoàn thành</TableCell>}
-				{enroll.state === 'PROPOSE' && <TableCell>Đề xuất</TableCell>}
-				{enroll.use.semester.name === 'FIRST' && <TableCell>Học kì 1</TableCell>}
-				{enroll.use.semester.name === 'SECOND' && <TableCell>Học kì 2</TableCell>}
-				{enroll.use.semester.name === 'SUMMER' && <TableCell>Học kì hè</TableCell>}
+				{enroll.state === 'WAIT' ? (
+					<TableCell>Chờ duyệt</TableCell>
+				) : enroll.state === 'IN_PROCESS' ? (
+					<TableCell>Đang thực hiện</TableCell>
+				) : enroll.state === 'DONE' ? (
+					<TableCell>Hoàn thành</TableCell>
+				) : (
+					<TableCell>Đề xuất</TableCell>
+				)}
+				{enroll.use.semester.name === 'FIRST' ? (
+					<TableCell>Học kì 1</TableCell>
+				) : enroll.use.semester.name === 'SECOND' ? (
+					<TableCell>Học kì 2</TableCell>
+				) : (
+					<TableCell>Học kì hè</TableCell>
+				)}
 				<TableCell>{enroll.use.semester.year.name}</TableCell>
 				<TableCell>
 					<IconButton onClick={() => handleReuse(enroll.use)} color='primary'>

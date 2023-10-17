@@ -47,7 +47,6 @@ export default function Info() {
 	}, []);
 
 	const user = useSelector((state) => state.user);
-	
 
 	const handleInfoChange = async () => {
 		try {
@@ -110,6 +109,7 @@ export default function Info() {
 									<div className={style.input__box}>
 										<span>Họ tên</span>
 										<input
+											className={style.input__box_input}
 											type='text'
 											autoComplete='off'
 											value={values.fullName}
@@ -143,6 +143,7 @@ export default function Info() {
 									<div className={style.input__box}>
 										<span>Email</span>
 										<input
+											className={style.input__box_input}
 											type='email'
 											name='email'
 											value={values.email}
@@ -154,6 +155,7 @@ export default function Info() {
 									<div className={style.input__box}>
 										<span>MGV</span>
 										<input
+											className={style.input__box_input}
 											type='text'
 											name='studentId'
 											required
@@ -174,13 +176,7 @@ export default function Info() {
 												setFieldValue('gender', event.target.value);
 											}}
 											sx={{
-												padding: '10px',
-												outline: 'none',
-												border: '1px solid var(--black1)',
-												resize: 'none',
 												borderRadius: '12px',
-												marginBottom: '10px',
-												fontSize: '1.1em',
 												height: '37px',
 											}}
 										>
@@ -192,7 +188,12 @@ export default function Info() {
 								</div>
 								<div className={style.row100}>
 									<div className={style.input__box}>
-										<input type='submit' value='Cập nhật' onClick={handleSubmit}></input>
+										<input
+											className={style.input__box_input}
+											type='submit'
+											value='Cập nhật'
+											onClick={handleSubmit}
+										></input>
 									</div>
 								</div>
 							</form>
@@ -221,6 +222,7 @@ export default function Info() {
 											<div className={style.input__box}>
 												<span>Mật khẩu cũ</span>
 												<input
+													className={style.input__box_input}
 													type='text'
 													autoComplete='off'
 													onChange={handleChange}
@@ -234,6 +236,7 @@ export default function Info() {
 											<div className={style.input__box}>
 												<span>Mật khẩu mới</span>
 												<input
+													className={style.input__box_input}
 													type='text'
 													autoComplete='off'
 													required
@@ -246,7 +249,12 @@ export default function Info() {
 
 										<div className={style.row100}>
 											<div className={style.input__box}>
-												<input type='submit' value='Cập nhật' onClick={handleSubmit}></input>
+												<input
+													className={style.input__box_input}
+													type='submit'
+													value='Cập nhật'
+													onClick={handleSubmit}
+												></input>
 											</div>
 										</div>
 									</form>
@@ -276,6 +284,7 @@ export default function Info() {
 											<div className={style.input__box}>
 												<span>Mật khẩu</span>
 												<input
+													className={style.input__box_input}
 													name='password'
 													error={!!errors.password}
 													onChange={handleChange}
@@ -287,6 +296,7 @@ export default function Info() {
 											<div className={style.input__box}>
 												<span>Xác nhận mật khẩu</span>
 												<input
+													className={style.input__box_input}
 													name='confirmPassword'
 													error={!!errors.confirmPassword}
 													onChange={handleChange}
@@ -298,6 +308,7 @@ export default function Info() {
 										<div className={style.row100}>
 											<div className={style.input__box}>
 												<input
+													className={style.input__box_input}
 													type='submit'
 													value='Tạo mật khẩu'
 													onClick={handleSubmit}

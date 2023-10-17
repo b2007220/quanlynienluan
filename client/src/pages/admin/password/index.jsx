@@ -92,6 +92,7 @@ export default function Password() {
 											<div className={style.input__box}>
 												<span>Mật khẩu cũ</span>
 												<input
+													className={style.input__box_input}
 													type='password'
 													autoComplete='off'
 													onChange={handleChange}
@@ -105,6 +106,7 @@ export default function Password() {
 											<div className={style.input__box}>
 												<span>Mật khẩu mới</span>
 												<input
+													className={style.input__box_input}
 													type='password'
 													autoComplete='off'
 													required
@@ -117,7 +119,12 @@ export default function Password() {
 
 										<div className={style.row50}>
 											<div className={style.input__box}>
-												<input type='submit' value='Cập nhật' onClick={handleSubmit}></input>
+												<input
+													className={style.input__box_input}
+													type='submit'
+													value='Cập nhật'
+													onClick={handleSubmit}
+												></input>
 											</div>
 										</div>
 									</form>
@@ -147,6 +154,7 @@ export default function Password() {
 											<div className={style.input__box}>
 												<span>Mật khẩu</span>
 												<input
+													className={style.input__box_input}
 													name='password'
 													type='password'
 													onChange={handleChange}
@@ -158,6 +166,7 @@ export default function Password() {
 											<div className={style.input__box}>
 												<span>Xác nhận mật khẩu</span>
 												<input
+													className={style.input__box_input}
 													name='confirmPassword'
 													onChange={handleChange}
 													type='password'
@@ -169,6 +178,7 @@ export default function Password() {
 										<div className={style.row50}>
 											<div className={style.input__box}>
 												<input
+													className={style.input__box_input}
 													type='submit'
 													value='Tạo mật khẩu'
 													onClick={handleSubmit}

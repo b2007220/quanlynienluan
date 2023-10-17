@@ -164,7 +164,12 @@ export default function Enroll() {
 								</div>
 								<div className={style.row100}>
 									<div className={style.input__box}>
-										<input type='submit' value='Tìm kiếm' onClick={handleSubmit} />
+										<input
+											className={style.input__box_input}
+											type='submit'
+											value='Tìm kiếm'
+											onClick={handleSubmit}
+										/>
 									</div>
 								</div>
 							</form>
@@ -265,6 +270,7 @@ export default function Enroll() {
 												sx={{
 													borderRadius: '12px',
 													height: '37px',
+													
 												}}
 												error={!!errors.teacherId}
 												value={values.teacherId}
@@ -305,7 +311,12 @@ export default function Enroll() {
 								</div>
 								<div className={style.row100}>
 									<div className={style.input__box}>
-										<input type='submit' value='Đăng kí' onClick={handleSubmit}></input>
+										<input
+											className={style.input__box_input}
+											type='submit'
+											value='Đăng kí'
+											onClick={handleSubmit}
+										></input>
 									</div>
 								</div>
 							</form>

@@ -125,6 +125,7 @@ export default function Year() {
 									<div className={style.input__box}>
 										<span>Tên năm học</span>
 										<input
+											className={style.input__box_input}
 											type='input'
 											onChange={handleChange}
 											value={values.name}
@@ -135,7 +136,9 @@ export default function Year() {
 								</div>
 								<div className={style.row100}>
 									<div className={style.input__box}>
-										<input type='submit' value='Tạo ngành học' onClick={handleSubmit}></input>
+										<input 
+										className={style.input__box_input}
+										type='submit' value='Tạo ngành học' onClick={handleSubmit}></input>
 									</div>
 								</div>
 							</form>

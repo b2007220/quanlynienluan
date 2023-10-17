@@ -49,6 +49,9 @@ class SemesterService {
 				id: parseInt(id),
 			},
 			data: semester,
+			include: {
+				year: true,
+			},
 		});
 
 		return updatedsemester;

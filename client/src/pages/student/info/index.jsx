@@ -8,11 +8,13 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { useSelector } from 'react-redux';
+
 const validationSchema = Yup.object().shape({
 	fullName: Yup.string().required('Fullname is required'),
 	gender: Yup.string().required().oneOf(['MALE', 'FEMALE', 'HIDDEN']),
 	schoolId: Yup.string().required('SchoolID is required'),
-	majorId: Yup.number().required('Major is required'),
+	// majorId: Yup.number().required('Major is required'),
 	course: Yup.number().required('Course is required'),
 });
 const validationSchemaChange = Yup.object().shape({
@@ -26,36 +28,28 @@ const validationSchemaCreate = Yup.object().shape({
 
 export default function Info() {
 	const MySwal = withReactContent(Swal);
-	const [userInfo, setUserInfo] = useState({});
 	const [majorList, setMajorList] = useState({
 		data: [],
 	});
+	const user = useSelector((state) => state.user);
 	useEffect(() => {
-		authService
-			.getUserProfile()
-			.then((user) => {
-				setUserInfo(user);
-				majorService.getAllMajors().then((res) => {
-					setMajorList(res);
-				});
-				console.log(userInfo);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+		majorService.getAllMajors().then((res) => {
+			setMajorList(res);
+		});
 	}, []);
-
-	const handleInfoChange = async () => {
+	if (!user) return null;
+	const handleInfoChange = async (values) => {
 		try {
-			const updatedUserInfo = await userService.updateUserById(userInfo.id, userInfo);
-			setUserInfo(updatedUserInfo);
+			console.log(values);
+			// const updatedUserInfo = await userService.updateUserById(user.id, values);
+			// setUserInfo(updatedUserInfo);
 		} catch (error) {
 			console.log(error);
 		}
 	};
 	const handlePasswordChange = async (values) => {
 		try {
-			await userService.changePassword(userInfo.id, values.oldPassword, values.newPassword);
+			await userService.changePassword(user.id, values.oldPassword, values.newPassword);
 			MySwal.fire({
 				icon: 'success',
 				title: 'Đặt mật khẩu thành công',
@@ -76,7 +70,7 @@ export default function Info() {
 					timer: 1500,
 				});
 			} else {
-				const user = await userService.createPassword(userInfo.id, values.password);
+				const user = await userService.createPassword(user.id, values.password);
 				MySwal.fire({
 					icon: 'success',
 					title: 'Đặt mật khẩu thành công',
@@ -96,9 +90,9 @@ export default function Info() {
 				</div>
 				<Formik
 					initialValues={
-						userInfo || { fullName: '', majorId: '', email: '', course: '', gender: '', studentId: '' }
+						user || { fullName: '', majorId: '', email: '', course: '', gender: '', studentId: '' }
 					}
-					validationSchema={validationSchema}
+					// validationSchema={validationSchema}
 					onSubmit={handleInfoChange}
 				>
 					{({ values, errors, setFieldValue, handleChange, handleSubmit }) => {
@@ -108,6 +102,7 @@ export default function Info() {
 									<div className={style.input__box}>
 										<span>Họ tên</span>
 										<input
+											className={style.input__box_input}
 											type='text'
 											autoComplete='off'
 											value={values.fullName}
@@ -141,6 +136,7 @@ export default function Info() {
 									<div className={style.input__box}>
 										<span>Email</span>
 										<input
+											className={style.input__box_input}
 											type='email'
 											name='email'
 											value={values.email}
@@ -152,6 +148,7 @@ export default function Info() {
 									<div className={style.input__box}>
 										<span>MSSV</span>
 										<input
+											className={style.input__box_input}
 											type='text'
 											name='studentId'
 											required
@@ -161,10 +158,11 @@ export default function Info() {
 										></input>
 									</div>
 								</div>
-								<div className={style.row25}>
+								<div className={style.row50}>
 									<div className={style.input__box}>
 										<span>Khóa</span>
 										<input
+											className={style.input__box_input}
 											type='number'
 											min='42'
 											name='khoa'
@@ -173,8 +171,6 @@ export default function Info() {
 											required
 										></input>
 									</div>
-								</div>
-								<div className={style.row25}>
 									<div className={style.input__box}>
 										<span>Giới tính</span>
 										<Select
@@ -185,25 +181,26 @@ export default function Info() {
 												setFieldValue('gender', event.target.value);
 											}}
 											sx={{
-												padding: '10px',
-												outline: 'none',
-												border: '1px solid var(--black1)',
-												resize: 'none',
 												borderRadius: '12px',
-												marginBottom: '10px',
-												fontSize: '1.1em',
 												height: '37px',
+
 											}}
 										>
 											<MenuItem value='MALE'>Nam</MenuItem>
 											<MenuItem value='FEMALE'>Nữ</MenuItem>
-											<MenuItem value='HIDĐEN'>Ẩn</MenuItem>
+											<MenuItem value='HIDDEN'>Ẩn</MenuItem>
 										</Select>
 									</div>
 								</div>
+								
 								<div className={style.row100}>
 									<div className={style.input__box}>
-										<input type='submit' value='Cập nhật' onClick={handleSubmit}></input>
+										<input
+											className={style.input__box_input}
+											type='submit'
+											value='Cập nhật'
+											onClick={handleSubmit}
+										></input>
 									</div>
 								</div>
 							</form>
@@ -211,7 +208,7 @@ export default function Info() {
 					}}
 				</Formik>
 			</div>
-			{userInfo.isSetPassword ? (
+			{user.isSetPassword ? (
 				<>
 					<div className={style.recentOrders}>
 						<div className={style.cardHeader}>
@@ -232,6 +229,7 @@ export default function Info() {
 											<div className={style.input__box}>
 												<span>Mật khẩu cũ</span>
 												<input
+													className={style.input__box_input}
 													type='text'
 													autoComplete='off'
 													onChange={handleChange}
@@ -245,6 +243,7 @@ export default function Info() {
 											<div className={style.input__box}>
 												<span>Mật khẩu mới</span>
 												<input
+													className={style.input__box_input}
 													type='text'
 													autoComplete='off'
 													required
@@ -257,7 +256,12 @@ export default function Info() {
 
 										<div className={style.row100}>
 											<div className={style.input__box}>
-												<input type='submit' value='Cập nhật' onClick={handleSubmit}></input>
+												<input
+													className={style.input__box_input}
+													type='submit'
+													value='Cập nhật'
+													onClick={handleSubmit}
+												></input>
 											</div>
 										</div>
 									</form>
@@ -287,6 +291,7 @@ export default function Info() {
 											<div className={style.input__box}>
 												<span>Mật khẩu</span>
 												<input
+													className={style.input__box_input}
 													name='password'
 													error={!!errors.password}
 													onChange={handleChange}
@@ -298,6 +303,7 @@ export default function Info() {
 											<div className={style.input__box}>
 												<span>Xác nhận mật khẩu</span>
 												<input
+													className={style.input__box_input}
 													name='confirmPassword'
 													error={!!errors.confirmPassword}
 													onChange={handleChange}
@@ -309,6 +315,7 @@ export default function Info() {
 										<div className={style.row100}>
 											<div className={style.input__box}>
 												<input
+													className={style.input__box_input}
 													type='submit'
 													value='Tạo mật khẩu'
 													onClick={handleSubmit}

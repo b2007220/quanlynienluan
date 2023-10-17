@@ -39,6 +39,9 @@ class EnrollService {
 			where: {
 				id: parseInt(id),
 			},
+			include: {
+				use: true,
+			},
 		});
 
 		return enroll;
@@ -50,6 +53,21 @@ class EnrollService {
 				id: parseInt(id),
 			},
 			data: enroll,
+			include: {
+				use: true,
+				user: true,
+				use: {
+					include: {
+						semester: true,
+						semester: {
+							include: {
+								year: true,
+							},
+						},
+						topic: true,
+					},
+				},
+			},
 		});
 
 		return updatedEnroll;
@@ -78,8 +96,8 @@ class EnrollService {
 				use: {
 					include: {
 						semester: true,
-						semester:{
-							include:{
+						semester: {
+							include: {
 								year: true,
 							},
 						},
@@ -119,6 +137,11 @@ class EnrollService {
 			},
 			include: {
 				use: true,
+				use: {
+					include: {
+						topic: true,
+					},
+				},
 			},
 		});
 
@@ -139,7 +162,7 @@ class EnrollService {
 		});
 		return enroll.length > 0;
 	}
-	async getByTeacherBasisId(id, page = 0, limit = 5) {
+	async getByTeacherBasisId(id, page = 0, limit = 6) {
 		const semester = await semesterService.getCurrent();
 		const enrolls = await this.#client.enroll.findMany({
 			where: {
@@ -156,6 +179,12 @@ class EnrollService {
 				user: true,
 				use: {
 					include: {
+						semester: true,
+						semester: {
+							include: {
+								year: true,
+							},
+						},
 						topic: true,
 					},
 				},
@@ -184,7 +213,7 @@ class EnrollService {
 			),
 		};
 	}
-	async getByTeacherMasterId(id, page = 0, limit = 10) {
+	async getByTeacherMasterId(id, page = 0, limit = 6) {
 		const semester = await semesterService.getCurrent();
 		const enrolls = await this.#client.enroll.findMany({
 			where: {
@@ -201,6 +230,12 @@ class EnrollService {
 				user: true,
 				use: {
 					include: {
+						semester: true,
+						semester: {
+							include: {
+								year: true,
+							},
+						},
 						topic: true,
 					},
 				},

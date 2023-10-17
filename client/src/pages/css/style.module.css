@@ -71,9 +71,9 @@
 	margin-bottom: 5px;
 	font-weight: 500;
 }
-.input__box__select,
-.input__box input,
-.input__box button {
+
+.input__box_input
+{
 	padding: 10px;
 	font-style: 1.1em;
 	outline: none;

@@ -128,6 +128,7 @@ export default function Major() {
 									<div className={style.input__box}>
 										<span>Mã ngành</span>
 										<input
+											className={style.input__box_input}
 											type='input'
 											onChange={handleChange}
 											value={values.code}
@@ -139,6 +140,7 @@ export default function Major() {
 									<div className={style.input__box}>
 										<span>Mã ngành</span>
 										<input
+											className={style.input__box_input}
 											type='input'
 											name='majorName'
 											onChange={handleChange}
@@ -148,7 +150,9 @@ export default function Major() {
 								</div>
 								<div className={style.row100}>
 									<div className={style.input__box}>
-										<input type='submit' value='Tạo ngành học' onClick={handleSubmit}></input>
+										<input 
+										className={style.input__box_input}
+										type='submit' value='Tạo ngành học' onClick={handleSubmit}></input>
 									</div>
 								</div>
 							</form>

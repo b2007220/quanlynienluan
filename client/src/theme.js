@@ -4,13 +4,17 @@ const theme = createTheme({
 	components: {
 		MuiSelect: {
 			styleOverrides: {
-				root: {},
+				root: {
+					fontFamily: 'Montserrat , sans-serif !important',
+				},
+				
 			},
 		},
 		MuiInputBase: {
 			styleOverrides: {
 				root: {
 					borderRadius: '10px !important',
+					fontFamily: 'Montserrat , sans-serif !important',
 				},
 			},
 		},
