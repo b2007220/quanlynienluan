@@ -12,7 +12,7 @@ import style from '../../css/style.module.css';
 const validationSchema = Yup.object().shape({
 	fullName: Yup.string().required('Fullname is required'),
 	gender: Yup.string().required().oneOf(['MALE', 'FEMALE', 'HIDDEN']),
-	studentId: Yup.string().required('studentID is required'),
+	schoolId: Yup.string().required('schoolId is required'),
 	majorId: Yup.number().required('Major is required'),
 	course: Yup.number().required('Course is required'),
 });
@@ -105,7 +105,7 @@ export default function Info() {
 				</div>
 				<Formik
 					initialValues={
-						user || { fullName: '', majorId: '', email: '', course: '', gender: '', studentId: '' }
+						user || { fullName: '', majorId: '', email: '', course: '', gender: '', schoolId: '' }
 					}
 					validationSchema={validationSchema}
 					onSubmit={handleInfoChange}
@@ -165,10 +165,10 @@ export default function Info() {
 										<input
 											className={style.input__box_input}
 											type='text'
-											name='studentId'
+											name='schoolId'
 											required
 											autoComplete='off'
-											value={values.studentId}
+											value={values.schoolId}
 											onChange={handleChange}
 										></input>
 									</div>
