@@ -1,7 +1,6 @@
 const router = require('express').Router();
 
 const enrollController = require('../controllers/enroll.controller');
-const { route } = require('./auth.route');
 
 router.route('/').post(enrollController.create).get(enrollController.getAll);
 router.route('/use').post(enrollController.createEnrollFromUse);
@@ -11,7 +10,5 @@ router.route('/teacher/master/:teacherId').get(enrollController.getByTeacherMast
 router.route('/teacher/basis/:teacherId').get(enrollController.getByTeacherBasisId);
 
 router.route('/:id').get(enrollController.getById).put(enrollController.updateById).delete(enrollController.deleteById);
-
-
 
 module.exports = router;
