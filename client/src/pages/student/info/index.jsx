@@ -12,7 +12,7 @@ import style from '../../css/style.module.css';
 const validationSchema = Yup.object().shape({
 	fullName: Yup.string().required('Fullname is required'),
 	gender: Yup.string().required().oneOf(['MALE', 'FEMALE', 'HIDDEN']),
-	schoolId: Yup.string().required('SchoolID is required'),
+	studentId: Yup.string().required('studentID is required'),
 	majorId: Yup.number().required('Major is required'),
 	course: Yup.number().required('Course is required'),
 });
@@ -40,8 +40,13 @@ export default function Info() {
 	const handleInfoChange = async (values) => {
 		try {
 			console.log(values);
-			// const updatedUserInfo = await userService.updateUserById(user.id, values);
-			// setUserInfo(updatedUserInfo);
+			await userService.updateUserById(user.id, values);
+			MySwal.fire({
+				icon: 'success',
+				title: 'Cập nhật thông tin thành công',
+				showConfirmButton: false,
+				timer: 1500,
+			});
 		} catch (error) {
 			console.log(error);
 		}

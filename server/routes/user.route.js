@@ -20,7 +20,7 @@ router.route('/teachers').get(userController.getAllTeachers);
 router
 	.route('/:id')
 	.get(userController.getById)
-	.put(adminMiddleware,userController.updateById)
+	.put(userController.updateById)
 	.delete(adminMiddleware,userController.deleteById)
 	.patch(adminMiddleware,userController.activeUser);
 

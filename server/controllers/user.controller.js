@@ -50,13 +50,14 @@ class UserController {
 	 */
 	async updateById(req, res, next) {
 		try {
-			const user = await userService.getById(req.params.id);
+			console.log(req.body);
+			// const user = await userService.getById(req.params.id);
 
-			if (!user) {
-				res.status(404).json({ message: 'User not found' });
-			}
+			// if (!user) {
+			// 	res.status(404).json({ message: 'User not found' });
+			// }
 
-			res.send(await userService.update(req.params.id, req.body));
+			// res.send(await userService.update(req.params.id, req.body));
 		} catch (error) {
 			next(error);
 		}

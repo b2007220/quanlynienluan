@@ -1,20 +1,19 @@
-import style from '../../css/style.module.css';
-import { useEffect, useState } from 'react';
-import authService from '../../../services/auth.service';
-import { Select, MenuItem, FormControl } from '@mui/material';
-import majorService from '../../../services/major.service';
-import userService from '../../../services/user.service';
+import { FormControl, MenuItem, Select } from '@mui/material';
 import { Formik } from 'formik';
-import * as Yup from 'yup';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import { useSelector } from 'react-redux';
+import * as Yup from 'yup';
+import majorService from '../../../services/major.service';
+import userService from '../../../services/user.service';
+import style from '../../css/style.module.css';
+
 const validationSchema = Yup.object().shape({
 	fullName: Yup.string().required('Fullname is required'),
 	gender: Yup.string().required().oneOf(['MALE', 'FEMALE', 'HIDDEN']),
-	schoolId: Yup.string().required('SchoolID is required'),
+	schoolId: Yup.string().required('schoolId is required'),
 	majorId: Yup.number().required('Major is required'),
-	course: Yup.number().required('Course is required'),
 });
 const validationSchemaChange = Yup.object().shape({
 	oldPassword: Yup.string().required('Mật khẩu cũ không được để trống'),
@@ -27,38 +26,33 @@ const validationSchemaCreate = Yup.object().shape({
 
 export default function Info() {
 	const MySwal = withReactContent(Swal);
-	const [userInfo, setUserInfo] = useState({});
 	const [majorList, setMajorList] = useState({
 		data: [],
 	});
+	const user = useSelector((state) => state.user);
 	useEffect(() => {
-		// authService
-		// 	.getUserProfile()
-		// 	.then((user) => {
-		// 		setUserInfo(user);
 		majorService.getAllMajors().then((res) => {
 			setMajorList(res);
 		});
-		// 	console.log(userInfo);
-		// })
-		// .catch((error) => {
-		// 	console.log(error);
-		// });
 	}, []);
-
-	const user = useSelector((state) => state.user);
-
-	const handleInfoChange = async () => {
+	if (!user) return null;
+	const handleInfoChange = async (values) => {
 		try {
-			const updatedUserInfo = await userService.updateUserById(userInfo.id, userInfo);
-			setUserInfo(updatedUserInfo);
+			console.log(values);
+			await userService.updateUserById(user.id, values);
+			MySwal.fire({
+				icon: 'success',
+				title: 'Cập nhật thông tin thành công',
+				showConfirmButton: false,
+				timer: 1500,
+			});
 		} catch (error) {
 			console.log(error);
 		}
 	};
 	const handlePasswordChange = async (values) => {
 		try {
-			await userService.changePassword(userInfo.id, values.oldPassword, values.newPassword);
+			await userService.changePassword(user.id, values.oldPassword, values.newPassword);
 			MySwal.fire({
 				icon: 'success',
 				title: 'Đặt mật khẩu thành công',
@@ -79,7 +73,7 @@ export default function Info() {
 					timer: 1500,
 				});
 			} else {
-				const user = await userService.createPassword(userInfo.id, values.password);
+				const user = await userService.createPassword(user.id, values.password);
 				MySwal.fire({
 					icon: 'success',
 					title: 'Đặt mật khẩu thành công',
@@ -98,11 +92,13 @@ export default function Info() {
 					<h2>Thông tin cá nhân</h2>
 				</div>
 				<Formik
-					initialValues={user || { fullName: '', majorId: '', email: '', gender: '', studentId: '' }}
+					initialValues={
+						user || { fullName: '', majorId: '', email: '', gender: '', schoolId: '' }
+					}
 					validationSchema={validationSchema}
 					onSubmit={handleInfoChange}
 				>
-					{({ values, errors, setFieldValue, handleChange, handleSubmit }) => {
+					{({ values, errors, handleChange, handleSubmit }) => {
 						return (
 							<form onSubmit={handleSubmit}>
 								<div className={style.row50}>
@@ -118,12 +114,12 @@ export default function Info() {
 										></input>
 									</div>
 									<div className={style.input__box}>
-										<span>Ngành học</span>
+										<span>Chuyên ngành</span>
 										<FormControl fullWidth>
 											<Select
 												name='majorId'
 												value={values.majorId}
-												error={!!errors.fullName}
+												error={!!errors.majorId}
 												onChange={handleChange}
 												sx={{
 													borderRadius: '12px',
@@ -132,7 +128,7 @@ export default function Info() {
 											>
 												{majorList.data.map((major) => (
 													<MenuItem key={major.id} value={major.id}>
-														{major.majorName}
+														{major.code}-{major.majorName}
 													</MenuItem>
 												))}
 											</Select>
@@ -157,24 +153,21 @@ export default function Info() {
 										<input
 											className={style.input__box_input}
 											type='text'
-											name='studentId'
+											name='schoolId'
 											required
 											autoComplete='off'
-											value={values.studentId}
+											value={values.schoolId}
 											onChange={handleChange}
 										></input>
 									</div>
 								</div>
-								<div className={style.row25}>
+								<div className={style.row50}>
 									<div className={style.input__box}>
 										<span>Giới tính</span>
 										<Select
 											value={values.gender}
 											name='gender'
-											displayEmpty
-											onChange={(event) => {
-												setFieldValue('gender', event.target.value);
-											}}
+											onChange={handleChange}
 											sx={{
 												borderRadius: '12px',
 												height: '37px',
@@ -182,10 +175,11 @@ export default function Info() {
 										>
 											<MenuItem value='MALE'>Nam</MenuItem>
 											<MenuItem value='FEMALE'>Nữ</MenuItem>
-											<MenuItem value='HIDĐEN'>Ẩn</MenuItem>
+											<MenuItem value='HIDDEN'>Ẩn</MenuItem>
 										</Select>
 									</div>
 								</div>
+
 								<div className={style.row100}>
 									<div className={style.input__box}>
 										<input
@@ -201,7 +195,7 @@ export default function Info() {
 					}}
 				</Formik>
 			</div>
-			{userInfo.isSetPassword ? (
+			{user.isSetPassword ? (
 				<>
 					<div className={style.recentOrders}>
 						<div className={style.cardHeader}>

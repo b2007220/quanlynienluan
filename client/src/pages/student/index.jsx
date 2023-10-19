@@ -30,19 +30,17 @@ export default function Student_Home() {
 		data: [],
 	});
 
-	const [enroll, setEnroll] = useState();
+	const [enroll, setEnroll] = useState({});
 	const [editReport, setEditReport] = useState(null);
 	const user = useSelector((state) => state.user);
 
 	useEffect(() => {
-		enrollService.getFromStudent().then((enroll) => {
-			setEnroll(enroll);
-			reportService.getReportsByEnroll(enroll.id, page).then((res) => {
+		enrollService.getFromStudent().then((res) => {
+			setEnroll(res);
+			reportService.getReportsByEnroll(res.id, page).then((res) => {
 				setReportList(res);
-				console.log(res);
 			});
 		});
-		console.log(enroll);
 	}, [page]);
 	if (!user) return null;
 	const handleCreateNewReport = async (values) => {
