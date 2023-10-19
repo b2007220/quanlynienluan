@@ -24,6 +24,7 @@ export default function Password() {
 
 	const handlePasswordChange = async (values) => {
 		try {
+			console.log(values);
 			const res = await userService.changePassword(values.oldPassword, values.newPassword);
 			if (res.status === 'success') {
 				MySwal.fire({

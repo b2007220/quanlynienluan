@@ -21,7 +21,9 @@ const validationSchemaChange = Yup.object().shape({
 });
 const validationSchemaCreate = Yup.object().shape({
 	password: Yup.string().required('Mật khẩu không được để trống'),
-	confirmPassword: Yup.string().required('Xác nhận mật khẩu không được để trống'),
+	confirmPassword: Yup.string()
+		.required('Xác nhận mật khẩu không được để trống')
+		.oneOf([Yup.ref('password'), ''], 'Mật khẩu không khớp'),
 });
 
 export default function Info() {
@@ -52,13 +54,22 @@ export default function Info() {
 	};
 	const handlePasswordChange = async (values) => {
 		try {
-			await userService.changePassword(user.id, values.oldPassword, values.newPassword);
-			MySwal.fire({
-				icon: 'success',
-				title: 'Đặt mật khẩu thành công',
-				showConfirmButton: false,
-				timer: 1500,
-			});
+			const res = await userService.changePassword(values.oldPassword, values.newPassword);
+			if (res.status === 'success') {
+				MySwal.fire({
+					icon: 'success',
+					title: 'Đặt mật khẩu thành công',
+					showConfirmButton: false,
+					timer: 1500,
+				});
+			} else {
+				MySwal.fire({
+					icon: 'error',
+					title: 'Mật khẩu cũ không đúng',
+					showConfirmButton: false,
+					timer: 1500,
+				});
+			}
 		} catch (error) {
 			console.log(error);
 		}
@@ -72,15 +83,15 @@ export default function Info() {
 					showConfirmButton: false,
 					timer: 1500,
 				});
-			} else {
-				const user = await userService.createPassword(user.id, values.password);
-				MySwal.fire({
-					icon: 'success',
-					title: 'Đặt mật khẩu thành công',
-					showConfirmButton: false,
-					timer: 1500,
-				});
+				return;
 			}
+			await userService.createPassword(values.password);
+			MySwal.fire({
+				icon: 'success',
+				title: 'Đặt mật khẩu thành công',
+				showConfirmButton: false,
+				timer: 1500,
+			});
 		} catch (error) {
 			console.log(error);
 		}
@@ -92,9 +103,7 @@ export default function Info() {
 					<h2>Thông tin cá nhân</h2>
 				</div>
 				<Formik
-					initialValues={
-						user || { fullName: '', majorId: '', email: '', gender: '', schoolId: '' }
-					}
+					initialValues={user || { fullName: '', majorId: '', email: '', gender: '', schoolId: '' }}
 					validationSchema={validationSchema}
 					onSubmit={handleInfoChange}
 				>
@@ -195,6 +204,7 @@ export default function Info() {
 					}}
 				</Formik>
 			</div>
+
 			{user.isSetPassword ? (
 				<>
 					<div className={style.recentOrders}>
@@ -217,7 +227,7 @@ export default function Info() {
 												<span>Mật khẩu cũ</span>
 												<input
 													className={style.input__box_input}
-													type='text'
+													type='password'
 													autoComplete='off'
 													onChange={handleChange}
 													value={values.oldPassword}
@@ -231,7 +241,7 @@ export default function Info() {
 												<span>Mật khẩu mới</span>
 												<input
 													className={style.input__box_input}
-													type='text'
+													type='password'
 													autoComplete='off'
 													required
 													onChange={handleChange}
@@ -271,7 +281,7 @@ export default function Info() {
 							onSubmit={handlePasswordCreate}
 							validationSchema={validationSchemaCreate}
 						>
-							{({ values, errors, handleChange, handleSubmit }) => {
+							{({ values, handleChange, handleSubmit }) => {
 								return (
 									<form onSubmit={handleSubmit}>
 										<div className={style.row100}>
@@ -280,7 +290,7 @@ export default function Info() {
 												<input
 													className={style.input__box_input}
 													name='password'
-													error={!!errors.password}
+													type='password'
 													onChange={handleChange}
 													value={values.password}
 												></input>
@@ -292,8 +302,8 @@ export default function Info() {
 												<input
 													className={style.input__box_input}
 													name='confirmPassword'
-													error={!!errors.confirmPassword}
 													onChange={handleChange}
+													type='password'
 													value={values.confirmPassword}
 												></input>
 											</div>
