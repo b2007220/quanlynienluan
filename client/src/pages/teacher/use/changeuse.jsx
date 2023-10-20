@@ -55,7 +55,7 @@ const ChangeUse = ({ use, open, onClose, setUseList }) => {
 		}
 	};
 	return (
-		<Dialog open={open} onClose={onClose}>
+		<Dialog open={open} onClose={onClose} fullWidth>
 			<Formik
 				initialValues={
 					{

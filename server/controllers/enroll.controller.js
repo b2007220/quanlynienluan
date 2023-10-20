@@ -139,7 +139,7 @@ class EnrollController {
 		try {
 			const enroll = await enrollService.getFromStudent(req.user.id);
 			if (!enroll) {
-				res.status(404).json({ message: 'Enroll not found' });
+				return res.status(404).json({ message: 'Enroll not found' });
 			}
 			res.send(enroll);
 		} catch (error) {

@@ -5,17 +5,16 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Formik } from 'formik';
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import * as yup from 'yup';
-import authService from '../../../services/auth.service';
 import enrollService from '../../../services/enroll.service';
 import topicService from '../../../services/topic.service';
 import useService from '../../../services/use.service';
 import userService from '../../../services/user.service';
 import style from '../../css/style.module.css';
-
 const validationSchemaFind = yup.object({
 	teacherId: yup.string().required('Vui lòng chọn giáo viên hướng dẫn'),
 	type: yup.string().required().oneOf(['BASIS', 'MASTER']),
@@ -30,14 +29,13 @@ export default function Enroll() {
 	const MySwal = withReactContent(Swal);
 	const [page, setPage] = useState(0);
 	const [teacherList, setTeacherList] = useState([]);
-	const [user, setUser] = useState(null);
+
 	const [useList, setUseList] = useState({
 		data: [],
 	});
+	const user = useSelector((state) => state.user);
+
 	useEffect(() => {
-		authService.getUserProfile().then((res) => {
-			setUser(res);
-		});
 		useService.getAllUsesInSemester().then((res) => {
 			setUseList(res);
 		});
@@ -45,7 +43,7 @@ export default function Enroll() {
 			setTeacherList(res);
 		});
 	}, [page]);
-
+	if (!user) return null;
 	const handleFind = (values) => {
 		try {
 			useService.getUsesFromTeacher(values).then((res) => {
@@ -58,9 +56,7 @@ export default function Enroll() {
 	const handleCreateNewTopic = async (values) => {
 		try {
 			const { name, describe, teacherId, type } = values;
-			const topic = await topicService.createTopic({ name, describe, type, isChecked: false });
-			const use = await useService.createUse({ topicId: topic.id, userId: teacherId });
-			const enroll = await enrollService.createEnroll({ userId: user.id, useId: use.id });
+			await topicService.createAndUse({ name, describe, type, isChecked: false, teacherId });
 			MySwal.fire({
 				icon: 'success',
 				title: 'Đăng kí đề tài thành công',
@@ -78,7 +74,7 @@ export default function Enroll() {
 	};
 	const handleCreateNewEnroll = async (use) => {
 		try {
-			const res = await enrollService.createEnrollFromUse(use);
+			await enrollService.createEnrollFromUse(use);
 			MySwal.fire({
 				icon: 'success',
 				title: 'Đăng kí đề tài thành công',
@@ -117,13 +113,7 @@ export default function Enroll() {
 										<span>Loại đề tài bạn tìm kiếm</span>
 										<div className={style.radio__group}>
 											<label className={style.radio}>
-												<input
-													type='radio'
-													name='type'
-													value='BASIS'
-													onChange={handleChange}
-													error={!!errors.type}
-												/>
+												<input type='radio' name='type' value='BASIS' onChange={handleChange} />
 												Niên luận cơ sở
 												<span></span>
 											</label>
@@ -133,7 +123,6 @@ export default function Enroll() {
 													name='type'
 													value='MASTER'
 													onChange={handleChange}
-													error={!!errors.type}
 												/>
 												Niên luận ngành
 												<span></span>
@@ -242,7 +231,7 @@ export default function Enroll() {
 													name='type'
 													value='BASIS'
 													onChange={handleChange}
-													error={!!errors.type}
+													
 												/>
 												Niên luận cơ sở
 												<span></span>
@@ -253,7 +242,7 @@ export default function Enroll() {
 													name='type'
 													value='MASTER'
 													onChange={handleChange}
-													error={!!errors.type}
+													
 												/>
 												Niên luận ngành
 												<span></span>
@@ -270,7 +259,6 @@ export default function Enroll() {
 												sx={{
 													borderRadius: '12px',
 													height: '37px',
-													
 												}}
 												error={!!errors.teacherId}
 												value={values.teacherId}
@@ -293,7 +281,7 @@ export default function Enroll() {
 											rows='3'
 											onChange={handleChange}
 											value={values.name}
-											error={!!errors.name}
+											
 										></textarea>
 									</div>
 								</div>
@@ -305,7 +293,7 @@ export default function Enroll() {
 											rows='5'
 											onChange={handleChange}
 											value={values.describe}
-											error={!!errors.describe}
+											
 										></textarea>
 									</div>
 								</div>

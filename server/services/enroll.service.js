@@ -1,4 +1,4 @@
-const { PrismaClient, Role, Type } = require('@prisma/client');
+const { PrismaClient, Type } = require('@prisma/client');
 const semesterService = require('./semester.service');
 class EnrollService {
 	#client;
@@ -54,11 +54,11 @@ class EnrollService {
 			},
 			data: enroll,
 			include: {
-				use: true,
 				user: true,
+				
 				use: {
 					include: {
-						semester: true,
+						
 						semester: {
 							include: {
 								year: true,
@@ -91,11 +91,11 @@ class EnrollService {
 				},
 			},
 			include: {
-				use: true,
 				user: true,
+				
 				use: {
 					include: {
-						semester: true,
+					
 						semester: {
 							include: {
 								year: true,
@@ -136,7 +136,7 @@ class EnrollService {
 				},
 			},
 			include: {
-				use: true,
+				
 				use: {
 					include: {
 						topic: true,
@@ -175,11 +175,11 @@ class EnrollService {
 				},
 			},
 			include: {
-				use: true,
 				user: true,
+			
 				use: {
 					include: {
-						semester: true,
+						
 						semester: {
 							include: {
 								year: true,
@@ -226,11 +226,11 @@ class EnrollService {
 				},
 			},
 			include: {
-				use: true,
+				
 				user: true,
 				use: {
 					include: {
-						semester: true,
+						
 						semester: {
 							include: {
 								year: true,

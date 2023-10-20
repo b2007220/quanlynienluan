@@ -8,12 +8,12 @@ class UseService {
 	}
 
 	async create(use) {
-		const semester = await semesterService.getCurrent();
+		
 		const newUse = await this.#client.use.create({
 			data: {
-				userId: use.userId,
+				userId: use.user.id,
 				topicId: use.topicId,
-				semesterId: semester.id,
+				semesterId: use.semesterId,
 			},
 			include: {
 				topic: true,

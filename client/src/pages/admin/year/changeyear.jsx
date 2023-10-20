@@ -35,7 +35,7 @@ const ChangeYear = ({ year, open, onClose, setYearList }) => {
 		}
 	};
 	return (
-		<Dialog open={open} onClose={onClose}>
+		<Dialog open={open} onClose={onClose} fullWidth>
 			<Formik
 				initialValues={year || { name: '' }}
 				validationSchema={validationSchema}

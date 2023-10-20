@@ -41,7 +41,7 @@ const ChangeReport = ({ report, open, onClose, setReportList }) => {
 	};
 	return (
 		<LocalizationProvider dateAdapter={AdapterDayjs}>
-			<Dialog open={open} onClose={onClose}>
+			<Dialog open={open} onClose={onClose} fullWidth>
 				<Formik
 					initialValues={report || { doneJob: '', nextJob: '', promiseAt: '' }}
 					validationSchema={validationSchema}

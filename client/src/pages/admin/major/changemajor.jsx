@@ -35,7 +35,7 @@ const ChangeMajor = ({ major, open, onClose, setMajorList }) => {
 		}
 	};
 	return (
-		<Dialog open={open} onClose={onClose}>
+		<Dialog open={open} onClose={onClose} fullWidth>
 			<Formik
 				initialValues={major || { code: '', majorName: '' }}
 				enableReinitialize

@@ -1,7 +1,7 @@
+import CreateIcon from '@mui/icons-material/Create';
+import IconButton from '@mui/material/IconButton';
 import Pagination from '@mui/material/Pagination';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 import { Formik } from 'formik';
 import { useEffect, useState } from 'react';
@@ -12,8 +12,6 @@ import * as Yup from 'yup';
 import enrollService from '../../services/enroll.service';
 import reportService from '../../services/report.service';
 import style from '../css/style.module.css';
-import CreateIcon from '@mui/icons-material/Create';
-import IconButton from '@mui/material/IconButton';
 import ChangeReport from './changereport';
 
 const yesterday = new Date(Date.now() - 86400000);
@@ -76,7 +74,7 @@ export default function Student_Home() {
 			<div className={style.recentOrders}>
 				<div className={style.cardHeader}>
 					<h2>Lịch sử báo cáo</h2>
-					{/* <h3>{enroll.use.topic.name}</h3> */}
+					<h2>{enroll.use?.topic.name}</h2>
 				</div>
 				<table>
 					<thead>
@@ -149,7 +147,6 @@ export default function Student_Home() {
 											rows='5'
 											onChange={handleChange}
 											value={values.doneJob}
-											error={!!errors.doneJob}
 										></textarea>
 									</div>
 								</div>
@@ -161,13 +158,17 @@ export default function Student_Home() {
 											rows='5'
 											onChange={handleChange}
 											value={values.nextJob}
-											error={!!errors.nextJob}
 										></textarea>
 									</div>
 								</div>
 								<div className={style.row100}>
 									<div className={style.input__box}>
-										<input type='submit' value='Thêm báo cáo' onClick={handleSubmit}></input>
+										<input
+											className={style.input__box_input}
+											type='submit'
+											value='Thêm báo cáo'
+											onClick={handleSubmit}
+										></input>
 									</div>
 								</div>
 							</form>

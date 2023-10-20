@@ -12,6 +12,7 @@ import authService from '../../services/auth.service';
 import tokenService from '../../services/token.service';
 import { setUser } from '../../store/user';
 import style from './login.module.css';
+import { useSelector } from 'react-redux';
 
 const validationSchema = Yup.object().shape({
 	email: Yup.string().required('Email is required'),
@@ -23,6 +24,21 @@ export default function Login() {
 	const navigate = useNavigate();
 
 	const dispatch = useDispatch();
+
+	const user = useSelector((state) => state.user);
+
+	switch (user?.role) {
+		case 'STUDENT':
+			navigate('/student');
+			break;
+
+		case 'TEACHER':
+			navigate('/teacher');
+			break;
+		case 'ADMIN':
+			navigate('/admin');
+			break;
+	}
 
 	const handleSignIn = async () => {
 		try {
@@ -46,18 +62,6 @@ export default function Login() {
 			}
 
 			dispatch(setUser(profile));
-
-			const userRole = profile.role;
-
-			if (userRole === 'STUDENT') {
-				navigate('/student');
-			}
-			if (userRole === 'TEACHER') {
-				navigate('/teacher');
-			}
-			if (userRole === 'ADMIN') {
-				navigate('/admin');
-			}
 		} catch (error) {
 			MySwal.fire({
 				icon: 'error',
@@ -83,18 +87,6 @@ export default function Login() {
 			}
 
 			dispatch(setUser(profile));
-
-			const userRole = profile.role;
-
-			if (userRole === 'STUDENT') {
-				navigate('/student');
-			}
-			if (userRole === 'TEACHER') {
-				navigate('/teacher');
-			}
-			if (userRole === 'ADMIN') {
-				navigate('/admin');
-			}
 		} catch (error) {
 			MySwal.fire({
 				icon: 'error',

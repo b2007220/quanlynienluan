@@ -5,7 +5,6 @@ import {
 	DialogContent,
 	DialogTitle,
 	Stack,
-	TextField,
 	FormControl,
 	Select,
 	MenuItem,
@@ -59,7 +58,7 @@ const ChangeSemester = ({ semester, open, onClose, setSemesterList }) => {
 		}
 	};
 	return (
-		<Dialog open={open} onClose={onClose}>
+		<Dialog open={open} onClose={onClose} fullWidth>
 			<Formik
 				initialValues={semester || { name: '', startAt: '', endAt: '', yearId: '' }}
 				validationSchema={validationSchema}

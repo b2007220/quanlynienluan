@@ -1,4 +1,6 @@
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient, State } = require('@prisma/client');
+
+const semesterService = require('./semester.service');
 
 class TopicService {
 	#client;
@@ -48,6 +50,33 @@ class TopicService {
 		});
 
 		return deletedTopic;
+	}
+
+	async createAndUse(enroll,user){
+		const semester = await semesterService.getCurrent();
+		const topic = await this.#client.topic.create({
+			data:{
+				name : enroll.name,
+				describe: enroll.describe,
+				type: enroll.type,
+				isChecked: false,
+			}
+		})
+		const use = await this.#client.use.create({
+			data:{
+				topicId: topic.id,
+				userId: enroll.teacherId,
+				semesterId: semester.id,
+			}
+		})
+		const newEnroll = await this.#client.enroll.create({
+			data:{
+				userId: user.id,
+				useId: use.id,
+				state: State.PROPOSE,
+			}
+		})
+		return newEnroll;
 	}
 }
 

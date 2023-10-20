@@ -38,6 +38,9 @@ class TopicService {
 	async deleteTopicById(id) {
 		await this.#client.delete(`/${id}`);
 	}
+	async createAndUse(enroll){
+		await this.#client.post('/create-and-use', enroll);
+	}
 }
 
 export default new TopicService();

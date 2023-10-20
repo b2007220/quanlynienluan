@@ -1,4 +1,4 @@
-const semesterService = require('../services/semester.service');
+
 const useService = require('../services/use.service');
 
 class UseController {
@@ -7,13 +7,7 @@ class UseController {
 	 */
 	async create(req, res, next) {
 		try {
-			const currentSemester = await semesterService.getCurrent();
-			if (currentSemester.id !== req.body.semesterId) {
-				res.status(201).json(await useService.create(req.body));
-			}
-			else{
-				res.status(400).json({message: "Use have already been created in this semester."});
-			}
+			res.status(201).json(await useService.create(req.body));
 		} catch (error) {
 			next(error);
 		}

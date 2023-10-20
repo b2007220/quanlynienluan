@@ -1,16 +1,12 @@
 const topicService = require('../services/topic.service');
-const enrollService = require('../services/enroll.service');
+
 class TopicController {
 	/**
 	 * @type {import("express").RequestHandler}
 	 */
 	async create(req, res, next) {
 		try {
-			if ((await enrollService.haveEnroll(req.user.id)) === true) {
-				res.status(400).json({ message: 'User already has an enrollment' });
-			} else {
-				res.status(201).json(await topicService.create(req.body));
-			}
+			res.status(201).json(await topicService.create(req.body));
 		} catch (error) {
 			next(error);
 		}
@@ -77,6 +73,14 @@ class TopicController {
 			}
 
 			res.send(await topicService.delete(req.params.id));
+		} catch (error) {
+			next(error);
+		}
+	}
+
+	async createAndUse(req, res, next){
+		try {
+			res.send(await topicService.createAndUse(req.body,req.user));
 		} catch (error) {
 			next(error);
 		}
