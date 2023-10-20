@@ -8,7 +8,6 @@ class UseService {
 	}
 
 	async create(use) {
-		
 		const newUse = await this.#client.use.create({
 			data: {
 				userId: use.user.id,
@@ -221,6 +220,29 @@ class UseService {
 					0.9,
 			),
 		};
+	}
+
+	async createTopicAndUse(use, user) {
+		const semester = await semesterService.getCurrent();
+		const topic = await this.#client.topic.create({
+			data: {
+				name: use.name,
+				type: use.type,
+				describe: use.describe,
+				link: use.link,
+			},
+		});
+		const newUse = await this.#client.use.create({
+			data: {
+				userId: user.id,
+				topicId: topic.id,
+				semesterId: semester.id,
+			},
+			include: {
+				topic: true,
+			},
+		});
+		return newUse;
 	}
 }
 

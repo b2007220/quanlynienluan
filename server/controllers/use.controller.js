@@ -129,6 +129,15 @@ class UseController {
 			next(error);
 		}
 	}
+
+	async createTopicAndUse(req, res, next) {
+		try{
+			res.status(201).json(await useService.createTopicAndUse(req.body, req.user));
+		}
+		catch(error){
+			next(error);
+		}
+	}
 }
 
 module.exports = new UseController();

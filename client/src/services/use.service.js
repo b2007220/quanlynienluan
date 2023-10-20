@@ -65,6 +65,10 @@ class UseService {
 		});
 		return uses;
 	}
+	async createTopicAndUse(value){
+		const use = await this.#client.post(`/use`, value);
+		return use;
+	}
 }
 
 export default new UseService();

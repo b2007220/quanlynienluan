@@ -36,9 +36,7 @@ export default function Use() {
 
 	const handleCreateNewUse = async (values) => {
 		try {
-			const semester = await semesterService.getCurrent();
-			const topic = await topicService.createTopic(values);
-			const newUse = await useService.createUse({ topicId: topic.id, user, semesterId: semester.id });
+			const newUse = await useService.createTopicAndUse(values);
 			setUseList((prev) => {
 				return {
 					...prev,

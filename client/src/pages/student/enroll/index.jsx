@@ -5,7 +5,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Formik } from 'formik';
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -169,9 +169,12 @@ export default function Enroll() {
 					{useList.data.map((use) => (
 						<Box sx={{ width: 350, margin: 0.3, borderRadius: 12 }} key={use.id}>
 							<Card>
-								<CardContent sx={{ height: 320 }}>
-									<Typography variant='h6' component='div'>
+								<CardContent sx={{ height: 250 }}>
+									<Typography sx={{ height: 150 }} variant='h6' component='div'>
 										{use.topic.name}
+									</Typography>
+									<Typography sx={{ height: 40 }} variant='subtitle1' component='div'>
+										{use.topic.type === 'BASIS' ? 'Niên luận cơ sở' : 'Niên luận ngành'}
 									</Typography>
 									<Typography variant='body2' color='text.secondary'>
 										{use.topic.describe}
@@ -226,13 +229,7 @@ export default function Enroll() {
 										<span>Loại đề tài bạn tìm kiếm</span>
 										<div className={style.radio__group}>
 											<label className={style.radio}>
-												<input
-													type='radio'
-													name='type'
-													value='BASIS'
-													onChange={handleChange}
-													
-												/>
+												<input type='radio' name='type' value='BASIS' onChange={handleChange} />
 												Niên luận cơ sở
 												<span></span>
 											</label>
@@ -242,7 +239,6 @@ export default function Enroll() {
 													name='type'
 													value='MASTER'
 													onChange={handleChange}
-													
 												/>
 												Niên luận ngành
 												<span></span>
@@ -281,7 +277,6 @@ export default function Enroll() {
 											rows='3'
 											onChange={handleChange}
 											value={values.name}
-											
 										></textarea>
 									</div>
 								</div>
@@ -293,7 +288,6 @@ export default function Enroll() {
 											rows='5'
 											onChange={handleChange}
 											value={values.describe}
-											
 										></textarea>
 									</div>
 								</div>

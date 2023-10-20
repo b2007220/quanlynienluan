@@ -4,6 +4,8 @@ const useController = require('../controllers/use.controller');
 
 router.route('/').post(useController.create).get(useController.getAll);
 
+router.route('/use').post(useController.createTopicAndUse);
+
 router.route('/user/:userId').get(useController.getAllFromUser);
 
 router.route('/semester').get(useController.getAllInSemester);
