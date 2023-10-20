@@ -55,10 +55,9 @@ class EnrollService {
 			data: enroll,
 			include: {
 				user: true,
-				
+
 				use: {
 					include: {
-						
 						semester: {
 							include: {
 								year: true,
@@ -92,10 +91,9 @@ class EnrollService {
 			},
 			include: {
 				user: true,
-				
+
 				use: {
 					include: {
-					
 						semester: {
 							include: {
 								year: true,
@@ -136,7 +134,6 @@ class EnrollService {
 				},
 			},
 			include: {
-				
 				use: {
 					include: {
 						topic: true,
@@ -149,18 +146,15 @@ class EnrollService {
 	}
 	async haveEnroll(id) {
 		const semester = await semesterService.getCurrent();
-		const enroll = await this.#client.enroll.findMany({
+
+		return !!(await this.#client.enroll.findUnique({
 			where: {
-				userId: parseInt(id),
+				userId: id,
 				use: {
 					semesterId: semester.id,
 				},
 			},
-			include: {
-				use: true,
-			},
-		});
-		return enroll.length > 0;
+		}));
 	}
 	async getByTeacherBasisId(id, page = 0, limit = 6) {
 		const semester = await semesterService.getCurrent();
@@ -176,10 +170,9 @@ class EnrollService {
 			},
 			include: {
 				user: true,
-			
+
 				use: {
 					include: {
-						
 						semester: {
 							include: {
 								year: true,
@@ -226,11 +219,9 @@ class EnrollService {
 				},
 			},
 			include: {
-				
 				user: true,
 				use: {
 					include: {
-						
 						semester: {
 							include: {
 								year: true,

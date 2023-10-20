@@ -178,7 +178,7 @@ class UserController {
 				return res.status(400).json({ message: 'Wrong password' });
 			}
 
-			res.send(await userService.changePassword(req.user.id, req.body.newPassword));
+			res.json(await userService.changePassword(req.user.id, req.body.newPassword));
 		} catch (error) {
 			next(error);
 		}

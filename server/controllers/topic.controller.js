@@ -1,3 +1,4 @@
+const enrollService = require('../services/enroll.service');
 const topicService = require('../services/topic.service');
 
 class TopicController {
@@ -80,6 +81,9 @@ class TopicController {
 
 	async createAndUse(req, res, next){
 		try {
+			if(await enrollService.haveEnroll(req.user.id)){
+				return res.status(400).json({message:'You already have enroll'})
+			}
 			res.send(await topicService.createAndUse(req.body,req.user));
 		} catch (error) {
 			next(error);

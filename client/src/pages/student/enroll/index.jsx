@@ -178,7 +178,7 @@ export default function Enroll() {
 									</Typography>
 								</CardContent>
 								<CardActions>
-									<Button size='small' href={use.topic.link}>
+									<Button size='small' href={use.topic?.link}>
 										Thêm thông tin đề tài
 									</Button>
 									<Button

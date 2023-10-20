@@ -38,6 +38,7 @@
 }
 .recentOrders .row50 {
 	display: flex;
+	flex-wrap: wrap;
 	gap: 20px;
 }
 .recentOrders .row25 {
@@ -346,12 +347,12 @@ table thead td {
 	}
 	.recentOrders .row50 {
 		display: flex;
-		flex-direction: columns;
+		flex-direction: column;
 		gap: 0;
 	}
 	.recentOrders .row25 {
 		display: flex;
-		flex-direction: columns;
+		flex-direction: column;
 		gap: 0;
 	}
 	.input__box {
@@ -359,18 +360,17 @@ table thead td {
 	}
 	.recentOrders .cardHeader {
 		display: flex;
-		flex-direction: columns;
+		flex-direction: column;
 		gap: 0;
 	}
-}
-@media (max-width: 768) {
+	.recentOrders{
+		overflow-x: auto;
+	}
 	.details {
 		grid-template-columns: repeat(1, 1fr);
 	}
-	.recentOrders {
-		overflow-x: auto;
-	}
 }
+
 @media (max-width: 480px) {
 	.cardBox {
 		grid-template-columns: repeat(1, 1fr);

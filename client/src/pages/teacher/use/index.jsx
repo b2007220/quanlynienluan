@@ -116,7 +116,7 @@ export default function Use() {
 								<td>{use.topic.name}</td>
 								<td>{use.topic.describe}</td>
 								<td>
-									<a href={use.topic.link}>{use.topic.link}</a>
+									<a href={use.topic?.link}>{use.topic?.link}</a>
 								</td>
 								<td>
 									<IconButton onClick={() => setEditUse(use)} color='primary'>
