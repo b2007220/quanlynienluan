@@ -38,7 +38,7 @@
 }
 .recentOrders .row50 {
 	display: flex;
-	flex-wrap: wrap;
+	
 	gap: 20px;
 }
 .recentOrders .row25 {
