@@ -49,7 +49,7 @@
 	display: flex;
 	flex-direction: column;
 	margin-bottom: 10px;
-	width: 100%;
+	
 }
 .recentOrders .row100 .input__box {
 	width: 100%;
@@ -348,12 +348,15 @@ table thead td {
 		flex-direction: column;
 		gap: 0;
 	}
+	.recentOrders .row50 .input__box {
+		width: 100%;
+	}
 	.recentOrders .row25 {
 		display: flex;
 		flex-direction: column;
 		gap: 0;
 	}
-	.input__box {
+	.recentOrders .row25 .input__box {
 		width: 100%;
 	}
 	.recentOrders .cardHeader {
