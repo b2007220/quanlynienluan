@@ -38,7 +38,6 @@
 }
 .recentOrders .row50 {
 	display: flex;
-	
 	gap: 20px;
 }
 .recentOrders .row25 {
@@ -110,7 +109,6 @@
 	font-weight: 500;
 	cursor: pointer;
 	padding: 14px 15px;
-	max-height: 37px;
 }
 .input__box .xacnhan {
 	margin-top: 15px;
