@@ -108,7 +108,7 @@ export default function Enroll() {
 					{({ values, errors, handleChange, handleSubmit }) => {
 						return (
 							<form onSubmit={handleSubmit}>
-								<div className={style.row50}>
+								<div className={style.row100}>
 									<div className={style.input__box}>
 										<span>Loại đề tài bạn tìm kiếm</span>
 										<div className={style.radio__group}>
