@@ -72,8 +72,7 @@
 	font-weight: 500;
 }
 
-.input__box_input
-{
+.input__box_input {
 	padding: 10px;
 	font-style: 1.1em;
 	outline: none;
@@ -109,6 +108,7 @@
 	font-weight: 500;
 	cursor: pointer;
 	padding: 14px 15px;
+	min-height: 37px;
 }
 .input__box .xacnhan {
 	margin-top: 15px;
@@ -361,7 +361,7 @@ table thead td {
 		flex-direction: column;
 		gap: 0;
 	}
-	.recentOrders{
+	.recentOrders {
 		overflow-x: auto;
 	}
 	.details {
