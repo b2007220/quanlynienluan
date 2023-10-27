@@ -198,7 +198,7 @@ export default function Teacher_Home() {
 		<div className={style.detail}>
 			<div className={style.recentOrders}>
 				<div className={style.cardHeader}>
-					<h2>Lịch sử báo cáo</h2>
+					<h2>Lịch sử báo cáo niên luận ngành</h2>
 				</div>
 				<Table
 					sx={{
