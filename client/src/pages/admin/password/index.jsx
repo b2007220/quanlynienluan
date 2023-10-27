@@ -24,25 +24,20 @@ export default function Password() {
 
 	const handlePasswordChange = async (values) => {
 		try {
-			console.log(values);
-			const res = await userService.changePassword(values.oldPassword, values.newPassword);
-			if (res.status === 'success') {
-				MySwal.fire({
-					icon: 'success',
-					title: 'Đặt mật khẩu thành công',
-					showConfirmButton: false,
-					timer: 1500,
-				});
-			} else {
-				MySwal.fire({
-					icon: 'error',
-					title: 'Mật khẩu cũ không đúng',
-					showConfirmButton: false,
-					timer: 1500,
-				});
-			}
+			await userService.changePassword(values.oldPassword, values.newPassword);
+			MySwal.fire({
+				icon: 'success',
+				title: 'Đặt mật khẩu thành công',
+				showConfirmButton: false,
+				timer: 1500,
+			});
 		} catch (error) {
-			console.log(error);
+			MySwal.fire({
+				icon: 'error',
+				title: 'Mật khẩu cũ không đúng',
+				showConfirmButton: false,
+				timer: 1500,
+			});
 		}
 	};
 	const handlePasswordCreate = async (values) => {
