@@ -170,10 +170,14 @@ export default function Enroll() {
 						<Box sx={{ width: 350, margin: 0.3, borderRadius: 12 }} key={use.id}>
 							<Card>
 								<CardContent sx={{ height: 250 }}>
-									<Typography sx={{ height: 150 }} variant='h6' component='div'>
+									<Typography sx={{ height: 150, overflow: 'hidden' }} variant='h6' component='div'>
 										{use.topic.name}
 									</Typography>
-									<Typography sx={{ height: 40 }} variant='subtitle1' component='div'>
+									<Typography
+										sx={{ height: 40, overflow: 'hidden' }}
+										variant='subtitle1'
+										component='div'
+									>
 										{use.topic.type === 'BASIS' ? 'Niên luận cơ sở' : 'Niên luận ngành'}
 									</Typography>
 									<Typography variant='body2' color='text.secondary'>
