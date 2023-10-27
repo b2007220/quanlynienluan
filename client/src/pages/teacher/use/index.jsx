@@ -105,6 +105,7 @@ export default function Use() {
 					<tr>
 						<td>Tên đề tài</td>
 						<td>Miêu tả đề tài</td>
+						<td>Loại đề tài</td>
 						<td>Link tham khảo</td>
 						<td>Thao tác</td>
 					</tr>
@@ -113,6 +114,8 @@ export default function Use() {
 							<tr>
 								<td>{use.topic.name}</td>
 								<td>{use.topic.describe}</td>
+								{use.topic.type === 'BASIS' ? (<td>Niên luận cơ sở</td>)
+								: (<td>Niên luận ngành</td>)}
 								<td>
 									<a href={use.topic?.link}>{use.topic?.link}</a>
 								</td>

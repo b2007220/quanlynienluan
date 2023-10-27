@@ -72,15 +72,7 @@ function Row({ enroll }) {
 				</TableCell>
 				<TableCell>{enroll.user.schoolId ? enroll.user.schoolId : 'Chưa có'}</TableCell>
 				<TableCell>{enroll.use.topic.name}</TableCell>
-				{enroll.state === 'WAIT' ? (
-					<TableCell>Chờ duyệt</TableCell>
-				) : enroll.state === 'IN_PROCESS' ? (
-					<TableCell>Đang thực hiện</TableCell>
-				) : enroll.state === 'DONE' ? (
-					<TableCell>Hoàn thành</TableCell>
-				) : (
-					<TableCell>Đề xuất</TableCell>
-				)}
+				{enroll.use.topic.type === 'BASIS' ? <td>Niên luận cơ sở</td> : <td>Niên luận ngành</td>}
 				{enroll.use.semester.name === 'FIRST' ? (
 					<TableCell>Học kì 1</TableCell>
 				) : enroll.use.semester.name === 'SECOND' ? (
