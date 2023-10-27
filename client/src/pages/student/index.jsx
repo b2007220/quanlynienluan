@@ -121,9 +121,9 @@ export default function Student_Home() {
 						<h3>Đề tài đang được thực hiện</h3>
 					) : enroll?.state === 'DONE' ? (
 						<h3>Đề tài đã hoàn thành</h3>
-					) : (
+					) : enroll?.state === 'PROPOSE' ?(
 						<h3>Đề tài đang đợi được cho phép</h3>
-					)}
+					) : null}
 				</div>
 				<Formik
 					initialValues={{
