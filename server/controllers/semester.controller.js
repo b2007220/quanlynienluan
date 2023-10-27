@@ -50,7 +50,6 @@ class SemesterController {
 	async updateById(req, res, next) {
 		try {
 			const semester = await semesterService.getById(req.params.id);
-
 			if (!semester) {
 				res.status(404).json({ message: 'Semester not found' });
 			}

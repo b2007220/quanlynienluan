@@ -55,7 +55,6 @@ class EnrollService {
 			data: enroll,
 			include: {
 				user: true,
-
 				use: {
 					include: {
 						semester: {

@@ -48,7 +48,13 @@ class SemesterService {
 			where: {
 				id: parseInt(id),
 			},
-			data: semester,
+			data: {
+				name: semester.name,
+				startAt: semester.startAt,
+				endAt: semester.endAt,
+				isCurrent: semester.isCurrent,
+				yearId: semester.yearId,
+			},
 			include: {
 				year: true,
 			},
