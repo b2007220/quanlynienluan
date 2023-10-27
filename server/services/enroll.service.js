@@ -145,15 +145,15 @@ class EnrollService {
 	}
 	async haveEnroll(id) {
 		const semester = await semesterService.getCurrent();
-
-		return !!(await this.#client.enroll.findUnique({
+		const enrolls = await this.#client.enroll.findMany({
 			where: {
-				userId: id,
+				userId: parseInt(id),
 				use: {
 					semesterId: semester.id,
 				},
 			},
-		}));
+		});
+		return enrolls.length > 0;
 	}
 	async getByTeacherBasisId(id, page = 0, limit = 6) {
 		const semester = await semesterService.getCurrent();

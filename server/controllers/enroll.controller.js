@@ -17,7 +17,7 @@ class EnrollController {
 	 */
 	async createEnrollFromUse(req, res, next) {
 		try {
-			if ((await enrollService.haveEnroll(req.user.id))) {
+			if (await enrollService.haveEnroll(req.user.id)) {
 				return res.status(400).json({ message: 'User already have an enroll' });
 			} else {
 				res.status(201).json(await enrollService.createEnrollFromUse(req.body, req.user));

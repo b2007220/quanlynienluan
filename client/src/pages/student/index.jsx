@@ -43,7 +43,7 @@ export default function Student_Home() {
 	if (!user) return null;
 	const handleCreateNewReport = async (values) => {
 		try {
-			if (enroll.state !== 'WAIT') {
+			if (enroll.state !== 'WAIT' || enroll.state !== 'PROPOSE') {
 				const newReport = await reportService.createReport({ ...values, enrollId: enroll.id });
 				setReportList((prev) => {
 					return {
@@ -68,13 +68,12 @@ export default function Student_Home() {
 			console.log(error);
 		}
 	};
-
 	return (
 		<div className={style.details}>
 			<div className={style.recentOrders}>
 				<div className={style.cardHeader}>
 					<h2>Lịch sử báo cáo</h2>
-					<h2>{enroll.use?.topic.name}</h2>
+					<h3>{enroll.use?.topic.name}</h3>
 				</div>
 				<table>
 					<thead>
@@ -116,6 +115,15 @@ export default function Student_Home() {
 			<div className={style.recentOrders}>
 				<div className={style.cardHeader}>
 					<h2>Thêm báo cáo mới</h2>
+					{enroll?.state === 'WAIT' ? (
+						<h3>Đề tài chưa được duyệt</h3>
+					) : enroll?.state === 'IN_PROCESS' ? (
+						<h3>Đề tài đang được thực hiện</h3>
+					) : enroll?.state === 'DONE' ? (
+						<h3>Đề tài đã hoàn thành</h3>
+					) : (
+						<h3>Đề tài đang đợi được cho phép</h3>
+					)}
 				</div>
 				<Formik
 					initialValues={{
