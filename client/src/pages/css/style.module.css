@@ -199,7 +199,10 @@
 	color: var(--white);
 	border-radius: 12px;
 }
-
+.state {
+	position: relative;
+	padding: 5px 10px;
+}
 .status__wait {
 	background: rgb(215, 36, 36);
 	font-size: 1em;

@@ -155,7 +155,9 @@ export default function Login() {
 										<div className={style.icon}>
 											<GoogleIcon></GoogleIcon>
 										</div>
-										<p>Sign In with Google</p>
+										<div className={style.text}>
+											Sign In with Google
+										</div>
 									</button>
 								</div>
 							</div>

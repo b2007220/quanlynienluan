@@ -114,16 +114,18 @@ export default function Student_Home() {
 			</div>
 			<div className={style.recentOrders}>
 				<div className={style.cardHeader}>
-					<h2>Thêm báo cáo mới</h2>
+					<h3>Thêm báo cáo mới</h3>
+					<div className={style.state}>
 					{enroll?.state === 'WAIT' ? (
-						<h3>Đề tài chưa được duyệt</h3>
+						<h4>Đề tài chưa được duyệt</h4>
 					) : enroll?.state === 'IN_PROCESS' ? (
-						<h3>Đề tài đang được thực hiện</h3>
+						<h4>Đề tài đang được thực hiện</h4>
 					) : enroll?.state === 'DONE' ? (
-						<h3>Đề tài đã hoàn thành</h3>
+						<h4>Đề tài đã hoàn thành</h4>
 					) : enroll?.state === 'PROPOSE' ?(
-						<h3>Đề tài đang đợi được cho phép</h3>
+						<h4>Đề tài đang đợi được cho phép</h4>
 					) : null}
+					</div>
 				</div>
 				<Formik
 					initialValues={{

@@ -171,10 +171,17 @@ hr {
 .input__google .icon {
 	padding-top: 5px;
 	font-size: 2rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
-.input__google p {
+.input__google .text {
 	font-size: 15px;
-	width: 90%;
+	width: 100%;
+	font-weight: 600;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 @keyframes btn-anim1 {
 	0% {

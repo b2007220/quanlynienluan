@@ -180,11 +180,20 @@ export default function Enroll() {
 									>
 										{use.topic.type === 'BASIS' ? 'Niên luận cơ sở' : 'Niên luận ngành'}
 									</Typography>
-									<Typography variant='body2' color='text.secondary'>
+									<Typography
+										variant='body2'
+										color='text.secondary'
+										sx={{
+											height: 60,
+											overflow: 'hidden',
+										}}
+									>
 										{use.topic.describe}
 									</Typography>
 								</CardContent>
-								<CardActions>
+								<CardActions sx={{
+									marginTop: '5px',
+								}}>
 									<Button size='small' href={use.topic?.link}>
 										Thêm thông tin đề tài
 									</Button>
