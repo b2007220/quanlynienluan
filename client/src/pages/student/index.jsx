@@ -15,6 +15,7 @@ import style from '../css/style.module.css';
 import ChangeReport from './changereport';
 
 const yesterday = new Date(Date.now() - 86400000);
+
 const validationSchema = Yup.object().shape({
 	doneJob: Yup.string().required('Vui lòng điền công việc đã hoàn thành'),
 	nextJob: Yup.string().required('Vui lòng điền công việc tiếp theo'),
@@ -88,7 +89,7 @@ export default function Student_Home() {
 					{reportList.data.map((report) => (
 						<tbody key={report.id}>
 							<tr>
-								<td>{dayjs(report.createAt).format('DD-MM-YYYY')}</td>
+								<td>{dayjs(report.createdAt).format('DD-MM-YYYY')}</td>
 								<td>{report.doneJob}</td>
 								<td>{report.nextJob}</td>
 								<td>{dayjs(report.promiseAt).format('DD-MM-YYYY')}</td>
