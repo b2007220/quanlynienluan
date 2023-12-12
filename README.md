@@ -6,8 +6,8 @@ client:
 server:
     tạo file env. theo mẫu
     cd server
+    Khởi tạo database: npx prisma db push
     npm run dev
-
 Kích hoạt rasa chatbot
 rasa train --config bert.yml
 
