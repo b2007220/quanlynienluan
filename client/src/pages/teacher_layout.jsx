@@ -4,7 +4,7 @@ import DensityMediumIcon from '@mui/icons-material/DensityMedium';
 import HomeIcon from '@mui/icons-material/Home';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
-// import SupportEngine from './chat/SupportEngine';
+import SupportEngine from './chat/SupportEngine';
 import {
 	Box,
 	Button,
@@ -157,7 +157,7 @@ const Layout = () => {
 			</Container>
 
 			<Outlet />
-			{/* <SupportEngine /> */}
+			<SupportEngine />
 		</LocalizationProvider>
 	);
 };
